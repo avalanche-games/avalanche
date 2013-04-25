@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=0.0
+Type=Application
+Name=Avalanche
+Comment=A Free and Open Source game IDE
+Exec=/home/cfls/Desktop/avalanche/bin/avalanche
+Icon=/home/cfls/Desktop/avalanche/bin/avalanche.png
+Categories=Application;Development;

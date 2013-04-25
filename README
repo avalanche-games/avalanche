@@ -1,0 +1,77 @@
+Garnet Framework:
+ -> The framework behind the game.
+
+Garnet Gemstones[1]
+ -> Game addons, usually vala scripts.
+
+Garnet Engine:
+ -> The editor.
+
+Garnet Veins:[1]
+ -> Mini Ruby/Lua scripts that add functions to Garnet.
+
+* NOTES:
+	[1] Only on a Late version
+
+		Garnet Engine needs some things (importance order):
+			Resource Store
+			====================
+			Yes, we will have a store[1] :D (with gtk interface, nothing about webkit).
+
+			Graphics:
+			 -> Project's Charsets (npcs, chests etc).
+			 -> Project's Tilesets (the `map`).
+			 -> Project's Backgrounds (backgrounds).
+			 -> Project's Artworks (artworks).
+			 -> Project's Sprites (everything else).
+
+			Musics:
+			 -> Project's BGM (background musics).
+			 -> Project's BGS (background sounds).
+			 -> Project's MEX (music efects).
+			 -> Project's SFX (sound effects).
+
+			Extensions Gemstones:[2]
+			 -> Project's Gemstones (game extensions).
+			 -> Project's Veins (editor extensions).
+
+			The project must be portable! (run on any Garnet platform) So every extension is
+			distributed with source, and are recompiled on another platforms. (we list
+			dependencies too, and there's also autoupdate)
+
+			* NOTES:
+				[1] Only in some years(or less)...
+				[2] We also do not dream about distributing that things now...
+
+			Content Editor
+			====================
+			-> Level Editor.
+				Holds events and objects (instanteated from a object model 
+				from object collection).
+
+				-> Environment Editor (what it means).
+
+			Database Editor
+			====================
+			Actually a REAL database.
+			I will find a way to make this thingy as interactive as json.
+
+			Scripting
+			====================
+			-> Events Editor.
+				Creates Events Collections and edit events.
+
+				Events can be game objects (that can be instantiated and etc),
+				os just do things statically.
+				Events may be used outside of a map (commom event) without need of a object.
+
+				$ Occurence Condition => Behavior
+
+				-> Behavior.
+					Is just a list of things to do, will likely be json OR binary (or both, 
+					json only on debug).
+
+			NPC's, Chests and Interactive Stuff
+			====================
+			-> Object Editor.
+				Creates Objects Collections and edit objects.

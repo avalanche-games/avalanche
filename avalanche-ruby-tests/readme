@@ -1,0 +1,165 @@
+The MIT License (MIT)
+
+Copyright (c) 2013 Christian Ferraz Lemos de Sousa
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
+Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
+OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+________________________________________________________________________________________________________________________
+
+Base Types:
+  * Action
+  * Container
+
+  -> Actions do things, many things really. They may set variables, db variables,
+  make things appear over screen and etc.
+
+  -> Containers hold things, and may happen over some condition. They make checks
+  and let it's inner content happens if the check returns true.
+
+
+
+Basic Containers:
+  Container, simply do something, used to organize events.
+
+Special Types:
+  -> Event, the primary container, it represents a event and when compiled, every
+  function that a event do must be inside it.
+
+  -> Page, a conditional container, it uses separate notebooks, it looks like a
+  very dynamic case check and will be compiled to *many* bytecode commands.
+
+  -> Comment, just hold a text, won't not do anything and is erased by the event
+  compiler.
+
+  -> Mark <- string(DATA)
+    like the above, but is persistent, might be used by some scripts.
+
+
+Power Containers:
+
+  -> Loop, faz com que código interno seja repetido até que ele seja quebrado por
+  um comando Break.
+
+  `If` Prefix
+
+    IfInteger <- bool(LOCAL), int(POINTER), int(OPERATION), int(VALUE)
+      check if a integer is equal to a value.
+
+    IfIntegerInteger <- bool(LOCAL), int(POINTER), int(OPERATION), int(POINTER)
+      check if a integer is * to another integer.
+
+    IfBoolean <- bool(LOCAL), int(POINTER), int(OPERATION), bool(VALUE)
+      check if a boolean is * to a boolean value.
+
+    IfBooleanBoolean <- bool(LOCAL), int(POINTER), int(OPERATION), int(POINTER)
+      check if a boolean is * to another boolean.
+
+    IfString <- bool(LOCAL), int(POINTER), int(OPERATION), string(VALUE)
+      check if a string is * to a value.
+
+    IfStringString <- bool(LOCAL), int(POINTER), int(OPERATION), int(POINTER)
+      check if a string is * to another string.
+
+    IfDbInteger <- ???(ADDRESS), int(OPERATION), int(VALUE)
+      check if a db integer is *to a value
+
+    IfDbIntegerInteger <- ???(ADDRESS), int(OPERATION),???(ADDRESS)
+      check if a db integer is * to another db integer
+
+    IfDbBoolean <- ???(ADDRESS), int(OPERATION), bool(VALUE)
+      check if a db boolean is * to a value
+
+    IfDbBooleanBoolean <- ???(ADDRESS), int(OPERATION), ???(ADDRESS)
+      check if a db boolean is *to another db boolean
+
+    IfDbString <- ???(ADDRESS), int(OPERATION), string(VALUE)
+      check if a db string is * to a value
+
+    IfDbStringString <- ???(ADDRESS), int(OPERATION), ???(ADDRESS)
+      check if a db string is *to another db boolean
+
+    Sub Commands:
+
+      DoIf bool(DO)
+        What will run if DO is true
+
+      Else bool(DONOT)
+        What will run if DO is false
+
+
+  `While` Prefix
+
+    WhileInteger <- bool(LOCAL), int(POINTER), int(OPERATION), int(VALUE)
+      check while a integer is equal to a value.
+
+    WhileIntegerInteger <- bool(LOCAL), int(POINTER), int(OPERATION), int(POINTER)
+      check while a integer is * to another integer.
+
+    WhileBoolean <- bool(LOCAL), int(POINTER), int(OPERATION), bool(VALUE)
+      check while a boolean is * to a boolean value.
+
+    WhileBooleanBoolean <- bool(LOCAL), int(POINTER), int(OPERATION), int(POINTER)
+      check while a boolean is * to another boolean.
+
+    WhileString <- bool(LOCAL), int(POINTER), int(OPERATION), string(VALUE)
+      check while a string is * to a value.
+
+    WhileStringString <- bool(LOCAL), int(POINTER), int(OPERATION), int(POINTER)
+      check while a string is * to another string.
+
+    WhileDbInteger <- ???(ADDRESS), int(OPERATION), int(VALUE)
+      check while a db integer is *to a value
+
+    WhileDbIntegerInteger <- ???(ADDRESS), int(OPERATION),???(ADDRESS)
+      check while a db integer is * to another db integer
+
+    WhileDbBoolean <- ???(ADDRESS), int(OPERATION), bool(VALUE)
+      check while a db boolean is * to a value
+
+    WhileDbBooleanBoolean <- ???(ADDRESS), int(OPERATION), ???(ADDRESS)
+      check while a db boolean is *to another db boolean
+
+Action Types:
+
+  Break, quebra o ciclo;
+
+  ConoutInteger <- int(VALUE)
+    Mostra valor int no console.
+
+  ConoutString <- string(VALUE)
+    Mostra valor string no console.
+
+  ConoutBool <- bool(VALUE)
+    Mostra valor bool no console.
+
+  ConoutDbInteger <- ???(ADDRESS)
+    Mostra valor int no console.
+
+  ConoutDbString <- ???(ADDRESS)
+    Mostra valor string no console.
+
+  ConoutDbBool <- ???(ADDRESS)
+    Mostra valor bool no console.
+
+  # ----
+
+  SpawnCharacter <- int(X), int(Y), int(EVENT), int(SAVE_ID) 
+    Spawns a character with a event (if EVENT > -1) and saves it's id in a integer (if SAVE_ID > -1)
+
+  ChangeEvent <- int(CHARACTER_ID), int(Y), int(EVENT)
+    Changes Character's event.
+
+  BindShape <- int(CHARACTER_ID), int(SHAPE) 
+    Binds a Physic Shape to a Character.
+
+
