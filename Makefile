@@ -6,7 +6,7 @@ P_PKG = --pkg sdl --pkg sdl-gfx
 P_OPT = -X -lSDL_gfx
 E_BIN = ./bin/Avalanche
 E_SRC = ./$(wildcard src/editor/*.vala)
-E_PKG = --pkg gtksourceview-3.0 --pkg gtk+-3.0
+E_PKG = --pkg gio-2.0 --pkg json-glib-1.0 --pkg gtk+-3.0 --pkg gtksourceview-3.0 --pkg gee-1.0 -X -lm
 E_OPT = 
 
 editor:
