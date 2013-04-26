@@ -126,7 +126,7 @@ You should avoid to create issues to unsupported ways of building the editor
 (the hard way), and also, for build issues use a name like `Build Error on
 Operational System - Details`, where Operational System is windows version,
 mac version or linux distro name and version, the details is a thing that you
-think that is causin the bug, no rules for descriptions (for now).
+think that is causing the bug, no rules for descriptions (for now).
 
 
 # Licensing
