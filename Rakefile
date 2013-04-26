@@ -13,6 +13,7 @@ E_OPT = ""
 task(:editor)  { sh_do [VALAC, E_PKG, E_OPT, E_SRC.join(" "), "-o", E_BIN].join(" ") }
 task(:player)  { sh_do [VALAC, P_PKG, P_OPT, P_SRC.join(" "), "-o", P_BIN].join(" ") }
 task(:clean)   { sh_do ["rm", "-f", E_BIN, P_BIN].join(" ") }
+task(:arch)    { puts "to build/run you must install `glib, libgee, gtk3, gtksourceview3, json-glib`:\n  pacman -S glib libgee gtk3 gtksourceview3 json-glib" }
 task(:all)     { Rake::Task[:editor].invoke;	Rake::Task[:player].invoke }
 task(:default) { Rake::Task[:editor].invoke }
 def sh_do command; puts command; system command; end
