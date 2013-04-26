@@ -13,14 +13,18 @@ require "fileutils"
 def sh command; puts command; system command; end
 
 VALAC = "valac"
-P_BIN = "./bin/samplegame"
-P_SRC = Dir["./src/player/*.vala"]
-P_PKG = "--pkg sdl --pkg sdl-gfx --pkg json-glib-1.0"
-P_OPT = "-X -lSDL_gfx"
-E_BIN = "./bin/avalanche"
-E_SRC = Dir["./src/editor/*.vala"]
-E_PKG = "--pkg gio-2.0 --pkg json-glib-1.0 --pkg gtk+-3.0 --pkg gtksourceview-3.0 --pkg gee-0.8 -X -lm"
-E_OPT = ""
+BIN   = "../bin/avalanche"
+SRC   = Dir["./src/*.vala"]
+PKG   = "--pkg gio-2.0 --pkg json-glib-1.0 --pkg gtk+-3.0 --pkg gtksourceview-3.0 --pkg gee-0.8 -X -lm"
+OPT   = ""
+
+task(:help) {
+  puts "to build/run you must install `glib, libgee,gtk3, gtksourceview3, json-glib`:\n  pacman -S glib libgee gtk3 gtksourceview3 json-glib"
+}
+
+task(:clean) { sh "rm -f #{BIN}" }
+
+task(:all)   { sh [VALAC, PKG, OPT, SRC.join(" "), "-o", BIN].join(" ") }
 
 task(:install) {
   check_dirs = ["/usr/", "/usr/bin/", "/usr/lib/", "/usr/lib/avalanche/", "/usr/lib/avalanche/syntax-colors/",
@@ -79,9 +83,4 @@ task(:uninstall) {
   end
 }
 
-task(:editor)  { sh [VALAC, E_PKG, E_OPT, E_SRC.join(" "), "-o", E_BIN].join(" ") }
-task(:player)  { sh [VALAC, P_PKG, P_OPT, P_SRC.join(" "), "-o", P_BIN].join(" ") }
-task(:clean)   { sh ["rm", "-f", E_BIN, P_BIN].join(" ") }
-task(:arch)    { puts "to build/run you must install `glib, libgee, gtk3, gtksourceview3, json-glib`:\n  pacman -S glib libgee gtk3 gtksourceview3 json-glib" }
-task(:all)     { Rake::Task[:editor].invoke;	Rake::Task[:player].invoke }
-task(:default) { Rake::Task[:editor].invoke }
+task(:default)   { Rake::Task[:all].invoke }

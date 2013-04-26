@@ -51,7 +51,6 @@ To run the game you do not need anything, it already comes with your game.
 
 ### On Linux
 Add Gtk3, Glib, libgee\* and SDL2\*\* to the package dependency list. 
-
 \* We're not using libgee (for now). \*\* SDL2 will be included statically(On Linux) because SDL2 has no packages.
 
 ## Building the Editor
