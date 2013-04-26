@@ -240,7 +240,7 @@ namespace SDL {
 	public delegate int blit (SDL.Surface *src, SDL.Rect *srcrect,
 	                          SDL.Surface *dst, SDL.Rect *dstrect);
 
-	[CCode (type_id="SDL_Surface", cname="SDL_Surface", free_function="SDL_FreeSurface", cheader_filename="SDL2/SDL_surface.h")]
+	[CCode (type_id="SDL_Surface", cname="SDL_Surface", free_function="SDL_FreeSurface", cheader_filename="SDL2/SDL_surface.h",unref_function="")]
 	public class Surface {
 		public uint32 flags;
 		public SDL.PixelFormat format;

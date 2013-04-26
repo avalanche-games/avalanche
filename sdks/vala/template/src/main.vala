@@ -6,7 +6,7 @@ public class Main {
         public static void main () {
 		SDL.init ();
 		
-		window = new SDL.Window ("Testing SDL 2.0 in Vala", Window.POS_CENTERED, Window.POS_CENTERED, 640, 480, WindowFlags.RESIZABLE);
+		window = new SDL.Window ("Testing SDL 2.0 in Vala", SDL.Window.POS_CENTERED, SDL.Window.POS_CENTERED, 640, 480, SDL.WindowFlags.RESIZABLE);
 		window.show ();
 		
 		Avalanche.Game.use_window(window);

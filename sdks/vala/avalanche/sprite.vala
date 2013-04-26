@@ -16,7 +16,7 @@ public class ScreenPosition {
 		this.y = y;
 	}
 	
-	public ScreenPosition.from_corners(uint16 x, uint16 y, PosCorners corner) {
+	public ScreenPosition.from_corners(uint16 x, uint16 y, PosCorner corner) {
 		switch(corner){
 			case  PosCorner.TOP_LEFT:
 				this.x = x;
