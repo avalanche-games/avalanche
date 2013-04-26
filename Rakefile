@@ -7,7 +7,7 @@ P_PKG = "--pkg sdl --pkg sdl-gfx --pkg json-glib-1.0"
 P_OPT = "-X -lSDL_gfx"
 E_BIN = "./bin/avalanche"
 E_SRC = Dir["./src/editor/*.vala"]
-E_PKG = "--pkg gio-2.0 --pkg json-glib-1.0 --pkg gtk+-3.0 --pkg gtksourceview-3.0 --pkg gee-1.0 -X -lm"
+E_PKG = "--pkg gio-2.0 --pkg json-glib-1.0 --pkg gtk+-3.0 --pkg gtksourceview-3.0 --pkg gee-0.8 -X -lm"
 E_OPT = ""
 
 task(:editor)  { sh_do [VALAC, E_PKG, E_OPT, E_SRC.join(" "), "-o", E_BIN].join(" ") }
