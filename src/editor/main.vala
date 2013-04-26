@@ -37,7 +37,7 @@ public class Application : Gtk.Window {
 			this.icon = Gtk.IconTheme.get_default().load_icon("avalanche", 512, 0);
 		} catch(Error e) {
 			try {
-				this.icon = new Gdk.Pixbuf.from_file("avalanche.png");
+				this.icon = new Gdk.Pixbuf.from_file("/usr/lib/avalanche/icons/avalanche.png");
 			} catch(Error e) {
 				stderr.printf("Could not load application icon: %s\n", e.message);
 			}

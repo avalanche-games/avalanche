@@ -27,7 +27,7 @@ namespace Miscellaneuous {
 
 	public Gtk.SourceStyleScheme get_syntax_style() {
 		// Changes the editor text to match the new page
-		Gtk.SourceStyleSchemeManager.get_default().append_search_path(".");
+		Gtk.SourceStyleSchemeManager.get_default().append_search_path("/usr/lib/avalanche/syntax-colors/");
 		Gtk.SourceStyleSchemeManager.get_default().force_rescan();
 		return Gtk.SourceStyleSchemeManager.get_default().get_scheme("tonight");
 	}

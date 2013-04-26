@@ -9,6 +9,36 @@ E_SRC = ./$(wildcard src/editor/*.vala)
 E_PKG = --pkg gio-2.0 --pkg json-glib-1.0 --pkg gtk+-3.0 --pkg gtksourceview-3.0 --pkg gee-0.8 -X -lm
 E_OPT = 
 
+install:
+	@echo "Preparing to install..."
+	@mkdir "/usr/" 2>/dev/null; true
+	@mkdir "/usr/bin/" 2>/dev/null; true
+	@mkdir "/usr/lib/" 2>/dev/null; true
+	@mkdir "/usr/local/" 2>/dev/null; true
+	@mkdir "/usr/local/share/" 2>/dev/null; true
+	@mkdir "/usr/local/share/applications/" 2>/dev/null; true
+	@echo -e "\nCreating directories..."
+	@echo -e "mkdir \"/usr/lib/avalanche/\""
+	@mkdir "/usr/lib/avalanche/"; true
+	@echo -e "mkdir \"/usr/lib/avalanche/icons/\""
+	@mkdir "/usr/lib/avalanche/syntax-colors/"; true
+	@echo -e "mkdir \"/usr/lib/avalanche/icons/\""
+	@mkdir "/usr/lib/avalanche/icons/"; true
+	@echo -e "\nInstalling files..."
+	cp -f "./bin/avalanche" "/usr/bin/avalanche"
+	cp -f "./res/syntax-colors/tonight.xml" "/usr/lib/avalanche/syntax-colors/tonight.xml"
+	cp -f "./res/icons/avalanche.png" "/usr/lib/avalanche/icons/avalanche.png"
+	cp -f "./res/shortcuts/avalanche.desktop" "/usr/local/share/applications/avalanche.desktop"
+
+uninstall:
+	rm -f "/usr/bin/avalanche"
+	rm -f "/usr/lib/avalanche/syntax-colors/tonight.xml"
+	rm -f "/usr/lib/avalanche/icons/avalanche.png"
+	rm -f "/usr/local/share/applications/avalanche.desktop"
+	rmdir "/usr/lib/avalanche/syntax-colors/"
+	rmdir "/usr/lib/avalanche/icons/"
+	rmdir "/usr/lib/avalanche/"
+
 editor:
 	$(VALAC) $(E_PKG) $(E_OPT) $(E_SRC) -o $(E_BIN)
 player:
