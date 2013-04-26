@@ -74,8 +74,9 @@ Install Cygwin, MSYS or any *Gnu Tools* port for windows, open the custom termin
 
 If you want to contribute to the project, first note that everything you pull to this project is copyrighted to the contributors. If you do not want to be a official contributor, just fork the project and pull your commits to the main repository, you should also keep our coding style:
 
-<pre>namespace A { // Root namespace on a fake '-1' identation level
-// do not write `using`
+<pre>
+namespace A { // Root namespace on a fake '-1' identation level
+// do not write 'using'
 public class SintaxSample : Object { // Type is camel case, do not reffer to glib directly, but always reffer to others
 	// Tabs instead of spaces
 	public void x_e(int y, float x) {
@@ -101,18 +102,31 @@ public enum  SomeEnum {
 	ALL_UPPER_CASE, WITH_UNDERSCORE
 }// SomeEnum
 
-}// A</pre>
+}// A
+</pre>
 
-If you follow those styles guidelines you commits might be accepted.
+If you follow those styles guidelines your commit might be accepted.
 
-# Problems
 
-If something is bothering you, you should really create a issue here, we have no restriction about the issues that you should create, but we ask you to: 
+##Problems
 
-Give information about your Operational System, GCC version, Vala version, and everything you tried to do to fix the problem, if some commit added that problem, you may also want to reffer to it.
 
-### About Build Issues
-You should avoid to create issues to unsupported ways of building the editor(the hard way), and also, for build issues use a name like `Build Error on Operational System - Details`, where Operational System is windows version, mac version or linux distro name and version, the details is a thing that you think that is causin the bug, no rules for descriptions (for now).
+If something is bothering you, you should really create a issue here, we have no
+restriction about the issues that you should create, but we ask you to:
+
+Give information about your Operational System, GCC version, Vala version, and
+everything you tried to do to fix the problem, if some commit added that
+problem, you may also want to reffer to it.
+
+
+###About Build Issues
+
+
+You should avoid to create issues to unsupported ways of building the editor
+(the hard way), and also, for build issues use a name like `Build Error on
+Operational System - Details`, where Operational System is windows version,
+mac version or linux distro name and version, the details is a thing that you
+think that is causin the bug, no rules for descriptions (for now).
 
 
 # Licensing
