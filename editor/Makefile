@@ -42,7 +42,7 @@ install:
 	@echo -e "mkdir \"/usr/lib/avalanche/icons/\""
 	@mkdir "/usr/lib/avalanche/icons/"; true
 	@echo -e "\nInstalling files..."
-	cp -f "./bin/avalanche" "/usr/bin/avalanche"
+	cp -f $(BIN) "/usr/bin/avalanche"
 	cp -f "./res/syntax-colors/tonight.xml" "/usr/lib/avalanche/syntax-colors/tonight.xml"
 	cp -f "./res/icons/avalanche.png" "/usr/lib/avalanche/icons/avalanche.png"
 	cp -f "./res/shortcuts/avalanche.desktop" "/usr/local/share/applications/avalanche.desktop"

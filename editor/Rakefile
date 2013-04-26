@@ -39,7 +39,7 @@ task(:install) {
       end
     end
   end
-  copy_list = [["./bin/avalanche","/usr/bin/avalanche"],["./res/syntax-colors/tonight.xml",
+  copy_list = [[BIN,"/usr/bin/avalanche"],["./res/syntax-colors/tonight.xml",
                 "/usr/lib/avalanche/syntax-colors/tonight.xml"],["./res/icons/avalanche.png",
                 "/usr/lib/avalanche/icons/avalanche.png"],["./res/shortcuts/avalanche.desktop",
                 "/usr/local/share/applications/avalanche.desktop"]]
