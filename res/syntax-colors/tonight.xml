@@ -58,7 +58,7 @@
   <style name="def:statement" foreground="#cc99cc"/>
   <style name="def:string" foreground="#99cc99"/>
   <style name="def:type" foreground="#ffcc66"/>
-  <style name="draw-spaces" foreground="#2F2F2F"/>
+  <style name="draw-spaces" foreground="#333333"/>
   <style name="html:dtd" foreground="#99cc99"/>
   <style name="html:tag" foreground="#f2777a"/>
   <style name="js:function" foreground="#6699cc"/>
