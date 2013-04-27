@@ -9,11 +9,11 @@
 ##
 
 VALAC = valac
-PROJ  = avalanche
 VFLAG = -X -Ofast -X '-lSDL2' --vapidir=./vala/thirds
 VPKGS = --pkg sdl2
-SRC   = ./$(wildcard vala/$(PROJ)/*.vala)
-BIN   = ./../bin/game-$(PROJ)
+VBASE   = ./$(wildcard vala/avalanche/*.vala)
+SRC   = ./$(wildcard vala/$(GAME)/src/*.vala)
+BIN   = ./../bin/game-$(GAME)
 
 ifeq ($(OS), Windows_NT)
 	CLEAN := rm -f $(BIN)
@@ -31,7 +31,7 @@ endif
 	$(CLEAN)
 
 build:
-	$(VALAC) $(VPKGS) $(VFLAG) $(SRC) -o $(BIN)
+	$(VALAC) $(VPKGS) $(VFLAG) $(VBASE) $(SRC) -o $(BIN)
 
 clean: .PHONY
 default: build
