@@ -55,19 +55,13 @@ Add Gtk3, Glib, libgee\* and SDL2\*\* to the package dependency list.
 
 ## Building the Editor
 
-### Linux Easy Way
+### Linux
 Open the Avalanche's source folder in a Terminal and run `make`, if everything is alright then `sudo make install`, you will be prompted to input your password to install the editor in the system, after that just search for avalanche in your desktop.
 
 If you got some errors during the make process, double check if the dependencies are all right, then check if the last commit is building on travis, if it is so create a issue using our issues standards.
 
-### Windows Easy Way
-Just install the dependencies (I might add some help here), install Ruby open the terminal, type rake, if no rake command is found then make sure that ruby is in your path and then run `gem install rake`, after that go to the Avalanche's folder using *cd* and run `rake`, if everything succeeds now type `rake install`.
-
-### Linux Hard Way \*\*UNSUPPORTED\*\*
-Install Ruby19 (or higher) and the rake gem, use `gem install rake` if you do not have it installed. Now open the Avalanche's source folder in a Terminal and run `rake`, if everything is ok then run `sudo rake install`, you will be prompted to input your password to install the editor in the system, after that just search for avalanche in your desktop.
-
-### Windows Hard Way \*\*UNSUPPORTED\*\*
-Install Cygwin, MSYS or any *Gnu Tools* port for windows, open the custom terminal(that should be able to run shell/bash), open the Avalanche source folder and run `make`, then run `sudo make install`.
+### Windows
+Just install the dependencies (I might add some help here), open the terminal, type make, if no make command is found then make sure that Mingw is in your path and then go to the Avalanche's folder using *cd* and run `make`, if everything succeeds now type `make install`.
 
 # Hacking
 
@@ -121,10 +115,9 @@ problem, you may also want to reffer to it.
 ###About Build Issues
 
 
-You should avoid to create issues to unsupported ways of building the editor
-(the hard way), and also, for build issues use a name like `Build Error on
-Operational System - Details`, where Operational System is windows version,
-mac version or linux distro name and version, the details is a thing that you
+You should avoid to create issues to unsupported ways of building the editor, and also,
+for build issues use a name like `Build Error on Operational System - Details`, where
+Operational System is Windows/Mac/LinuxDistro version, the details is a thing that you
 think that is causing the bug, no rules for descriptions (for now).
 
 
