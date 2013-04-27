@@ -66,9 +66,12 @@ Just install the dependencies (I might add some help here), open the terminal, t
 If you want to contribute to the project, first note that everything you pull to this project is copyrighted to the contributors. If you do not want to be an official contributor, just fork the project and pull your commits to the main repository, you should also keep our coding style:
 
 <pre>
-namespace A { // Root namespace on a fake '-1' identation level
+// Root namespace on a fake '-1' identation level
+namespace A {
 // do not write 'using'
-public class SintaxSample : Object { // Type is camel case, do not reffer to glib directly, but always reffer to others
+
+// Type is camel case, do not reffer to glib directly, but always reffer to others
+public class SintaxSample : Object {
 	// Tabs instead of spaces
 	public void x_e(int y, float x) {
 		/* Comments on separated lines
@@ -84,15 +87,17 @@ public class SintaxSample : Object { // Type is camel case, do not reffer to gli
 			h, i, j, k, l, m, n, o , p);
 		// Space before every opening bracket
 		}else {
-			do_sth(y);
-		} // This kind of comment for remembering what is being closed
+			A.B.do_otherth(y);
+		}
 		// If needed remember to do the correct usage of &\&&
 	}
-}// SintaxSample
+}// SintaxSample << This kind of comment is for remembering what is being closed
+
 
 public enum  SomeEnum {
 	ALL_UPPER_CASE, WITH_UNDERSCORE
 }// SomeEnum
+
 
 }// A
 </pre>
