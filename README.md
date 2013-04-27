@@ -1,25 +1,23 @@
 # Avalanche
-We're a team that was born from a group of developers that learned to programm while developing games,  our major goal is to make a engine that makes it easier, but without being so slow or limited like those we used way before. We also want it to be Free and Open Source.
+We're a team made of developers that learned to programm while developing games, our major goal is to make an engine that makes easier for game making, without reducing performance or limiting like other tools. We also want it to be Free and Open Source.
 
-Also, note that being Free and Open Source do not excludes the possibility of writing proprietary prfitable games, so we also make it ease to create such projects.
+Also, note that being Free and Open Source do not excludes the possibility of writing proprietary profitables games, so we also make it easy to create such projects.
 
-We also desire to create some games, and develop a community about Indie Game.
+We also desire to create some games, and create a community about Indie Game.
 
 # Building
 
 ## General Requirements
 
-You'll need to install these libraries to build any Avalanche thing:
+You'll need to install these packages to build any Avalanche thing:
 
-* [GCC](http://gcc.gnu.org/)(Linux) or *[Mingw](http://www.mingw.org/) and [Ruby](http://rubyinstaller.org/)*(Windows)
-* [vala](https://live.gnome.org/Vala/)
+* [GCC](http://gcc.gnu.org/)(Linux) or [Mingw](http://www.mingw.org/)(Windows)
 * [glib](https://developer.gnome.org/glib/)
+* [vala](https://live.gnome.org/Vala/)
 
-Some already comes installed with most Linux, if not you can just install it with your package manager. On Windows you might need to hunt for binaries or build most libraries from source, also use rake to build the editor if you do not like headaches :P
+We might add others packages to this list, so keep your eyes open.
 
-We will add some AES library to this list when implementing cryptography, so keep your eyes open.
-
-## Build Editor Requirements
+## Editor Requirements
 
 To build the editor, also install:
 
@@ -28,7 +26,7 @@ To build the editor, also install:
 * [gtksourceview3](http://projects.gnome.org/gtksourceview/)
 * [json-glib](https://live.gnome.org/JsonGlib/)
 
-## Edit a Game
+## Running Requirements
 
 * [libgee](https://live.gnome.org/Libgee)\*
 * [SDL 2](http://www.libsdl.org/hg.php)
@@ -36,7 +34,7 @@ To build the editor, also install:
 \* We *may* use it, but I(Christian), for some reason, do not want to .-.
 
 ### Deploy on Linux
-We, Linux developers, have some nice *installation* tools called package managers, they install all dependencies that another package needs automatically, so we have no reason to build anything statically, just make a package to your targeted distro and let the package manager do it's work, you should also release a tar.gz with the binaries and a makefile with a install/uninstall task (crossdistro release). 
+Linux developers, have some nice *installation* tools called package managers, they install all dependencies that another package needs automatically, so we have no reason to build anything statically, just make a package to your targeted distro and let the package manager do it's work, you should also release a tar.gz with the binaries and a makefile with a install/uninstall task (crossdistro release). 
 
 ### Deploy on Windows
 On Windows our builds include every library you need, in the deploy tab you can choise if you will build the game statically or dynamically. Because of the LGPL coverage, you should use the dll model on Windows.
@@ -47,11 +45,11 @@ TODO
 ## Play a Game
 
 ### On Windows
-To run the game you do not need anything, it already comes with your game.
+Nothing is required to play the game on Windows, since all the libraries will be static linked.
 
 ### On Linux
 Add Gtk3, Glib, libgee\* and SDL2\*\* to the package dependency list. 
-\* We're not using libgee (for now). \*\* SDL2 will be included statically(On Linux) because SDL2 has no packages.
+\* We're not using libgee (for now). \*\* Before the stable SDL2 release, it will be included static linked(On Linux) because not every distro has unstable pacakges.
 
 ## Building the Editor
 
@@ -65,7 +63,7 @@ Just install the dependencies (I might add some help here), open the terminal, t
 
 # Hacking
 
-If you want to contribute to the project, first note that everything you pull to this project is copyrighted to the contributors. If you do not want to be a official contributor, just fork the project and pull your commits to the main repository, you should also keep our coding style:
+If you want to contribute to the project, first note that everything you pull to this project is copyrighted to the contributors. If you do not want to be an official contributor, just fork the project and pull your commits to the main repository, you should also keep our coding style:
 
 <pre>
 namespace A { // Root namespace on a fake '-1' identation level
@@ -82,7 +80,8 @@ public class SintaxSample : Object { // Type is camel case, do not reffer to gli
 		// Space before every comment
 		if(y > x) {
 			// Explicit namespaces, no "using" statements 
-			z_a = A.B.do_sth(x);
+			z_a = A.B.do_sth(x, y, z, a, b, c, d, e, f , g,
+			h, i, j, k, l, m, n, o , p);
 		// Space before every opening bracket
 		}else {
 			do_sth(y);
@@ -104,21 +103,16 @@ If you follow those styles guidelines your commit might be accepted.
 ##Problems
 
 
-If something is bothering you, you should really create a issue here, we have no
-restriction about the issues that you should create, but we ask you to:
+If something is bothering you, you should really create an issue on our github, we have no restriction about the issues that you should create, but we ask you to:
 
-Give information about your Operational System, GCC version, Vala version, and
-everything you tried to do to fix the problem, if some commit added that
-problem, you may also want to reffer to it.
+Give information about your Operational System, GCC version, Vala version, and everything you tried to do to fix the problem, if some commit were added, sending it might help solving the problem.
 
 
 ###About Build Issues
 
 
-You should avoid to create issues to unsupported ways of building the editor, and also,
-for build issues use a name like `Build Error on Operational System - Details`, where
-Operational System is Windows/Mac/LinuxDistro version, the details is a thing that you
-think that is causing the bug, no rules for descriptions (for now).
+You should avoid to create issues to unsupported ways of building the editor.
+For build issues use a name like `Build Error on Operational System - Details`, where Operational System is Windows/Mac/LinuxDistro version, Details can be a possible cause or the error message resume.
 
 
 # Licensing
