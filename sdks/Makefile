@@ -1,0 +1,37 @@
+##
+#  This Source Code Form is subject to the terms of the Mozilla Public
+#  License, v. 2.0. If a copy of the MPL was not distributed with this
+#  file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+#                          Copyright(C) 2013
+#                   Christian Ferraz Lemos de Sousa
+#                      Pedro Henrique Lara Campos
+##
+
+VALAC = valac
+PROJ  = avalanche
+VFLAG = -X -Ofast -X '-lSDL2' --vapidir=./vala/thirds
+VPKGS = --pkg sdl2
+SRC   = ./$(wildcard vala/$(PROJ)/*.vala)
+BIN   = ./../bin/game-$(PROJ)
+
+ifeq ($(OS), Windows_NT)
+	CLEAN := rm -f $(BIN)
+	VFLAG += -X -mwindows
+else
+	UNAME := $(shell uname)
+	ifeq ($(UNAME), Linux)
+	endif
+	ifeq ($(UNAME), Darwin)
+	endif
+endif
+
+
+.PHONY:
+	$(CLEAN)
+
+build:
+	$(VALAC) $(VPKGS) $(VFLAG) $(SRC) -o $(BIN)
+
+clean: .PHONY
+default: build
