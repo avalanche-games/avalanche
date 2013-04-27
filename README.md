@@ -49,7 +49,7 @@ Nothing is required to play the game on Windows, since all the libraries will be
 
 ### On Linux
 Add Gtk3, Glib, libgee\* and SDL2\*\* to the package dependency list. 
-\* We're not using libgee (for now). \*\* Before the stable SDL2 release, it will be included static linked(On Linux) because not every distro has unstable pacakges.
+\* We're not using libgee for now. \*\* Before the stable SDL2 release it will be static linked on Linux too, because not every distro suppport unstable pacakges.
 
 ## Building the Editor
 
