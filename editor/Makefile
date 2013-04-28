@@ -28,35 +28,35 @@ else
 endif
 
 ifeq ($(OSNAME),Linux)
-	BUILD := $(VALAC) $(VPKGS) $(VFLAG) $(SRC) -o $(BIN)
-	INSTALL := @echo "Preparing to install..."\
-	@mkdir "/usr/" 2>/dev/null; true\
-	@mkdir "/usr/bin/" 2>/dev/null; true\
-	@mkdir "/usr/lib/" 2>/dev/null; true\
-	@mkdir "/usr/local/" 2>/dev/null; true\
-	@mkdir "/usr/local/share/" 2>/dev/null; true\
-	@mkdir "/usr/local/share/applications/" 2>/dev/null; true\
-	@echo -e "\nCreating directories..."\
-	@echo -e "mkdir \"/usr/lib/avalanche/\""\
-	@mkdir "/usr/lib/avalanche/"; true\
-	@echo -e "mkdir \"/usr/lib/avalanche/icons/\""\
-	@mkdir "/usr/lib/avalanche/syntax-colors/"; true\
-	@echo -e "mkdir \"/usr/lib/avalanche/icons/\""\
-	@mkdir "/usr/lib/avalanche/icons/"; true\
-	@echo -e "\nInstalling files..."\
-	cp -f $(BIN) "/usr/bin/avalanche"\
-	cp -f "./res/syntax-colors/tonight.xml" "/usr/lib/avalanche/syntax-colors/tonight.xml"\
-	cp -f "./res/icons/avalanche.png" "/usr/lib/avalanche/icons/avalanche.png"\
-	cp -f "./res/shortcuts/avalanche.desktop" "/usr/local/share/applications/avalanche.desktop"
-	REMOVE := rm -f "/usr/bin/avalanche"\
-	rm -f "/usr/lib/avalanche/syntax-colors/tonight.xml"\
-	rm -f "/usr/lib/avalanche/icons/avalanche.png"\
-	rm -f "/usr/local/share/applications/avalanche.desktop"\
-	rmdir "/usr/lib/avalanche/syntax-colors/"\
-	rmdir "/usr/lib/avalanche/icons/"\
-	rmdir "/usr/lib/avalanche/"
-	CLEAN := rm -f $(BIN)
-
+	BUILD := mkdir "../bin" 2>/dev/null; true && $(VALAC) $(VPKGS) $(VFLAG) $(SRC) -o $(BIN)
+	INSTALL := @echo "Preparing to install..." 2>/dev/null; true &&
+	INSTALL := $(INSTALL) mkdir "/usr/" 2>/dev/null; true &&
+	INSTALL := $(INSTALL) mkdir "/usr/bin/" 2>/dev/null; true &&
+	INSTALL := $(INSTALL) mkdir "/usr/lib/" 2>/dev/null; true &&
+	INSTALL := $(INSTALL) mkdir "/usr/local/" 2>/dev/null; true &&
+	INSTALL := $(INSTALL) mkdir "/usr/local/share/" 2>/dev/null; true &&
+	INSTALL := $(INSTALL) mkdir "/usr/local/share/applications/" 2>/dev/null; true &&
+	INSTALL := $(INSTALL) echo -e "\nCreating directories..." &&
+	INSTALL := $(INSTALL) echo -e "mkdir \"/usr/lib/avalanche/\"" &&
+	INSTALL := $(INSTALL) mkdir "/usr/lib/avalanche/"; true &&
+	INSTALL := $(INSTALL) echo -e "mkdir \"/usr/lib/avalanche/icons/\"" &&
+	INSTALL := $(INSTALL) mkdir "/usr/lib/avalanche/syntax-colors/"; true &&
+	INSTALL := $(INSTALL) echo -e "mkdir \"/usr/lib/avalanche/icons/\"" &&
+	INSTALL := $(INSTALL) mkdir "/usr/lib/avalanche/icons/"; true &&
+	INSTALL := $(INSTALL) echo -e "\nInstalling files..." &&
+	INSTALL := $(INSTALL) cp -f $(BIN) "/usr/bin/avalanche" &&
+	INSTALL := $(INSTALL) cp -f "./res/syntax-colors/tonight.xml" "/usr/lib/avalanche/syntax-colors/tonight.xml" &&
+	INSTALL := $(INSTALL) cp -f "./res/icons/avalanche.png" "/usr/lib/avalanche/icons/avalanche.png" &&
+	INSTALL := $(INSTALL) cp -f "./res/shortcuts/avalanche.desktop" "/usr/local/share/applications/avalanche.desktop"
+	REMOVE  := @echo "Removing Avalanche from the system..." 2>/dev/null; true &&
+	REMOVE  := $(REMOVE) rm -f "/usr/bin/avalanche"; true &&
+	REMOVE  := $(REMOVE) rm -f "/usr/lib/avalanche/syntax-colors/tonight.xml"; true &&
+	REMOVE  := $(REMOVE) rm -f "/usr/lib/avalanche/icons/avalanche.png"; true &&
+	REMOVE  := $(REMOVE) rm -f "/usr/local/share/applications/avalanche.desktop"; true &&
+	REMOVE  := $(REMOVE) rmdir "/usr/lib/avalanche/syntax-colors/"; true &&
+	REMOVE  := $(REMOVE) rmdir "/usr/lib/avalanche/icons/"; true &&
+	REMOVE  := $(REMOVE) rmdir "/usr/lib/avalanche/"; true
+	CLEAN   := rm -f $(BIN) && rmdir "../bin"
 else ifeq ($(OSNAME),Darwin)
 	@echo "We're still adding Mac OS support, support us by sending issues \`OSNAME=Linux\`."
 else ifeq ($(OSNAME),Windows_NT)
