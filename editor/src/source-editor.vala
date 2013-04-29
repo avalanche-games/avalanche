@@ -35,7 +35,6 @@ namespace Tabs {
 			this.title.destroy ();
 		}
 
-
 		public void setup(Gtk.Notebook notebook) {
 			Gtk.Box sidebar           = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
 			Gtk.ScrolledWindow editor = new Gtk.ScrolledWindow(null, null);
