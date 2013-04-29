@@ -28,10 +28,12 @@ namespace Miscellaneuous {
 	public Gtk.SourceStyleScheme get_syntax_style() {
 		// Changes the editor text to match the new page
 		string config_path = GLib.Environment.get_user_config_dir();
-		//TODO: Add differente path slash for 
-		Gtk.SourceStyleSchemeManager.get_default().append_search_path(
-		@"$config_path/avalanche-ide");
+		#if (Linux)
+		Gtk.SourceStyleSchemeManager.get_default().append_search_path(@"$config_path/avalanche-ide");
 		Gtk.SourceStyleSchemeManager.get_default().append_search_path("/usr/lib/avalanche/syntax-colors/");
+		#elif (Darwin)
+		#elif (Windows_NT)
+		#endif
 		Gtk.SourceStyleSchemeManager.get_default().force_rescan();
 		return Gtk.SourceStyleSchemeManager.get_default().get_scheme("tonight");
 	}

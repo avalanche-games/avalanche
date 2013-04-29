@@ -9,7 +9,7 @@
 ##
 
 VALAC = valac
-VFLAG = -X '-lm' -X -O3
+VFLAG = -X '-lm' -X -O3 -D $(OSNAME)
 VPKGS = --pkg gio-2.0 --pkg json-glib-1.0 --pkg gtk+-3.0 --pkg gtksourceview-3.0 --pkg gee-0.8
 SRC = ./$(wildcard src/*.vala)
 BIN = ../bin/avalanche
@@ -28,9 +28,9 @@ else
 endif
 
 ifeq ($(OSNAME),Linux)
-	BUILD := mkdir "../bin" 2>/dev/null; true && $(VALAC) $(VPKGS) $(VFLAG) $(SRC) -o $(BIN)
+	BUILD   := mkdir "../bin" 2>/dev/null; true && $(VALAC) $(VPKGS) $(VFLAG) $(SRC) -o $(BIN)
 	INSTALL := @echo "Preparing to install..." 2>/dev/null; true &&
-	INSTALL := $(INSTALL) mkdir "/usr/" 2>/dev/null; true &&
+	INSTALL := mkdir "/usr/" 2>/dev/null; true &&
 	INSTALL := $(INSTALL) mkdir "/usr/bin/" 2>/dev/null; true &&
 	INSTALL := $(INSTALL) mkdir "/usr/lib/" 2>/dev/null; true &&
 	INSTALL := $(INSTALL) mkdir "/usr/local/" 2>/dev/null; true &&
@@ -47,11 +47,15 @@ ifeq ($(OSNAME),Linux)
 	INSTALL := $(INSTALL) cp -f $(BIN) "/usr/bin/avalanche" &&
 	INSTALL := $(INSTALL) cp -f "./res/syntax-colors/tonight.xml" "/usr/lib/avalanche/syntax-colors/tonight.xml" &&
 	INSTALL := $(INSTALL) cp -f "./res/icons/avalanche.png" "/usr/lib/avalanche/icons/avalanche.png" &&
+	INSTALL := $(INSTALL) cp -f "./res/icons/folder.png" "/usr/lib/avalanche/icons/folder.png" &&
+	INSTALL := $(INSTALL) cp -f "./res/icons/vala.png" "/usr/lib/avalanche/icons/vala.png" &&
 	INSTALL := $(INSTALL) cp -f "./res/shortcuts/avalanche.desktop" "/usr/local/share/applications/avalanche.desktop"
 	REMOVE  := @echo "Removing Avalanche from the system..." 2>/dev/null; true &&
 	REMOVE  := $(REMOVE) rm -f "/usr/bin/avalanche"; true &&
 	REMOVE  := $(REMOVE) rm -f "/usr/lib/avalanche/syntax-colors/tonight.xml"; true &&
 	REMOVE  := $(REMOVE) rm -f "/usr/lib/avalanche/icons/avalanche.png"; true &&
+	REMOVE  := $(REMOVE) rm -f "/usr/lib/avalanche/icons/folder.png" &&
+	REMOVE  := $(REMOVE) rm -f "/usr/lib/avalanche/icons/vala.png" &&
 	REMOVE  := $(REMOVE) rm -f "/usr/local/share/applications/avalanche.desktop"; true &&
 	REMOVE  := $(REMOVE) rmdir "/usr/lib/avalanche/syntax-colors/"; true &&
 	REMOVE  := $(REMOVE) rmdir "/usr/lib/avalanche/icons/"; true &&
@@ -62,7 +66,6 @@ else ifeq ($(OSNAME),Darwin)
 else ifeq ($(OSNAME),Windows_NT)
 	BUILD := $(VALAC) $(VPKGS) $(VFLAG) $(SRC) -o $(BIN)
 endif
-
 
 .PHONY:
 	$(CLEAN)

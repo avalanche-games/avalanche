@@ -31,6 +31,7 @@ endif
 	$(CLEAN)
 
 build:
+	mkdir "../bin" 2>/dev/null;
 	$(VALAC) $(VPKGS) $(VFLAG) $(VBASE) $(SRC) -o $(BIN)
 
 clean: .PHONY

@@ -18,21 +18,13 @@ namespace Avalanche {
 
 namespace Tabs {
 	public class SourceEditor : Object, Base {
-		private Gee.ArrayList<string> cstm_data = new Gee.ArrayList<string>();
-		private Gee.ArrayList<string> dflt_data = new Gee.ArrayList<string>();
 		private Gtk.SourceView editor = new Gtk.SourceView();
 		private Gtk.TreeView cstm_view;
 		private Gtk.TreeView dflt_view;
-		private Gtk.ListStore cstm_model;
-		private Gtk.ListStore dflt_model;
-		private int cstm_index = 0;
-		private int dflt_index = 0;
-		private uint cstm_size = 0;
-		private uint dflt_size = 0;
-		private uint current_page = 0;
+		private Gtk.TreeStore cstm_model;
+		private Gtk.TreeStore dflt_model;
 		private Gtk.Box title   = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0);
 		private Gtk.Box content = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
-
 
 		public SourceEditor() {
 		}
@@ -54,28 +46,16 @@ namespace Tabs {
 			notebook.set_tab_reorderable (this.content, true);
 		}
 
-		private Gtk.TreeView setup_script_list(Gee.ArrayList<string> data, Gtk.ListStore list_store) {
-			// Creates a script list
-			Gtk.TreeIter iter;
-			for(int i = 0; i < 10; i++){
-				// TODO: replace it by a data loading function :D
-				list_store.append(out iter);
-				list_store.set(iter, 0, "%d".printf(i));
-				data.insert(i, "%d".printf(i));
-			}
-			// Cell and view creation
-			Gtk.CellRendererText cell = new Gtk.CellRendererText();
-			Gtk.TreeView view = new Gtk.TreeView.with_model(list_store);
-			// View settings
-			view.insert_column_with_attributes(-1, "", cell, "text", 0);
-			view.reorderable = true;
-			view.enable_search = true;
-			view.headers_visible = false;
-			view.get_selection().set_mode(Gtk.SelectionMode.SINGLE);
-			view.cursor_changed.connect(on_cursor_changed);
-			// Enable cell editing
-			cell.editable = true;
-			cell.edited.connect(on_edited);
+		private Gtk.TreeView setup_script_list(Gtk.TreeStore store) { 
+			Gtk.TreeIter root;
+			Gtk.TreeIter category_iter;
+			Gtk.TreeIter product_iter;
+			Gtk.TreeView view = new Gtk.TreeView.with_model(store);
+			view.set_headers_visible(false);
+			view.insert_column_with_attributes (-1, "Icon", new Gtk.CellRendererPixbuf (), "pixbuf", 1, null);
+			view.insert_column_with_attributes (-1, "Name", new Gtk.CellRendererText (), "text", 0, null);
+			store.append (out root, null);
+			store.set (root, 1, new Gdk.Pixbuf.from_file("/usr/lib/avalanche/icons/vala.png"), 0, "afafaf", -1);
 			return(view);
 		}
 
@@ -86,12 +66,10 @@ namespace Tabs {
 			Gtk.ScrolledWindow cstm_scripts  = new Gtk.ScrolledWindow(null, null);
 			Gtk.ScrolledWindow dflt_scripts  = new Gtk.ScrolledWindow(null, null);
 			// Adding scripts
-			this.cstm_model = new Gtk.ListStore(1, typeof(string));
-			this.dflt_model = new Gtk.ListStore(1, typeof(string));
-			this.cstm_view = setup_script_list(this.cstm_data, this.cstm_model);
-			this.dflt_view = setup_script_list(this.dflt_data, this.dflt_model);
-			this.cstm_size = 9;
-			this.dflt_size = 9;
+			this.cstm_model = new Gtk.TreeStore(2, typeof (string), typeof (Gdk.Pixbuf));
+			this.dflt_model = new Gtk.TreeStore(2, typeof (string), typeof (Gdk.Pixbuf));
+			this.cstm_view = setup_script_list(this.cstm_model);
+			this.dflt_view = setup_script_list(this.dflt_model);
 			// Making the view visible
 			cstm_scripts.add(this.cstm_view);
 			dflt_scripts.add(this.dflt_view);
@@ -99,10 +77,6 @@ namespace Tabs {
 			sidebar_tabs.append_page(cstm_scripts,  new Gtk.Label("Custom"));
 			sidebar_tabs.append_page(dflt_scripts,  new Gtk.Label("Standard"));
 			sidebar_tabs.tab_pos = Gtk.PositionType.BOTTOM;
-			sidebar_tabs.switch_page.connect(on_switch_page);
-			// Connect the signal
-			this.cstm_model.row_changed.connect(on_row_changed);
-			this.dflt_model.row_changed.connect(on_row_changed);
 			// Down content
 			Gtk.Box footer     = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 1);
 			Gtk.Box add_remove = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 1);
@@ -131,10 +105,6 @@ namespace Tabs {
 			// Packing the footer
 			footer.pack_start(add_remove, true, true);
 			footer.pack_end  (search_btn,false, false);
-			// Signal connection
-			new_btn.clicked.connect(on_clicked_new);
-			delete_btn.clicked.connect(on_clicked_delete);
-			search_btn.clicked.connect(on_clicked_search);
 			// Adding sidebar
 			sidebar_container.pack_start(sidebar_tabs, true, true, 0);
 			sidebar_container.pack_end(footer, false, false, 0);
@@ -155,7 +125,6 @@ namespace Tabs {
 			this.editor.override_font(Pango.FontDescription.from_string("Liberation Mono 11"));
 			this.editor.draw_spaces = (Gtk.SourceDrawSpacesFlags.SPACE    + Gtk.SourceDrawSpacesFlags.TAB +
 				                       Gtk.SourceDrawSpacesFlags.TRAILING + Gtk.SourceDrawSpacesFlags.NEWLINE);
-			this.editor.buffer.set_text(this.cstm_data.get(0));
 			// Adding the editor
 			editor_container.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
 			editor_container.add(this.editor);
@@ -170,184 +139,6 @@ namespace Tabs {
 			division.pack1(sidebar, false, false);
 			division.pack2(editor, true, false);
 			this.content.pack_start(division);
-		}
-
-
-		private void on_clicked_new() {
-			// Creates a new script in the cursor position
-			string script = "/*\n * Hack with Vala here\n *\n */";
-			if(this.current_page == 0) {
-				Gtk.TreePath path = new Gtk.TreePath.from_string("%d".printf(this.cstm_index));
-				Gtk.TreeIter iter;
-				this.cstm_model.get_iter(out iter, path);
-				this.cstm_data.insert(this.cstm_index+1, script);
-				this.cstm_model.insert(out iter, this.cstm_index + 1);
-				this.cstm_model.set(iter, 0, "New Script");
-				this.cstm_size += 1;
-			}else {
-				Gtk.TreePath path = new Gtk.TreePath.from_string("%d".printf(this.dflt_index));
-				Gtk.TreeIter iter;
-				this.dflt_model.get_iter(out iter, path);
-				this.dflt_data.insert(this.dflt_index+1, script);
-				this.dflt_model.insert(out iter, this.dflt_index + 1);
-				this.dflt_model.set(iter, 0, "New Script");
-				this.dflt_size += 1;
-			}
-		}
-
-		private void on_clicked_delete() {
-			// Delete the current script.
-			if(this.current_page == 0) {
-				if(this.cstm_size > 0) {
-					Gtk.TreePath path = new Gtk.TreePath.from_string("%d".printf(this.cstm_index));
-					Gtk.TreeIter iter;
-					this.cstm_data.remove_at(this.cstm_index);
-					this.cstm_model.get_iter(out iter, path);
-					if(this.cstm_index == this.cstm_size) {
-						this.cstm_index -= 1;
-					}
-					this.editor.buffer.set_text(cstm_data.get(this.cstm_index));
-					this.cstm_model.remove(iter);
-					this.cstm_size -= 1;
-				}
-			}else {
-				if(this.dflt_size > 0) {
-					Gtk.TreePath path = new Gtk.TreePath.from_string("%d".printf(this.dflt_index));
-					Gtk.TreeIter iter;
-					this.dflt_data.remove_at(this.dflt_index);
-					this.dflt_model.get_iter(out iter, path);
-					if(this.dflt_index == this.dflt_size) {
-						this.dflt_index -= 1;
-					}
-					this.editor.buffer.set_text(dflt_data.get(this.dflt_index));
-					this.dflt_model.remove(iter);
-					this.dflt_size -= 1;
-				}
-			}
-		}
-
-		private void on_clicked_search() {
-			// Open a seach dialog
-			SourceEditorSearchDialog dialog = new SourceEditorSearchDialog();
-			dialog.show_all();
-		}
-
-		private void on_cursor_changed() {
-			// Changes the script on the editor
-			Gtk.TreeIter  iter;
-			Gtk.TreeModel model;
-			Gtk.TextIter  start;
-			Gtk.TextIter  end;
-			int location;
-			if(this.current_page == 0) {
-				// Get the index at custom list
-				model = this.cstm_view.model;
-				this.cstm_view.get_selection().get_selected(out model, out iter);
-				location = Miscellaneuous.str_to_int(cstm_model.get_path(iter).to_string());
-			}else {
-				// Get the index at default list
-				model = this.dflt_view.model;
-				this.dflt_view.get_selection().get_selected(out model, out iter);
-				location = Miscellaneuous.str_to_int(dflt_model.get_path(iter).to_string());
-			}
-			// Set text iter points
-			this.editor.buffer.get_start_iter(out start);
-			this.editor.buffer.get_end_iter(out end);
-			if(this.current_page == 0) {
-				// backup custom script and change editor's text
-				cstm_data[this.cstm_index] = this.editor.buffer.get_text(start, end, true);
-				this.cstm_index = location;
-				this.editor.buffer.set_text(cstm_data.get(this.cstm_index));
-			}else {
-				// backup default script and change editor's text
-				dflt_data[this.dflt_index] = this.editor.buffer.get_text(start, end, true);
-				this.dflt_index = location;
-				this.editor.buffer.set_text(dflt_data.get(this.dflt_index));
-			}
-		}
-
-		private void on_row_changed(Gtk.TreePath path, Gtk.TreeIter iter) {
-			// Moves a script on the list
-			if(this.current_page == 0) {
-				// List points
-				int remove_from   = this.cstm_index;
-				int move_to       = Miscellaneuous.str_to_int(cstm_model.get_path(iter).to_string());
-				string tmp_backup = this.cstm_data.get(remove_from);
-				string current    = this.cstm_data.get(remove_from);
-				// Cursor fastfix
-				if(move_to > remove_from) {
-					current = this.cstm_data.get(remove_from+1);
-					move_to -= 1;
-				} else if(move_to < remove_from) {
-					current = this.cstm_data.get(remove_from-1);
-				}
-				// Avoid useless work(and bugs)
-				if(move_to != remove_from) {
-					this.cstm_data.remove_at(remove_from);
-					this.cstm_data.insert(move_to, tmp_backup);
-					this.editor.buffer.set_text(current);
-				}
-				// Back to the old index
-				this.cstm_index = remove_from;
-			}else {
-				// List points
-				int remove_from   = this.dflt_index;
-				int move_to       = Miscellaneuous.str_to_int(dflt_model.get_path(iter).to_string());
-				string tmp_backup = this.dflt_data.get(remove_from);
-				string current    = this.dflt_data.get(remove_from);
-				// Cursor fastfix
-				if(move_to > remove_from) {
-					current = this.dflt_data.get(remove_from+1);
-					move_to -= 1;
-				} else if(move_to < remove_from) {
-					current = this.dflt_data.get(remove_from-1);
-				}
-				// won't do anything if it isn't moved
-				if(move_to != remove_from) {
-					this.dflt_data.remove_at(remove_from);
-					this.dflt_data.insert(move_to, tmp_backup);
-					this.editor.buffer.set_text(current);
-				}
-				// Avoid useless work(and bugs)
-				this.dflt_index = remove_from;
-			}
-		}
-
-		private void on_edited(string path, string new_text) {
-			// Renames a script
-			Gtk.TreeIter iter;
-			if(this.current_page == 0) {
-				// Rename a custom script
-				this.cstm_model.get_iter_from_string(out iter, path);
-				this.cstm_model.set_value(iter, 0,new_text);
-			}else {
-				// Rename a default script
-				this.dflt_model.get_iter_from_string(out iter, path);
-				this.dflt_model.set_value(iter, 0,new_text);
-			}
-		}
-
-		private void on_switch_page(Gtk.Widget page, uint page_num) {
-			// Changes the script page
-			Gtk.TextIter start;
-			Gtk.TextIter end;
-			// Setting the start and end iter to it's position
-			this.editor.buffer.get_start_iter(out start);
-			this.editor.buffer.get_end_iter  (out end);
-			// Get the current tab, safely save it and change the text to the another
-			if(this.current_page == 0) {
-				// Data backup and page change
-				cstm_data[this.cstm_index] = this.editor.buffer.get_text(start, end, true);
-				this.current_page          = page_num;
-				// Changes the script
-				this.editor.buffer.set_text(this.dflt_data.get(this.dflt_index));
-			}else {
-				// Data backup and page change
-				dflt_data[this.dflt_index] = this.editor.buffer.get_text(start, end, true);
-				this.current_page          = page_num;
-				// Changes the script
-				this.editor.buffer.set_text(this.cstm_data.get(this.cstm_index));
-			}
 		}
 	}
 } // Tabs
