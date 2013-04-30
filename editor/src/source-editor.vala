@@ -13,7 +13,6 @@
  *
  * Note: This source still needs a partial rewrite to act more efficiently
  */
-
 namespace Avalanche {
 
 namespace Tabs {
@@ -23,7 +22,7 @@ namespace Tabs {
 		private Gtk.TreeView dflt_view;
 		private Gtk.TreeStore cstm_model;
 		private Gtk.TreeStore dflt_model;
-		private Gtk.Box title   = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0);
+		private Gtk.Box title = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0);
 		private Gtk.Box content = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
 
 		public SourceEditor() {
@@ -31,31 +30,96 @@ namespace Tabs {
 
 		~SourceEditor() {
 			// Destructor
-			this.content.destroy ();
-			this.title.destroy ();
+			this.content.destroy();
+			this.title.destroy();
 		}
 
 		public void setup(Gtk.Notebook notebook) {
-			Gtk.Box sidebar           = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
+			Gtk.Box sidebar = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
 			Gtk.ScrolledWindow editor = new Gtk.ScrolledWindow(null, null);
 			setup_sidebar(sidebar);
-			setup_editor (editor);
+			setup_editor(editor);
 			setup_content(sidebar, editor);
-			notebook.append_page (this.content, this.title);
-			notebook.set_tab_reorderable (this.content, true);
+			notebook.append_page(this.content, this.title);
+			notebook.set_tab_reorderable(this.content, true);
 		}
 
-		private Gtk.TreeView setup_script_list(Gtk.TreeStore store) { 
-			Gtk.TreeIter root;
-			Gtk.TreeIter category_iter;
-			Gtk.TreeIter product_iter;
+		private Gtk.TreeView setup_script_list(Gtk.TreeStore store) {
 			Gtk.TreeView view = new Gtk.TreeView.with_model(store);
 			view.set_headers_visible(false);
-			view.insert_column_with_attributes (-1, "Icon", new Gtk.CellRendererPixbuf (), "pixbuf", 1, null);
-			view.insert_column_with_attributes (-1, "Name", new Gtk.CellRendererText (), "text", 0, null);
-			store.append (out root, null);
-			store.set (root, 1, new Gdk.Pixbuf.from_file("/usr/lib/avalanche/icons/vala.png"), 0, "afafaf", -1);
+			view.insert_column_with_attributes(-1, "Icon", new Gtk.CellRendererPixbuf (), "pixbuf", 1, null);
+			view.insert_column_with_attributes(-1, "Name", new Gtk.CellRendererText (), "text", 0, null);
+			list_directory(store);
 			return(view);
+		}
+
+		private async void list_directory(Gtk.TreeStore store){
+			string path = (Environment.get_home_dir() + "/.local/share/Avalanche/DebugProject/src/");
+			var dir = File.new_for_path(path);
+			try {
+				// Asynchronous call, get directory entries
+				var e = yield dir.enumerate_children_async(FileAttribute.STANDARD_NAME, 0, Priority.DEFAULT);
+				Gtk.TreeIter root;
+				while (true) {
+					// Asynchronous call, get entries
+					var files = yield e.next_files_async(10, Priority.DEFAULT);
+					if(files == null){
+						break;
+					}
+					// append the files found so far to the list
+					foreach(var info in files){
+						switch (info.get_file_type()) {
+						case FileType.DIRECTORY:
+							store.append(out root, null);
+							store.set(root, 1, new Gdk.Pixbuf.from_file("/usr/lib/avalanche/icons/folder.png"), 0,
+							                                            info.get_name(), -1);
+							list_subdir(store, root, (path+info.get_name()));
+							break;
+						case FileType.REGULAR:
+							store.append(out root, null);
+							store.set(root, 1, new Gdk.Pixbuf.from_file("/usr/lib/avalanche/icons/vala.png"), 0,
+							                                            info.get_name(), -1);
+							break;
+						}
+					}
+				}
+			}catch (Error err) {
+				stderr.printf ("Error: SourceEditor list_directory failed: %s\n", err.message);
+			}
+		}
+
+		private async void list_subdir(Gtk.TreeStore store, Gtk.TreeIter root, string path) {
+			var dir = File.new_for_path(path);
+			try {
+				// Asynchronous call, get directory entries
+				var e = yield dir.enumerate_children_async(FileAttribute.STANDARD_NAME, 0, Priority.DEFAULT);
+				Gtk.TreeIter category_iter;
+				while (true) {
+					// Asynchronous call, get entries
+					var files = yield e.next_files_async(10, Priority.DEFAULT);
+					if(files == null){
+						break;
+					}
+					// append the files found so far to the list
+					foreach(var info in files){
+						switch (info.get_file_type()) {
+						case FileType.DIRECTORY:
+							store.append(out category_iter, root);
+							store.set(category_iter, 1, new Gdk.Pixbuf.from_file
+							          ("/usr/lib/avalanche/icons/folder.png"), 0, info.get_name(), -1);
+							list_subdir(store, root, (path+info.get_name()));
+							break;
+						case FileType.REGULAR:
+							store.append(out category_iter, root);
+							store.set(category_iter, 1, new Gdk.Pixbuf.from_file("/usr/lib/avalanche/icons/vala.png"),
+							          0, info.get_name(), -1);
+							break;
+						}
+					}
+				}
+			} catch (Error err) {
+				stderr.printf ("Error: SourceEditor list_subdir failed: %s\n", err.message);
+			}
 		}
 
 		private void setup_sidebar(Gtk.Box sidebar_container) {
@@ -73,8 +137,8 @@ namespace Tabs {
 			cstm_scripts.add(this.cstm_view);
 			dflt_scripts.add(this.dflt_view);
 			// Appending every page in the script sidebar
-			sidebar_tabs.append_page(cstm_scripts,  new Gtk.Label("Custom"));
-			sidebar_tabs.append_page(dflt_scripts,  new Gtk.Label("Standard"));
+			sidebar_tabs.append_page(cstm_scripts, new Gtk.Label("Custom"));
+			sidebar_tabs.append_page(dflt_scripts, new Gtk.Label("Standard"));
 			sidebar_tabs.tab_pos = Gtk.PositionType.BOTTOM;
 			// Down content
 			Gtk.Box footer     = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 1);
@@ -111,19 +175,24 @@ namespace Tabs {
 
 		private void setup_editor(Gtk.ScrolledWindow editor_container) {
 			// Creates a source editor
-			Gtk.SourceBuffer buffer = new Gtk.SourceBuffer.with_language
-				                         (Gtk.SourceLanguageManager.get_default().get_language("vala"));
+			Gtk.SourceBuffer buffer = new Gtk.SourceBuffer.with_language(Gtk.SourceLanguageManager.get_default
+			                                                             ().get_language("vala"));
 			buffer.style_scheme = Miscellaneuous.get_syntax_style();
 			// Editor settings
 			this.editor.buffer = buffer;
-			this.editor.right_margin_position = 120;       this.editor.set_show_right_margin(true);
-			this.editor.set_show_line_numbers(true);      this.editor.set_show_line_marks(true);
-			this.editor.set_highlight_current_line(true); this.editor.set_indent_width(4);
-			this.editor.set_tab_width(4);                 this.editor.set_indent_on_tab(true);
-			this.editor.set_auto_indent(true);            this.editor.set_insert_spaces_instead_of_tabs(false);
+			this.editor.right_margin_position = 120;
+			this.editor.set_show_right_margin(true);
+			this.editor.set_show_line_numbers(true);
+			this.editor.set_show_line_marks(true);
+			this.editor.set_highlight_current_line(true);
+			this.editor.set_indent_width(4);
+			this.editor.set_tab_width(4);
+			this.editor.set_indent_on_tab(true);
+			this.editor.set_auto_indent(true);
+			this.editor.set_insert_spaces_instead_of_tabs(false);
 			this.editor.override_font(Pango.FontDescription.from_string("Liberation Mono 11"));
-			this.editor.draw_spaces = (Gtk.SourceDrawSpacesFlags.SPACE    + Gtk.SourceDrawSpacesFlags.TAB +
-				                       Gtk.SourceDrawSpacesFlags.TRAILING + Gtk.SourceDrawSpacesFlags.NEWLINE);
+			this.editor.draw_spaces = (Gtk.SourceDrawSpacesFlags.SPACE + Gtk.SourceDrawSpacesFlags.TAB +
+			                           Gtk.SourceDrawSpacesFlags.TRAILING + Gtk.SourceDrawSpacesFlags.NEWLINE);
 			// Adding the editor
 			editor_container.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
 			editor_container.add(this.editor);
@@ -133,7 +202,7 @@ namespace Tabs {
 			// Adds the sidebar and editor to the tab content
 			this.title.pack_start(new Gtk.Label("Programming"), false, false, 0);
 			this.title.pack_start(new Gtk.Button(), false, false, 0);
-			this.title.show_all  ();
+			this.title.show_all();
 			Gtk.Paned division = new Gtk.Paned(Gtk.Orientation.HORIZONTAL);
 			division.pack1(sidebar, false, false);
 			division.pack2(editor, true, false);

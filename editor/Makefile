@@ -10,7 +10,7 @@
 
 VALAC = valac
 VFLAG = -X '-lm' -X -O3 -D $(OSNAME)
-VPKGS = --pkg gio-2.0 --pkg json-glib-1.0 --pkg gtk+-3.0 --pkg gtksourceview-3.0 --pkg gee-0.8
+VPKGS = --pkg json-glib-1.0 --pkg gtk+-3.0 --pkg gtksourceview-3.0 --pkg gee-0.8
 SRC = ./$(wildcard src/*.vala)
 BIN = ../bin/avalanche
 
@@ -30,20 +30,10 @@ endif
 ifeq ($(OSNAME),Linux)
 	BUILD   := mkdir "../bin" 2>/dev/null; true && $(VALAC) $(VPKGS) $(VFLAG) $(SRC) -o $(BIN)
 	INSTALL := @echo "Preparing to install..." 2>/dev/null; true &&
-	INSTALL := mkdir "/usr/" 2>/dev/null; true &&
-	INSTALL := $(INSTALL) mkdir "/usr/bin/" 2>/dev/null; true &&
-	INSTALL := $(INSTALL) mkdir "/usr/lib/" 2>/dev/null; true &&
-	INSTALL := $(INSTALL) mkdir "/usr/local/" 2>/dev/null; true &&
-	INSTALL := $(INSTALL) mkdir "/usr/local/share/" 2>/dev/null; true &&
-	INSTALL := $(INSTALL) mkdir "/usr/local/share/applications/" 2>/dev/null; true &&
-	INSTALL := $(INSTALL) echo -e "\nCreating directories..." &&
-	INSTALL := $(INSTALL) echo -e "mkdir \"/usr/lib/avalanche/\"" &&
-	INSTALL := $(INSTALL) mkdir "/usr/lib/avalanche/"; true &&
-	INSTALL := $(INSTALL) echo -e "mkdir \"/usr/lib/avalanche/icons/\"" &&
-	INSTALL := $(INSTALL) mkdir "/usr/lib/avalanche/syntax-colors/"; true &&
-	INSTALL := $(INSTALL) echo -e "mkdir \"/usr/lib/avalanche/icons/\"" &&
-	INSTALL := $(INSTALL) mkdir "/usr/lib/avalanche/icons/"; true &&
-	INSTALL := $(INSTALL) echo -e "\nInstalling files..." &&
+	INSTALL := $(INSTALL) echo -e "Creating directories..." &&
+	INSTALL := $(INSTALL) mkdir -p "/usr/lib/avalanche/syntax-colors/"; true &&
+	INSTALL := $(INSTALL) mkdir -p "/usr/lib/avalanche/icons/"; true &&
+	INSTALL := $(INSTALL) echo -e "Installing files..." &&
 	INSTALL := $(INSTALL) cp -f $(BIN) "/usr/bin/avalanche" &&
 	INSTALL := $(INSTALL) cp -f "./res/syntax-colors/tonight.xml" "/usr/lib/avalanche/syntax-colors/tonight.xml" &&
 	INSTALL := $(INSTALL) cp -f "./res/icons/avalanche.png" "/usr/lib/avalanche/icons/avalanche.png" &&

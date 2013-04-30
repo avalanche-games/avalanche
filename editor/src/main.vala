@@ -16,9 +16,39 @@ public class Application : Gtk.Window {
 	private GenericArray<Tabs.Base> tab_list = new GenericArray<Tabs.Base>(); // used to avoid tab destruction
 
 	public Application() {
+		setup_user();
 		setup();
 		setup_tabs();
 		this.add(this.notebook);
+	}
+
+	private void setup_user() {
+		// NOTE: Temporary
+		string location = "/.local/share/Avalanche/";
+		try {
+			File.new_for_path(Environment.get_home_dir() + location
+			                 ).make_directory_with_parents();
+		}catch (Error err) {}
+		try {
+			File.new_for_path(Environment.get_home_dir() + location + "DebugProject/src/sample-folder"
+			                 ).make_directory_with_parents();
+		}catch (Error err) {}
+		try {
+			File.new_for_path(Environment.get_home_dir() + location + "DebugProject/db/"
+			                 ).make_directory_with_parents();
+		}catch (Error err) {}
+		try {
+			File.new_for_path(Environment.get_home_dir() + location + "DebugProject/res/"
+			                 ).make_directory_with_parents();
+		}catch (Error err) {}
+		try {
+			File.new_for_path(Environment.get_home_dir() + location + "DebugProject/src/sample-script"
+			                 ).create(FileCreateFlags.REPLACE_DESTINATION);
+		}catch (Error err) {}
+		try {
+			File.new_for_path(Environment.get_home_dir() + location + "DebugProject/src/sample-folder/sample-script2"
+			                 ).create(FileCreateFlags.REPLACE_DESTINATION);
+		}catch (Error err) {}
 	}
 
 	private void setup() {
