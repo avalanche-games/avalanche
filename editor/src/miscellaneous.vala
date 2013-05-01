@@ -35,7 +35,11 @@ namespace Miscellaneuous {
 		#elif (Windows_NT)
 		#endif
 		Gtk.SourceStyleSchemeManager.get_default().force_rescan();
+		#if (DARK_THEME)
+		return Gtk.SourceStyleSchemeManager.get_default().get_scheme("tomorrow");
+		#else
 		return Gtk.SourceStyleSchemeManager.get_default().get_scheme("tonight");
+		#endif
 	}
 }
 

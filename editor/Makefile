@@ -8,6 +8,10 @@
 #                      Pedro Henrique Lara Campos
 ##
 
+# Defaul options
+DARK_THEME = false
+
+# Vala configs
 VALAC = valac
 VFLAG = -X '-lm' -X -O3 -D $(OSNAME)
 VPKGS = --pkg json-glib-1.0 --pkg gtk+-3.0 --pkg gtksourceview-3.0 --pkg gee-0.8
@@ -27,6 +31,12 @@ else
 	endif
 endif
 
+
+# Option parsing
+ifeq ($(DARK_THEME), true)
+	VFLAG +=  -D DARK_THEME
+endif
+
 ifeq ($(OSNAME),Linux)
 	BUILD   := mkdir "../bin" 2>/dev/null; true && $(VALAC) $(VPKGS) $(VFLAG) $(SRC) -o $(BIN)
 	INSTALL := @echo "Preparing to install..." 2>/dev/null; true &&
@@ -36,6 +46,7 @@ ifeq ($(OSNAME),Linux)
 	INSTALL := $(INSTALL) echo -e "Installing files..." &&
 	INSTALL := $(INSTALL) cp -f $(BIN) "/usr/bin/avalanche" &&
 	INSTALL := $(INSTALL) cp -f "./res/syntax-colors/tonight.xml" "/usr/lib/avalanche/syntax-colors/tonight.xml" &&
+	INSTALL := $(INSTALL) cp -f "./res/syntax-colors/tonight.xml" "/usr/lib/avalanche/syntax-colors/tomorrow.xml" &&
 	INSTALL := $(INSTALL) cp -f "./res/icons/avalanche.png" "/usr/lib/avalanche/icons/avalanche.png" &&
 	INSTALL := $(INSTALL) cp -f "./res/icons/folder.png" "/usr/lib/avalanche/icons/folder.png" &&
 	INSTALL := $(INSTALL) cp -f "./res/icons/vala.png" "/usr/lib/avalanche/icons/vala.png" &&
@@ -43,6 +54,7 @@ ifeq ($(OSNAME),Linux)
 	REMOVE  := @echo "Removing Avalanche from the system..." 2>/dev/null; true &&
 	REMOVE  := $(REMOVE) rm -f "/usr/bin/avalanche"; true &&
 	REMOVE  := $(REMOVE) rm -f "/usr/lib/avalanche/syntax-colors/tonight.xml"; true &&
+	REMOVE  := $(REMOVE) rm -f "/usr/lib/avalanche/syntax-colors/tomorrow.xml"; true &&
 	REMOVE  := $(REMOVE) rm -f "/usr/lib/avalanche/icons/avalanche.png"; true &&
 	REMOVE  := $(REMOVE) rm -f "/usr/lib/avalanche/icons/folder.png" &&
 	REMOVE  := $(REMOVE) rm -f "/usr/lib/avalanche/icons/vala.png" &&

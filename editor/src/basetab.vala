@@ -13,7 +13,7 @@ namespace Avalanche {
 namespace Tabs {
 	public interface Base : Object {
 		// A very dynamic base for tabs
-		public abstract void setup(Gtk.Notebook notebook);
+		public abstract void show_at(Gtk.Box container);
 	}
 }
 
