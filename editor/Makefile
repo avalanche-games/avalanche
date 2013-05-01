@@ -34,7 +34,7 @@ endif
 
 # Option parsing
 ifeq ($(DARK_THEME), true)
-	VFLAG +=  -D DARK_THEME
+	VFLAG += -D DARK_THEME
 endif
 
 ifeq ($(OSNAME),Linux)
