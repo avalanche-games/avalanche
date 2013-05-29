@@ -1311,13 +1311,13 @@ namespace SDL {
 		public static uint32 TOUCH_MOUSEID;
 		
 		[CCode (cname="SDL_GetNumTouchDevices")]
-		public static int count_devices();
+		public static int num_devices();
 		
 		[CCode (cname="SDL_GetTouchDevice")]
 		public static SDL.TouchID get_device(int index);
 		
 		[CCode (cname="SDL_GetNumTouchFingers")]
-		public static int count_fingers(SDL.TouchID touchId);
+		public static int num_fingers(SDL.TouchID touchId);
 		
 		[CCode (cname="SDL_GetTouchFinger")]
 		public Finger(SDL.TouchID touchId, int index);
@@ -1398,7 +1398,7 @@ namespace SDL {
 	[Compact]
 	public class Audio {
 		[CCode (cname="SDL_GetNumAudioDrivers")]
-		public static int count_drivers();
+		public static int num_drivers();
 		
 		[CCode (cname="SDL_GetAudioDriver")]
 		public static unowned string get_driver(int index);
@@ -1416,7 +1416,7 @@ namespace SDL {
 		public static int open(AudioSpec desired, out AudioSpec obtained);
 		
 		[CCode (cname="SDL_GetNumAudioDevices")]
-		public static int count_devices();
+		public static int num_devices();
 		
 		[CCode (cname="SDL_GetAudioDeviceName")]
 		public static unowned string get_devicename(int index);
@@ -1506,5 +1506,204 @@ namespace SDL {
 		public bool remove ();
 	}// Timer
 	
-	// TODO: Threading
+	
+	///
+	/// Render
+	///
+	[CCode (cname="SDL_RendererFlags", cprefix="SDL_RENDERER_", cheader="SDL2/SDL_render.h")]
+	public enum RendererFlags {
+		SOFTWARE, ACCELERATED,
+		PRESENTVSYNC, TARGETTEXTURE
+	}// RendererFlags
+	
+	[CCode (cprefix="SDL_", cname = "SDL_RendererInfo", cheader_filename="SDL2/SDL_render.h")]
+	[Compact]
+	public class RendererInfo {
+		[CCode (cname="name")]
+		public const string name;
+		
+		[CCode (cname="flags")]
+		public uint32 flags;
+		
+		[CCode (cname="num_texture_formats")]
+		public uint32 num_texture_formats;
+		
+		[CCode (cname="texture_formats")]
+		public uint32 texture_formats[];
+		
+		[CCode (cname="max_texture_width")]
+		public int max_texture_width;
+		
+		[CCode (cname="texture_formats")]
+		public int max_texture_height;
+	}// RendererInfo
+
+	[Flags, CCode (cname="SDL_TextureAccess", cprefix="SDL_TEXTUREACCESS_", cheader_filename="SDL2/SDL_render.h")]
+	public enum TextureAccess {
+		STATIC, STREAMING, TARGET
+	}// TextureAccess
+
+	[Flags, CCode (cname="SDL_TextureModulate", cprefix="SDL_TEXTUREMODULATE_", cheader_filename="SDL2/SDL_render.h")]
+	public enum TextureModulate {
+		NONE, COLOR, ALPHA
+	}// TextureModulate
+
+	[Flags, CCode (cname="SDL_RendererFlip", cprefix="SDL_FLIP_", cheader_filename="SDL2/SDL_render.h")]
+	public enum RendererFlip {
+		NONE, HORIZONTAL, VERTICAL
+	}// RendererFlip
+	
+	[CCode (cprefix="SDL_", cname = "SDL_Renderer", destroy_function = "SDL_DestroyTexture", cheader_filename="SDL2/SDL_render.h")]
+	[Compact]
+	public class Renderer {
+		[CCode (cname="SDL_GetNumRenderDrivers")]
+		public static int num_drivers();
+		
+		[CCode (cname="SDL_GetRenderDriverInfo")]
+		public static int get_driver_info(int index, SDL.RendererInfo info);
+		
+		[CCode (cname="SDL_CreateWindowAndRenderer")]
+		public static int create_with_window(int width, int height, SDL.WindowFlags window_flags, out SDL.Window window, out SDL.Renderer renderer);
+		
+		[CCode (cname="SDL_CreateRenderer")]
+		public Renderer(SDL.Window window, int index, uint32 flags);
+		
+		[CCode (cname="SDL_CreateSoftwareRenderer")]
+		public Renderer.from_surface(SDL.Surface surface);
+		
+		[CCode (cname="SDL_CreateSoftwareRenderer")]
+		public static SDL.Renderer get_from_window(SDL.Window window);
+		
+		[CCode (cname="SDL_GetRendererInfo")]
+		public int get_info(out SDL.RendererInfo info);
+		
+		[CCode (cname="SDL_RenderTargetSupported")]
+		public bool is_supported();
+	
+		[CCode (cname="SDL_SetRenderTarget")]
+		public int set_render_target(SDL.Texture texture);
+	
+		[CCode (cname="SDL_GetRenderTarget")]
+		public SDL.Texture get_render_target(out SDL.Texture? texture);
+	
+		[CCode (cname="SDL_RenderSetLogicalSize")]
+		public int set_logical_size(int w, int h);
+	
+		[CCode (cname="SDL_RenderGetLogicalSize")]
+		public void get_logical_size(out int w, out int h);
+	
+		[CCode (cname="SDL_RenderSetViewport")]
+		public int set_viewport(SDL.Rect rect);
+	
+		[CCode (cname="SDL_RenderGetViewport")]
+		public void get_viewport(out SDL.Rect rect);
+	
+		[CCode (cname="SDL_RenderSetScale")]
+		public int set_scale(float scale_x, float scale_y);
+	
+		[CCode (cname="SDL_RenderGetScale")]
+		public void get_scale(out float scale_x, out float scale_y);
+		
+		[CCode (cname="SDL_SetRenderDrawColor")]
+		public int set_draw_color(uint8 r, uint8 g, uint8 b, uint8 a);
+		
+		[CCode (cname="SDL_GetRenderDrawColor")]
+		public int get_draw_color(out uint8 r, out uint8 g, out uint8 b, out uint8 a);
+		
+		[CCode (cname="SDL_SetRenderDrawBlendMode")]
+		public int set_draw_blend_mod(SDL.BlendMode blend_mode);
+		
+		[CCode (cname="SDL_GetRenderDrawBlendMode")]
+		public int get_draw_blend_mod(out SDL.BlendMode blend_mode);
+		
+		[CCode (cname="SDL_RenderClear")]
+		public int clear();
+		
+		[CCode (cname="SDL_RenderDrawPoint")]
+		public int draw_point(int x, int y);
+		
+		[CCode (cname="SDL_RenderDrawPoints")]
+		public int draw_points(SDL.Point[] points, int count);
+		
+		[CCode (cname="SDL_RenderDrawLine")]
+		public int draw_line(int x1, int y1, int x2, int y2);
+		
+		[CCode (cname="SDL_RenderDrawLines")]
+		public int draw_lines(SDL.Point[] points, int count);
+		
+		[CCode (cname="SDL_RenderDrawRect")]
+		public int draw_rect(SDL.Rect? rect);
+		
+		[CCode (cname="SDL_RenderDrawLines")]
+		public int draw_rects(SDL.Rect[] points, int count);
+		
+		[CCode (cname="SDL_RenderFillRect")]
+		public int fill_rect(SDL.Rect? rect);
+		
+		[CCode (cname="SDL_RenderFillRects")]
+		public int fill_rects(SDL.Rect[] points, int count);
+		
+		[CCode (cname="SDL_RenderCopy")]
+		public int copy(SDL.Texture texture, SDL.Rect? srcrect, SDL.Rect? dstrect);
+		
+		[CCode (cname="SDL_RenderCopyEx")]
+		public int copyex(SDL.Texture texture, SDL.Rect? srcrect, SDL.Rect? dstrect, double angle, SDL.Point center, SDL.RendererFlip flip);
+		
+		[CCode (cname="SDL_RenderReadPixels")]
+		public int read_pixels(SDL.Rect? rect, uint32 format, out void[] pixels, int pitch);
+		
+		[CCode (cname="SDL_RenderPresent")]
+		public void present();
+	}// Renderer
+	
+	[CCode (cprefix="SDL_", cname = "SDL_Texture", destroy_function = "SDL_DestroyRenderer", cheader_filename="SDL2/SDL_render.h")]
+	[Compact]
+	public class Texture {
+		[CCode (cname="SDL_CreateTexture")]
+		public Texture(SDL.Renderer renderer, uint32 format, int access, int w, int h);
+		
+		[CCode (cname="SDL_CreateTextureFromSurface")]
+		public Texture.from_surface(SDL.Renderer renderer, SDL.Surface surface);
+		
+		[CCode (cname="SDL_QueryTexture")]
+		public int query_texture(uint32[] format, int[] access, int[] w, int[] h);
+		
+		[CCode (cname="SDL_SetTextureColorMod")]
+		public int set_color_mod(uint8 r, uint8 g, uint8 b);
+		
+		[CCode (cname="SDL_GetTextureColorMod")]
+		public int get_color_mod(out uint8 r, out uint8 g, out uint8 b);
+		
+		[CCode (cname="SDL_SetTextureAlphaMod")]
+		public int set_alpha_mod(uint8 alpha);
+		
+		[CCode (cname="SDL_GetTextureColorMod")]
+		public int get_alpha_mod(out uint8 alpha);
+		
+		[CCode (cname="SDL_SetTextureBlendMode")]
+		public int set_blend_mod(SDL.BlendMode blend_mode);
+		
+		[CCode (cname="SDL_GetTextureBlendMode")]
+		public int get_blend_mod(out SDL.BlendMode blend_mode);
+		
+		[CCode (cname="SDL_UpdateTexture")]
+		public int update(SDL.Rect? rect, void[] pixels, int pitch);
+		
+		[CCode (cname="SDL_LockTexture")]
+		public int lock(SDL.Rect? rect, void[] pixels, int pitch);
+		
+		[CCode (cname="SDL_UnlockTexture")]
+		public void unlock();
+		
+		[CCode (cname="SDL_GL_BindTexture")]
+		public void gl_bind(ref float texw, ref float texh);
+		
+		[CCode (cname="SDL_GL_UnbindTexture")]
+		public int gl_unbind();
+	}// Texture
+	
+	
+	///
+	/// TODO: Threading
+	///
 }// SDL

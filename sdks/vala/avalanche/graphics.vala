@@ -68,38 +68,4 @@ public class ScreenPosition {
 }// ScreenPosition
 
 
-// Sprite automates image loading and drawning
-public class Sprite {
-	//TODO: Choose between this or just store pixels...
-	public SDL.Surface? bitmap;
-	/* OpenGL Texture ID
-	 * [GLuint] Unsigned binary integer(min. 32 bits)
-	 */
-	public uint32 texture;
-	public ScreenPosition? position;
-	public int8 z = 0;
-	
-	public Sprite.load(string file) {
-	}
-	
-	public Sprite.clone_surface(SDL.Surface origin) {
-	}
-	
-	public void dispose_bitmap() {
-	}
-	
-	public void free_texture() {
-	}
-	
-	public void update(){
-		//Copy surface to texture
-	}
-	
-	public void update_rect(SDL.Rect rect){
-	}
-	
-	//TODO: Finish PLANNING this class
-} // Sprite
-
-
 }// Avalanche
