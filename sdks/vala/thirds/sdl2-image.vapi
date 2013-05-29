@@ -10,7 +10,9 @@ namespace SDLImage {
 	    JPG,
 	    PNG,
 	    TIF,
-	    WEBP
+	    WEBP,
+	    [CCode (cname = "IMG_INIT_JPG|IMG_INIT_PNG|IMG_INIT_TIF|IMG_INIT_WEBP")]
+	    ALL
 	}
 
 	//! General

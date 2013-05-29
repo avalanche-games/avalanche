@@ -16,23 +16,24 @@ public class ScreenPosition {
 		this.y = y;
 	}
 	
-	public ScreenPosition.from_corners(uint16 x, uint16 y, PosCorner corner) {
+	public ScreenPosition.from_corners(uint16 x, uint16 y, PosCorner corner, uint16 maxw, uint16 maxh) {
+		//Game.window.get_size(out maxw, out maxh);
 		switch(corner){
 			case  PosCorner.TOP_LEFT:
 				this.x = x;
 				this.y = y;
 				break;
 			case  PosCorner.TOP_RIGHT:
-				this.x = Avalanche.Game.video_w - x;
+				this.x = maxw - x;
 				this.y = y;
 				break;
 			case  PosCorner.BOTTOM_LEFT:
 				this.x = x;
-				this.y = Avalanche.Game.video_h - y;
+				this.y = maxh - y;
 				break;
 			case  PosCorner.BOTTOM_RIGHT:
-				this.x = Avalanche.Game.video_w - x;
-				this.y = Avalanche.Game.video_h - y;
+				this.x = maxw - x;
+				this.y = maxh - y;
 				break;
 		}
 	}
@@ -98,7 +99,7 @@ public class Sprite {
 	}
 	
 	//TODO: Finish PLANNING this class
-}// Sprite
+} // Sprite
 
 
 }// Avalanche
