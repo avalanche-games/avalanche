@@ -2,6 +2,7 @@ namespace Avalanche {
 
 public class Game {
 	public static SDL.Window? WINDOW;
+	public static SDL.Renderer? WIN_RENDERER;
 	
 	public static void init (SDL.InitFlag sdl_flags, SDLImage.InitFlags img_flags) {
 		SDL.init (sdl_flags);
