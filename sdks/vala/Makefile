@@ -18,10 +18,10 @@
 
 VALAC = valac
 VFLAG = -X -Ofast -X '-lSDL2' --vapidir=./vala/thirds
-VPKGS = --pkg sdl2
+VPKGS = --pkg sdl2 --pkg sdl2-image
 VBASE   = ./$(wildcard avalanche/*.vala)
 SRC   = ./$(wildcard $(GAME)/src/*.vala)
-BIN   = ./../bin/game-$(GAME)
+BIN   = $(GAME)/bin/game
 
 ifeq ($(OS), Windows_NT)
 	CLEAN := rm -f $(BIN)

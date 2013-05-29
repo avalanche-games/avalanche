@@ -14,7 +14,7 @@ DARK_THEME = false
 # Vala configs
 VALAC = valac
 VFLAG = -X '-lm' -X -O3 -D $(OSNAME)
-VPKGS = --pkg json-glib-1.0 --pkg gtk+-3.0 --pkg gtksourceview-3.0 --pkg gee-0.8
+VPKGS = --pkg json-glib-1.0 --pkg gtk+-3.0 --pkg gtksourceview-3.0
 SRC = ./$(wildcard src/*.vala)
 BIN = ../bin/avalanche
 
