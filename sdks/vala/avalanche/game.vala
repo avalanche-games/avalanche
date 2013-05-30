@@ -13,6 +13,21 @@ public class Game {
 		SDL.init (sdl_flags);
 		SDLImage.init (img_flags);
 		fps_endsec (SDL.Timer.get_ticks ());
+		
+		// CHDIR on executable path
+		string path=".";
+		#if AVALANCE_WIN
+			path = GLib.Win32.get_package_installation_directory_of_module (null);
+		#elif AVALANCE_UNIX
+			char path_buf[1024];
+			char *dirend;
+			Posix.readlink ("/proc/self/exe", path_buf);
+			dirend = (char*)Posix.strrchr ((string)path_buf, '/');
+			dirend[0] = '\0';
+			path = (string)path_buf;
+		#endif
+		stdout.printf ("Entering:"+path+"\n");
+		Posix.chdir (path);
 	}
 	
 	public static void main_loop () {
