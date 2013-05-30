@@ -25,4 +25,4 @@ public class Main : Avalanche.Game {
 }// Main
 
 
-}// AlucardsChronicles
+}// AvalancheTemplate

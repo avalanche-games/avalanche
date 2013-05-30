@@ -14,7 +14,7 @@ public class SampleIMGState : Avalanche.ScreenState,  GLib.Object {
 	}
 	
 	public void on_update () {
-		// This is a static state so this method is useless here
+		// This is a static state, so this method is useless here
 	}
 	
 	public void draw () {
@@ -23,14 +23,13 @@ public class SampleIMGState : Avalanche.ScreenState,  GLib.Object {
 	}
 	
 	public void on_leave () {
-		// Free texture allocated for sample image, the right should be destroy it
-		//sample_tex.destroy ();
+		// Nothing to do here...
 	}
 	
 	public void on_event (SDL.Event e) {
 		// ... OH Yeah!
 	}
-}// Main
+}// SampleIMGState
 
 
-}// AlucardsChronicles
+}// AvalancheTemplate
