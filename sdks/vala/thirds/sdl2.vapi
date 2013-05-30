@@ -1553,7 +1553,7 @@ namespace SDL {
 		NONE, HORIZONTAL, VERTICAL
 	}// RendererFlip
 	
-	[CCode (cprefix="SDL_", cname = "SDL_Renderer", destroy_function = "SDL_DestroyTexture", cheader_filename="SDL2/SDL_render.h")]
+	[CCode (cprefix="SDL_", cname = "SDL_Renderer", destroy_function = "SDL_DestroyRenderer", cheader_filename="SDL2/SDL_render.h")]
 	[Compact]
 	public class Renderer {
 		[CCode (cname="SDL_GetNumRenderDrivers")]
@@ -1656,7 +1656,7 @@ namespace SDL {
 		public void present();
 	}// Renderer
 	
-	[CCode (cprefix="SDL_", cname = "SDL_Texture", destroy_function = "SDL_DestroyRenderer", cheader_filename="SDL2/SDL_render.h")]
+	[CCode (cprefix="SDL_", cname = "SDL_Texture", destroy_function = "SDL_DestroyTexture", cheader_filename="SDL2/SDL_render.h")]
 	[Compact]
 	public class Texture {
 		[CCode (cname="SDL_CreateTexture")]

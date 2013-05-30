@@ -5,6 +5,9 @@ public class Main : Avalanche.Game {
 		// Intialize SDL, SDLImage and Avalanche.
 		init(SDL.InitFlag.EVERYTHING, SDLImage.InitFlags.PNG);
 		
+		// Setup Avalanche
+		set_fps (60);
+		
 		// Create window and render separately.
 		WINDOW = new SDL.Window ("VALA-Avalanche Example", SDL.Window.POS_CENTERED,
 			SDL.Window.POS_CENTERED, 640, 480, SDL.WindowFlags.SHOWN);
@@ -16,7 +19,7 @@ public class Main : Avalanche.Game {
 		// Core
 		while (STATE != null) {
 			STATE.on_enter (); // Welcome...
-			main_loop (STATE); // ...to the work
+			main_loop (); // ...to the work
 		}
 		
 		// Quit SDL and valanche module.
