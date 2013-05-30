@@ -29,3 +29,11 @@ public class Main : Avalanche.Game {
 
 
 }// AvalancheTemplate
+
+#if AVALANCE_WIN
+[CCode (cname="WinMain")]
+public static int WinMain (uint16 instance, uint16 prev_instance, string cmd_line, int cmd_show) {
+	AvalancheTemplate.Main.main ();
+	return 0;
+}
+#endif

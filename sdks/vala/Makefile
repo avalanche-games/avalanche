@@ -1,46 +1,47 @@
 ##
+#  This Source Code Form is subject to the terms of the Mozilla Public
+#  License, v. 2.0. If a copy of the MPL was not distributed with this
+#  file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
 #                          Copyright(C) 2013
 #                   Christian Ferraz Lemos de Sousa
 #                      Pedro Henrique Lara Campos
-#
-#   Licensed under the Apache License, Version 2.0 (the "License");
-#   you may not use this file except in compliance with the License.
-#   You may obtain a copy of the License at
-#
-#       http://www.apache.org/licenses/LICENSE-2.0
-#
-#   Unless required by applicable law or agreed to in writing, software
-#   distributed under the License is distributed on an "AS IS" BASIS,
-#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#   See the License for the specific language governing permissions and
-#   limitations under the License.
 ##
 
 VALAC = valac
-VFLAG = -X -Ofast -X '-lSDL2' --vapidir=./vala/thirds
-VPKGS = --pkg sdl2 --pkg sdl2-image
-VBASE   = ./$(wildcard avalanche/*.vala)
-SRC   = ./$(wildcard $(GAME)/src/*.vala)
+VFLAG = -X -Ofast -X '-lSDL2' -X '-lSDL2_image' --vapidir=./vala/thirds
+VPKGS = --pkg sdl2 --pkg sdl2-image --pkg posix
+VBASE = ./$(wildcard avalanche/*.vala)
+SRC = ./$(wildcard $(GAME)/src/*.vala)
 BIN   = $(GAME)/bin/game
+
+ifeq ($(CROSS), WIN)
+	PKG_CONFIG_PATH=/usr/i486-mingw32/lib/pkgconfig
+	BIN =  $(GAME)/bin/game.exe
+	VFLAG += --cc=i486-mingw32-gcc
+endif
+
 
 ifeq ($(OS), Windows_NT)
 	CLEAN := rm -f $(BIN)
-	VFLAG += -X -mwindows
+	VFLAG += -X -mwindows -D AVALANCE_WIN
 else
 	UNAME := $(shell uname)
 	ifeq ($(UNAME), Linux)
+		VFLAG+= -D AVALANCE_UNIX -D AVALANCHE_LINUX
 	endif
 	ifeq ($(UNAME), Darwin)
+		VFLAG+= -D AVALANCE_UNIX -D AVALANCHE_DARWIN
 	endif
 endif
 
 
 .PHONY:
+	 rmdir "$(GAME)/bin"
 	$(CLEAN)
-	@rmdir "../bin" 2>/dev/null; true;
 
 build:
-	@mkdir "../bin" 2>/dev/null; true;
+	@mkdir "$(GAME)/bin" 2>/dev/null; true;
 	$(VALAC) $(VPKGS) $(VFLAG) $(VBASE) $(SRC) -o $(BIN)
 
 clean: .PHONY

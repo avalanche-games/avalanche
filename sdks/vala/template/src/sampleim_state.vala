@@ -10,7 +10,7 @@ public class SampleIMGState : Avalanche.ScreenState,  GLib.Object {
 	
         public void on_enter () {
 		// Loads sample image and put on a texture.
-		sample_tex = SDLImage.load_texture (Avalanche.Game.WIN_RENDERER, "./sample.png");
+		sample_tex = SDLImage.load_texture (Avalanche.Game.WIN_RENDERER, "../res/sample.png");
 	}
 	
 	public void on_update (SDL.Event e) {
