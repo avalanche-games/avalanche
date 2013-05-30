@@ -10,11 +10,16 @@
 
 namespace Avalanche {
 
-namespace Tabs {
-	public interface Base : Object {
-		// A very dynamic base for tabs
-		public abstract void show_at(Gtk.Box container);
+namespace Plugins {
+
+	// A very dynamic base for tabs
+	public interface Tab : Object {
+		public abstract void show(Gtk.Box container);
+		public abstract void hide();
+		public abstract void session_save();
+		public abstract void session_load();
 	}
-}
+
+} // Plugins
 
 } // Avalanche
