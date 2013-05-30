@@ -9,25 +9,27 @@
 ##
 
 VALAC = valac
-VFLAG = -X -Ofast -X '-lSDL2' -X '-lSDL2_image' --vapidir=./vala/thirds
+VFLAG = -X -Ofast -X '-lSDL2' -X '-lSDL2_image' --vapidir=./thirds
 VPKGS = --pkg sdl2 --pkg sdl2-image --pkg posix
 VBASE = ./$(wildcard avalanche/*.vala)
-SRC = ./$(wildcard $(GAME)/src/*.vala)
-BIN   = $(GAME)/bin/game
+SRC = $(wildcard $(GAMEDIR)/src/*.vala)
+BIN   = $(GAMEDIR)/bin/game
 
 ifeq ($(CROSS), WIN)
 	PKG_CONFIG_PATH=/usr/i486-mingw32/lib/pkgconfig
-	BIN =  $(GAME)/bin/game.exe
 	VFLAG += --cc=i486-mingw32-gcc
+	OS = Windows_NT
 endif
 
 
 ifeq ($(OS), Windows_NT)
+	BIN =  $(GAMEDIR)/bin/game.exe
 	CLEAN := rm -f $(BIN)
 	VFLAG += -X -mwindows -D AVALANCE_WIN
 else
 	UNAME := $(shell uname)
 	ifeq ($(UNAME), Linux)
+		BIN =  $(GAMEDIR)/bin/game.elf
 		VFLAG+= -D AVALANCE_UNIX -D AVALANCHE_LINUX
 	endif
 	ifeq ($(UNAME), Darwin)
@@ -37,11 +39,11 @@ endif
 
 
 .PHONY:
-	 rmdir "$(GAME)/bin"
+	 rmdir "$(GAMEDIR)/bin"
 	$(CLEAN)
 
 build:
-	@mkdir "$(GAME)/bin" 2>/dev/null; true;
+	@mkdir "$(GAMEDIR)/bin" 2>/dev/null; true;
 	$(VALAC) $(VPKGS) $(VFLAG) $(VBASE) $(SRC) -o $(BIN)
 
 clean: .PHONY
