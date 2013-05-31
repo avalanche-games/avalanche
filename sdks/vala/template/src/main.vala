@@ -1,6 +1,6 @@
 namespace AvalancheTemplate {
 
-public class Main : Avalanche.Game {
+public class Main : Aval.Game {
 	#if AVALANCE_WIN
 		[CCode (cname="WinMain")]
 	#endif

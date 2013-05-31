@@ -1,6 +1,6 @@
 namespace AvalancheTemplate {
 
-public class SampleIMGState : Avalanche.ScreenState,  GLib.Object {
+public class SampleIMGState : Aval.ScreenState,  GLib.Object {
 	private SDL.Texture sample_tex;
 	
 	public SampleIMGState () {
@@ -10,14 +10,14 @@ public class SampleIMGState : Avalanche.ScreenState,  GLib.Object {
 	
         public void on_enter () {
 		// Loads sample image and put on a texture.
-		sample_tex = SDLImage.load_texture (Avalanche.Game.WIN_RENDERER, "../res/sample.png");
+		sample_tex = SDLImage.load_texture (Aval.Game.WIN_RENDERER, "../res/sample.png");
 	}
 	
 	public void on_update (SDL.Event e) {
 	}
 	
 	public void draw () {
-		Avalanche.Game.WIN_RENDERER.copy (sample_tex, null, null);
+		Aval.Game.WIN_RENDERER.copy (sample_tex, null, null);
 	}
 	
 	public void on_leave () {

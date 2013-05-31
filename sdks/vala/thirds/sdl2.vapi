@@ -122,8 +122,8 @@ namespace SDL {
 	}// BlitMap
 
 	[CCode (type_id="SDL_Rect", cheader_filename="SDL2/SDL_rect.h", cname="SDL_Rect")]
-	[Compact]
-	public class Rect {
+	[SimpleType]
+	public struct Rect {
 		public int x;
 		public int y;
 		public int w;

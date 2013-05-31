@@ -1,9 +1,9 @@
-namespace Avalanche {
+namespace Aval {
 
 public class Game {
 	public static SDL.Window? WINDOW;
 	public static SDL.Renderer? WIN_RENDERER;
-	public static Avalanche.ScreenState? STATE;
+	public static Aval.ScreenState? STATE;
 	internal static uint32 FRAME_EACHONE_TIME;
 	internal static uint32 FRAME_LAST_SEC;
 	internal static uint32 FRAME_NEXT_SEC;
@@ -31,7 +31,7 @@ public class Game {
 	}
 	
 	public static void main_loop () {
-		Avalanche.ScreenState enginer = STATE;
+		Aval.ScreenState enginer = STATE;
 		
 		SDL.Event e;
 		for (e = {0} ;; SDL.Event.poll (out e)) {
@@ -48,7 +48,7 @@ public class Game {
 			// Quit the game correctly
 			// -To jump this, threat the event and set it type to 0
 			if (e.type == SDL.EventType.QUIT){
-				Avalanche.Game.change_state (null);
+				Aval.Game.change_state (null);
 				break;
 			}
 		}
@@ -80,7 +80,7 @@ public class Game {
 		SDL.quit ();
 	}
 	
-	public static void change_state (Avalanche.ScreenState? nstate) {
+	public static void change_state (Aval.ScreenState? nstate) {
 		if (STATE != null) 
 			STATE.on_leave ();
 		STATE = nstate;
@@ -92,4 +92,4 @@ public class Game {
 }// Game
 
 
-}// Avalanche
+}// Aval

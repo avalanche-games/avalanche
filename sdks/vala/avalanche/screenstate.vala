@@ -1,4 +1,4 @@
-namespace Avalanche {
+namespace Aval {
 
 public interface ScreenState : GLib.Object {
 	public abstract void on_enter ();
@@ -7,4 +7,4 @@ public interface ScreenState : GLib.Object {
 	public abstract void on_leave ();
 }
 
-}// Avalanche
+}// Aval
