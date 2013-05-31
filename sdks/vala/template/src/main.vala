@@ -1,7 +1,10 @@
 namespace AvalancheTemplate {
 
 public class Main : Avalanche.Game {
-	public static void main () {
+	#if AVALANCE_WIN
+		[CCode (cname="WinMain")]
+	#endif
+	public static int main () {
 		// Intialize SDL, SDLImage and Avalanche.
 		init(SDL.InitFlag.EVERYTHING, SDLImage.InitFlags.PNG);
 		
@@ -24,16 +27,10 @@ public class Main : Avalanche.Game {
 		
 		// Quit SDL and valanche module.
 		quit ();
+		
+		return 0;
 	}
 }// Main
 
 
 }// AvalancheTemplate
-
-#if AVALANCE_WIN
-[CCode (cname="WinMain")]
-public static int WinMain (uint16 instance, uint16 prev_instance, string cmd_line, int cmd_show) {
-	AvalancheTemplate.Main.main ();
-	return 0;
-}
-#endif

@@ -18,6 +18,7 @@ public class Game {
 		string path=".";
 		#if AVALANCE_WIN
 			path = GLib.Win32.get_package_installation_directory_of_module (null);
+			path += "\\bin";
 		#elif AVALANCE_UNIX
 			char path_buf[1024];
 			char *dirend;
@@ -26,7 +27,6 @@ public class Game {
 			dirend[0] = '\0';
 			path = (string)path_buf;
 		#endif
-		stdout.printf ("Entering:"+path+"\n");
 		Posix.chdir (path);
 	}
 	
@@ -55,7 +55,6 @@ public class Game {
 	}
 	
 	internal static void fps_endsec (uint32 start_ticks) {
-		stdout.printf ("Showed %d frames this sec.\n", FRAME_CURR);
 		FRAME_LAST_SEC = start_ticks;
 		FRAME_NEXT_SEC = start_ticks +1000;
 		FRAME_CURR = 0;

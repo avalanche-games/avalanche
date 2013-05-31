@@ -11,7 +11,7 @@
 VALAC = valac
 VFLAG = -X -Ofast -X '-lSDL2' -X '-lSDL2_image' --vapidir=$(AVALANCHE_DIR)/sdks/vala/thirds
 VPKGS = --pkg sdl2 --pkg sdl2-image --pkg posix
-VBASE = ./$(wildcard $(AVALANCHE_DIR)/*.vala)
+VBASE = $(wildcard $(AVALANCHE_DIR)/sdks/vala/avalanche/*.vala)
 SRC = ./$(wildcard src/*.vala)
 BIN   = ./bin/game
 
@@ -29,7 +29,7 @@ ifeq ($(OS), Windows_NT)
 else
 	UNAME := $(shell uname)
 	ifeq ($(UNAME), Linux)
-		BIN =  $(GAMEDIR)/bin/game.elf
+		BIN =  ./bin/game.elf
 		VFLAG+= -D AVALANCE_UNIX -D AVALANCHE_LINUX
 	endif
 	ifeq ($(UNAME), Darwin)
