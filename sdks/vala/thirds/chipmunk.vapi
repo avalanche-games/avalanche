@@ -515,7 +515,7 @@ namespace cp {
 		public double sleep_time_threshold;
 		public weak cp.Array sleeping_components_private;
 		public weak cp.Timestamp stamp_private;
-		public weak cp.Body static_body;
+		[CCode (cname = "staticBody")] public weak cp.Body static_body;
 		public weak cp.SpatialIndex static_shapes_private;
 		
 		[CCode (cname = "cpSpaceNew")]

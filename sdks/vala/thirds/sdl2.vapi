@@ -1647,7 +1647,7 @@ namespace SDL {
 		public int copy(SDL.Texture texture, SDL.Rect? srcrect, SDL.Rect? dstrect);
 		
 		[CCode (cname="SDL_RenderCopyEx")]
-		public int copyex(SDL.Texture texture, SDL.Rect? srcrect, SDL.Rect? dstrect, double angle, SDL.Point center, SDL.RendererFlip flip);
+		public int copyex(SDL.Texture texture, SDL.Rect? srcrect, SDL.Rect? dstrect, double angle, SDL.Point? center, SDL.RendererFlip flip);
 		
 		[CCode (cname="SDL_RenderReadPixels")]
 		public int read_pixels(SDL.Rect? rect, uint32 format, out void[] pixels, int pitch);
