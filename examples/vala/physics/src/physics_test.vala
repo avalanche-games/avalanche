@@ -1,7 +1,7 @@
 // From: http://code.google.com/p/chipmunk-physics/source/browse/trunk/example/hello_chipmunk.c
 // Ported to Avalanche-VALA by PedroHLC
 
-namespace AvalancheTemplate {
+namespace AvalanchePhysicsExample {
 
 public class PhysicsTestState : Aval.ScreenState,  GLib.Object {
 	private cp.Vect gravity;
@@ -23,7 +23,7 @@ public class PhysicsTestState : Aval.ScreenState,  GLib.Object {
 		// We'll make it slightly tilted so the ball will roll off.
 		// We attach it to space.static_body to tell Chipmunk it shouldn't be movable.
 		ground = new cp.SegmentShape (space.static_body, {0, 580}, {800, 581}, 0);
-		ground.u = 20; //u = friction
+		ground.u = 1; //u = friction
 		space.add_shape (ground);
 		
 		// Now let's make a ball that falls onto the line and rolls off.
@@ -97,11 +97,11 @@ public class Ball {
 		Aval.Game.WIN_RENDERER.copyex (texture, //Texture
 			{0, 0, 256, 256}, // Image input pos and size
 			{(int)(body.p.x-RADIUS), (int)(body.p.y-RADIUS), 64, 64}, //Output pos and size
-			body.a, // Angle
+			body.a*3.14, // Angle
 			null, // enter point for rotation (NULL uses half width and half height)
 			SDL.RendererFlip.NONE ); //Flip
 	}
-}
+} // Ball
 
 
-}// AvalancheTemplate
+}// AvalanchePhysicsExample

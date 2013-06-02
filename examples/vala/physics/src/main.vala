@@ -1,4 +1,4 @@
-namespace AvalancheTemplate {
+namespace AvalanchePhysicsExample {
 
 public class Main : Aval.Game {
 	#if AVALANCE_WIN
@@ -33,4 +33,4 @@ public class Main : Aval.Game {
 }// Main
 
 
-}// AvalancheTemplate
+}// AvalanchePhysicsExample
