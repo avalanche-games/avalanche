@@ -16,6 +16,7 @@ namespace Plugins {
 	public interface Tab : Object {
 		public abstract void show(Gtk.Box container);
 		public abstract void hide();
+		public abstract void create_menu();
 		public abstract void session_save();
 		public abstract void session_load();
 	}

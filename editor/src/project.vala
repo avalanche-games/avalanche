@@ -12,7 +12,7 @@ namespace Avalanche {
 
 namespace Application {
 
-	public class Session : Object {
+	public class Project : Object {
 		// Project folder
 		private string _project_path = "";
 		public string project_path {
@@ -23,34 +23,36 @@ namespace Application {
 		// Json things
 		private Json.Generator generator = new Json.Generator();
     private Json.Node root = new Json.Node(Json.NodeType.OBJECT);
-    private Json.Object object = new Json.Object();
+    private Json.Object project = new Json.Object();
+    private Json.Object session = new Json.Object();
+    private Json.Object root_obj = new Json.Object();
 
-		// Session singleton variables
+		// Project singleton variables
 		static bool initialized = false;
-		static Session single_instance;
+		static Project single_instance;
 
 		// Initialization Methods
 		public static void initialize(){
 			if (initialized == false) {
-				single_instance = new Session();
+				single_instance = new Project();
 				initialized = false;
 			}
 		}
 
 		// delivering the standard session
-		public static Session get_default(){
+		public static Project get_default(){
 			return single_instance;
 		}
 
 		// Forbid another session
-		private Session() {
+		private Project() {
 			size_t length;
-			//var args = new Json.Object();
 			generator.indent_char = 9;
 			generator.indent = 1;
 			generator.pretty = true;
-			object.set_string_member("project", "dummy");//set_object_member("project", "dummy");
-			root.set_object(object);
+			root_obj.set_object_member("project", project);
+			root_obj.set_object_member("session", session);
+			root.set_object(root_obj);
 			generator.set_root(root);
 			string test = generator.to_data(out length);
 			print(test);
@@ -58,16 +60,29 @@ namespace Application {
 
 		// Loading a session from path
 		public bool load_path(string path) {
-			File file = File.new_for_path(path + "session.avl");
+			File file = File.new_for_path(path + "session.apj");
 			return true;
 		}
 
-		public string to_json(){
-			// should convert the current session to json
-			return "";
+		public string session_to_json(){
+			size_t length;
+   		Json.Node _root = new Json.Node(Json.NodeType.OBJECT);
+			Json.Generator gen = new Json.Generator();
+			gen.set_root(_root);
+			_root.set_object(session);
+			return gen.to_data(out length);
 		}
 
-	} // Session
+		public string project_to_json(){
+			size_t length;
+   		Json.Node _root = new Json.Node(Json.NodeType.OBJECT);
+			Json.Generator gen = new Json.Generator();
+			gen.set_root(_root);
+			_root.set_object(project);
+			return gen.to_data(out length);
+		}
+
+	} // Project
 
 } // Application
 

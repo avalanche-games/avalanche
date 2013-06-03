@@ -16,12 +16,12 @@ namespace Application {
 
 		private Gtk.Box box = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
 		private GenericArray<Plugins.Tab> tab_list = new GenericArray<Plugins.Tab>(); // used to avoid tab destruction
-		private Session session = Session.get_default();
+		private Project project = Project.get_default();
 
 		public static int main(string[] args) {
 			// Gtk setup
 			Gtk.init(ref args);
-			Session.initialize();
+			Project.initialize();
 			// TODO: dark theme as runtime setting
 			#if (DARK_THEME)
 			Gtk.Settings.get_default().gtk_application_prefer_dark_theme = true;
@@ -95,34 +95,27 @@ namespace Application {
 		private void setup_menu() {
 			// Toobar setup
 			Gtk.Toolbar toolbar = new Gtk.Toolbar ();
-			toolbar.get_style_context ().add_class (Gtk.STYLE_CLASS_PRIMARY_TOOLBAR);
-			Gtk.ToolButton open_button = new Gtk.ToolButton.from_stock (Gtk.Stock.OPEN);
+			toolbar.get_style_context ().add_class(Gtk.STYLE_CLASS_PRIMARY_TOOLBAR);
+			Gtk.ToolButton open_button = new Gtk.ToolButton.from_stock(Gtk.Stock.OPEN);
 			open_button.clicked.connect(open_project);
 			open_button.is_important = true;
-			toolbar.add (open_button);
+			toolbar.add(open_button);
 			this.box.pack_start(toolbar, false, false);
 		}
 
 		private void open_project(){
 			// Open project dialog
 			OpenProjectDialog project_dialog = new OpenProjectDialog(); // todo: reuse a dynamic dialog system
-			if (project_dialog.run() == Gtk.ResponseType.OK){
-				// should try to get info from the project folder and also
-				SList<string> uris = project_dialog.get_uris ();
-				stdout.printf ("Selection:\n");
-				foreach (unowned string uri in uris) {
-					stdout.printf (" %s\n", uri);
-				}
-				project_dialog.close();
-			}else {
-				// Just cancell the action
-				project_dialog.close();
+			if (project_dialog.run() == Gtk.ResponseType.ACCEPT){
+				File file = File.new_for_uri(project_dialog.get_uris().nth(0).data);
+				Project.get_default().project_path = file.get_parent().get_path();
 			}
+			project_dialog.close();
 		}
 
 		private void setup_tabs() {
 			// Our default tab list.
-			//add_tab(new Tabs.SourceEditor());
+			add_tab(new Plugins.Welcome());
 		}
 
 		private void add_tab(Plugins.Tab tab) {

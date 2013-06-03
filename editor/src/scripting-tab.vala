@@ -32,6 +32,10 @@ namespace Plugins {
 				// Hides the plugin content without destroying it
 			}
 
+			public void create_menu() {
+				// Creates a new menu
+			}
+
 			// Saves the plugin session
 			public void session_save() {
 			}
@@ -39,7 +43,6 @@ namespace Plugins {
 			// Loads the plugin session
 			public void session_load() {
 			}
-
 
 		}
 
