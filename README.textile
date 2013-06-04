@@ -16,12 +16,12 @@ h2. General Requirements
 p. You will need to install these packages to build any Avalanche thing:
 
 * "GCC":http://gcc.gnu.org/ (Linux) or "Mingw":http://www.mingw.org/ (Windows)
-* "glib":https://developer.gnome.org/glib/
-* "vala":https://live.gnome.org/Vala/
+* "GLib":https://developer.gnome.org/glib/
+* "Vala":https://live.gnome.org/Vala/
 
 We might add others packages to this list, so keep your eyes open.
 
-h2. Editor Requirements
+h2. Others Requirements
 
 p. To build the editor, also install:
 
@@ -29,13 +29,14 @@ p. To build the editor, also install:
 * "gtk3":http://www.gtk.org/
 * "gtksourceview3":http://projects.gnome.org/gtksourceview/
 * "json-glib":https://live.gnome.org/JsonGlib/
+(not everything is required for running)
 
-h2. Running Requirements
+p. To build the editor, also install:
 
-* "libgee":https://live.gnome.org/Libgee *
 * "SDL 2":http://www.libsdl.org/hg.php
-
-p. * We *may* use it, but I(Christian), for some reason, does not want to .-.
+* "SDL-Image 2": http://www.libsdl.org/projects/SDL_image/
+* "Chipmunk Physics": http://chipmunk-physics.net/
+(everything is optional)
 
 h3. Deploy on Linux
 
@@ -57,7 +58,7 @@ h2. Play a Game
 
 h3. On Windows
 
-p. Nothing is required to play the game on Windows, since all the libraries will be static linked.
+p. You might include needed DLLs, but do not forget their licenses when needed.
 
 h3. On Linux
 
