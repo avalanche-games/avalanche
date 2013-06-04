@@ -11,30 +11,39 @@ namespace Avalanche {
 
 namespace Application {
 
-	public class OpenProjectDialog : Gtk.FileChooserDialog {
+	public class OpenDialog : Gtk.FileChooserDialog {
 
 		private string last_folder;
 		private Gtk.FileFilter filter = new Gtk.FileFilter();
 
-		public OpenProjectDialog () {
+		public OpenDialog (string pattern, bool multiple = false, string title = "Open File") {
 			// Dialog settings
-			this.title = "Open File";
+			this.title = title;
 			this.action = Gtk.FileChooserAction.OPEN;
-			this.select_multiple = false;
+			this.select_multiple = multiple;
+
 			// Filter to .apl files
-			filter.add_pattern("*.apj");
+			filter.add_pattern(pattern);
 			set_filter(filter);
+
 			// Action buttons
 			add_button (Gtk.Stock.CANCEL, Gtk.ResponseType.CANCEL);
 			add_button (Gtk.Stock.OPEN, Gtk.ResponseType.ACCEPT);
 			set_default_response (Gtk.ResponseType.ACCEPT);
-			// current folder
+
+			// Current folder
 			if (this.last_folder != null) {
 				set_current_folder (this.last_folder);
 			}
 		}
 
+		public string get_last_folder() {
+			// Return the last folder
+			return this.last_folder;
+		}
+
 		public override void response (int type) {
+			// Set current folder
 			if (type == Gtk.ResponseType.ACCEPT)
 				this.last_folder = get_current_folder ();
 		}

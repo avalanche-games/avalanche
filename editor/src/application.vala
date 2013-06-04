@@ -16,6 +16,7 @@ namespace Application {
 
 		private Gtk.Notebook notebook = new Gtk.Notebook ();
 		private Gtk.Box box = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
+		private Gtk.Toolbar toolbar = new Gtk.Toolbar ();
 		private GenericArray<Plugins.Tab> tab_list = new GenericArray<Plugins.Tab>(); // used to avoid tab destruction
 		private Project project = Project.get_default();
 
@@ -23,14 +24,17 @@ namespace Application {
 			// Gtk setup
 			Gtk.init(ref args);
 			Project.initialize();
+
 			// TODO: dark theme as runtime setting
 			#if (DARK_THEME)
 			Gtk.Settings.get_default().gtk_application_prefer_dark_theme = true;
 			#endif
+
 			// Launch Avalanche
 			Main application = new Main();
 			application.show_all();
 			Gtk.main();
+
 			// No errors
 			return 0;
 		}
@@ -43,7 +47,9 @@ namespace Application {
 		private void setup() {
 			setup_user();
 			setup_menu();
-			setup_tabs();
+			setup_toolbar();
+			setup_notebook();
+			this.add(this.box);
 			// Adjusts the main window
 			this.title = "Avalanche";
 			this.window_position = Gtk.WindowPosition.CENTER;
@@ -63,62 +69,79 @@ namespace Application {
 		}
 
 		private void setup_user() {
-			// NOTE: Temporary
-			string location = "/.local/share/Avalanche/";
+			// NOTE: this is temporary
+			string location = "/.local/share/Avalanche/DebugProject/";
+			// Creates the root
 			try {
-				File.new_for_path(Environment.get_home_dir() + location
-												 ).make_directory_with_parents();
+				File.new_for_path(Environment.get_home_dir() + location).make_directory_with_parents();
 			}catch (Error err) {}
+			// Creates a source folder
 			try {
-				File.new_for_path(Environment.get_home_dir() + location + "DebugProject/src/sample-folder"
-												 ).make_directory_with_parents();
+				File.new_for_path(Environment.get_home_dir() + location + "src/").make_directory_with_parents();
 			}catch (Error err) {}
+			// Adds a debug folder inside the source
 			try {
-				File.new_for_path(Environment.get_home_dir() + location + "DebugProject/db/"
-												 ).make_directory_with_parents();
+				File.new_for_path(Environment.get_home_dir() + location + "src/sample-folder").make_directory_with_parents();
 			}catch (Error err) {}
+			// Creates a database folder
 			try {
-				File.new_for_path(Environment.get_home_dir() + location + "DebugProject/res/"
-												 ).make_directory_with_parents();
+				File.new_for_path(Environment.get_home_dir() + location + "db/").make_directory_with_parents();
 			}catch (Error err) {}
+			// Creates a resource folder
 			try {
-				File.new_for_path(Environment.get_home_dir() + location + "DebugProject/src/sample-script"
-												 ).create(FileCreateFlags.REPLACE_DESTINATION);
+				File.new_for_path(Environment.get_home_dir() + location + "res/").make_directory_with_parents();
 			}catch (Error err) {}
+			// Creates a sample script
 			try {
-				File.new_for_path(Environment.get_home_dir() + location + "DebugProject/src/sample-folder/sample-script2"
+				File.new_for_path(Environment.get_home_dir() + location + "src/sample-script.vala").create(FileCreateFlags.REPLACE_DESTINATION);
+			}catch (Error err) {}
+			// Creates another sample script
+			try {
+				File.new_for_path(Environment.get_home_dir() + location + "src/sample-folder/sample-script2.vala"
 				                 ).create(FileCreateFlags.REPLACE_DESTINATION);
 			}catch (Error err) {}
 		}
 
 		// Toolbar System
-		private void setup_menu() {
-			// Toobar setup
-			Gtk.Toolbar toolbar = new Gtk.Toolbar ();
-			toolbar.get_style_context ().add_class(Gtk.STYLE_CLASS_PRIMARY_TOOLBAR);
+		private void setup_toolbar() {
+			// Toolbar configs
+			this.toolbar.get_style_context().add_class(Gtk.STYLE_CLASS_PRIMARY_TOOLBAR);
+
+			// Toolbar buttons
 			Gtk.ToolButton open_button = new Gtk.ToolButton.from_stock(Gtk.Stock.OPEN);
 			open_button.clicked.connect(open_project);
 			open_button.is_important = true;
-			toolbar.add(open_button);
-			notebook.tab_pos = Gtk.PositionType.BOTTOM;
+
+			// Adding toolbar
+			this.toolbar.add(open_button);
 			this.box.pack_start(toolbar, false, false);
+		}
+
+		private void setup_menu() {
+
+		}
+
+		private void setup_notebook() {
+			this.notebook.tab_pos = Gtk.PositionType.BOTTOM;
 			this.box.pack_start(notebook, true, true);
-			this.add(this.box);
+		}
+
+		private void setup_tabs() {
+			// Our default tab list.
+		}
+
+		public void base_menu() {
 		}
 
 		private void open_project(){
 			// Open project dialog
-			OpenProjectDialog project_dialog = new OpenProjectDialog(); // todo: reuse a dynamic dialog system
+			OpenDialog project_dialog = new OpenDialog("*.avalproject");
 			if (project_dialog.run() == Gtk.ResponseType.ACCEPT){
 				File file = File.new_for_uri(project_dialog.get_uris().nth(0).data);
 				Project.get_default().project_path = file.get_parent().get_path();
 			}
 			project_dialog.close();
 			add_tab(new Plugins.Scripting.TabPlugin());
-		}
-
-		private void setup_tabs() {
-			// Our default tab list.
 		}
 
 		private void add_tab(Plugins.Tab tab) {

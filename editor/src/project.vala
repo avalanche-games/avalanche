@@ -39,7 +39,7 @@ namespace Application {
 			}
 		}
 
-		// delivering the standard session
+		// Delivering the standard session
 		public static Project get_default(){
 			return single_instance;
 		}
