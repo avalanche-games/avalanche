@@ -100,6 +100,7 @@ namespace Application {
 			open_button.clicked.connect(open_project);
 			open_button.is_important = true;
 			toolbar.add(open_button);
+			notebook.tab_pos = Gtk.PositionType.BOTTOM;
 			this.box.pack_start(toolbar, false, false);
 			this.box.pack_start(notebook, true, true);
 			this.add(this.box);
@@ -118,7 +119,6 @@ namespace Application {
 
 		private void setup_tabs() {
 			// Our default tab list.
-			add_tab(new Plugins.Welcome());
 		}
 
 		private void add_tab(Plugins.Tab tab) {
