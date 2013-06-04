@@ -31,19 +31,16 @@ p. To build the editor, also install:
 * "json-glib":https://live.gnome.org/JsonGlib/
 (not everything is required for running)
 
-p. To build the editor, also install:
+p. To build an example or SDK template, also install:
 
 * "SDL 2":http://www.libsdl.org/hg.php
-* "SDL-Image 2": http://www.libsdl.org/projects/SDL_image/
-* "Chipmunk Physics": http://chipmunk-physics.net/
+* "SDL-Image 2":http://www.libsdl.org/projects/SDL_image/
+* "Chipmunk Physics":http://chipmunk-physics.net/
 (everything is optional)
 
 h3. Deploy on Linux
 
-p. Linux developers, have some nice *installation* tools called package managers, they install all dependencies that
-another package needs automatically, so we have no reason to build anything statically, just make a package to your
-targeted distro and let the package manager do it is work, you should also release a tar.gz with the binaries and a
-makefile with a install/uninstall task (cross-distro release). 
+p. Linux developers, can use package managers, to install programs and it dependencies, so they don't have reasons to build anything statically, just make a package to your targeted distro and let the package manager do it is work.
 
 h3. Deploy on Windows
 
