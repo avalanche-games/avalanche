@@ -50,7 +50,7 @@ ifeq ($(OSNAME),Linux)
 	INSTALL := $(INSTALL) cp -f "./res/icons/avalanche.png" "/usr/lib/avalanche/icons/avalanche.png" &&
 	INSTALL := $(INSTALL) cp -f "./res/icons/folder.png" "/usr/lib/avalanche/icons/folder.png" &&
 	INSTALL := $(INSTALL) cp -f "./res/icons/vala.png" "/usr/lib/avalanche/icons/vala.png" &&
-	INSTALL := $(INSTALL) cp -f "./res/shortcuts/avalanche.desktop" "/usr/local/share/applications/avalanche.desktop"
+	INSTALL := $(INSTALL) cp -f "./res/shortcuts/avalanche.desktop" "/usr/share/applications/avalanche.desktop"
 	REMOVE  := @echo "Removing Avalanche from the system..." 2>/dev/null; true &&
 	REMOVE  := $(REMOVE) rm -f "/usr/bin/avalanche"; true &&
 	REMOVE  := $(REMOVE) rm -f "/usr/lib/avalanche/syntax-colors/tonight.xml"; true &&
@@ -58,7 +58,7 @@ ifeq ($(OSNAME),Linux)
 	REMOVE  := $(REMOVE) rm -f "/usr/lib/avalanche/icons/avalanche.png"; true &&
 	REMOVE  := $(REMOVE) rm -f "/usr/lib/avalanche/icons/folder.png" &&
 	REMOVE  := $(REMOVE) rm -f "/usr/lib/avalanche/icons/vala.png" &&
-	REMOVE  := $(REMOVE) rm -f "/usr/local/share/applications/avalanche.desktop"; true &&
+	REMOVE  := $(REMOVE) rm -f "/usr/share/applications/avalanche.desktop"; true &&
 	REMOVE  := $(REMOVE) rmdir "/usr/lib/avalanche/syntax-colors/"; true &&
 	REMOVE  := $(REMOVE) rmdir "/usr/lib/avalanche/icons/"; true &&
 	REMOVE  := $(REMOVE) rmdir "/usr/lib/avalanche/"; true
