@@ -14,6 +14,7 @@ namespace Application {
 
 	public class Main : Gtk.Window {
 
+		private Gtk.Notebook notebook = new Gtk.Notebook ();
 		private Gtk.Box box = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
 		private GenericArray<Plugins.Tab> tab_list = new GenericArray<Plugins.Tab>(); // used to avoid tab destruction
 		private Project project = Project.get_default();
@@ -37,7 +38,6 @@ namespace Application {
 		public Main() {
 			// Another settings
 			setup();
-			this.add(this.box);
 		}
 
 		private void setup() {
@@ -101,6 +101,8 @@ namespace Application {
 			open_button.is_important = true;
 			toolbar.add(open_button);
 			this.box.pack_start(toolbar, false, false);
+			this.box.pack_start(notebook, true, true);
+			this.add(this.box);
 		}
 
 		private void open_project(){
@@ -111,6 +113,7 @@ namespace Application {
 				Project.get_default().project_path = file.get_parent().get_path();
 			}
 			project_dialog.close();
+			add_tab(new Plugins.Scripting.TabPlugin());
 		}
 
 		private void setup_tabs() {
@@ -121,7 +124,7 @@ namespace Application {
 		private void add_tab(Plugins.Tab tab) {
 			// Adding tabs
 			tab_list.add(tab);
-			tab.show(this.box);
+			tab.show(this.notebook);
 		}
 
 	}

@@ -23,7 +23,7 @@ namespace Plugins {
 		// No things to destroy
 		~Welcome() { }
 
-		public void show(Gtk.Box container) {
+		public void show(Gtk.Notebook notebook) {
 		}
 
 		public void hide() {

@@ -14,7 +14,7 @@ namespace Plugins {
 
 	// A very dynamic base for tabs
 	public interface Tab : Object {
-		public abstract void show(Gtk.Box container);
+		public abstract void show(Gtk.Notebook notebook);
 		public abstract void hide();
 		public abstract void create_menu();
 		public abstract void session_save();
