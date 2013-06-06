@@ -50,7 +50,6 @@ namespace Plugins {
 			public void session_load() {
 			}
 
-
 			public TabPlugin() {
 				// Listing and tabs division
 				Gtk.Paned division = new Gtk.Paned(Gtk.Orientation.HORIZONTAL);
@@ -131,11 +130,11 @@ namespace Plugins {
 				return(view);
 			}
 
-	    private enum Columns {
-	        TOGGLE,
-	        TEXT,
-	        N_COLUMNS
-	    }
+			private enum Columns {
+				TOGGLE,
+				TEXT,
+				N_COLUMNS
+			}
 
 			private void setup_dashboard() {
 				// Dashboard tab title
@@ -163,36 +162,116 @@ namespace Plugins {
 				header.pack_end(settings_button, false, true, 8);
 
 				// Custom `make' settings
-				Gtk.Box make_settings = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0);
+				Gtk.Box master_box = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0);
+				Gtk.Box make_settings = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
+				Gtk.Box make_build = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
 
 				// Content Boxes
-				Gtk.Frame packages = new Gtk.Frame ("Packages:");
-				(packages.label_widget as Gtk.Label).use_markup = true;
-				Gtk.Frame valacflags = new Gtk.Frame ("Flags:");
-				(valacflags.label_widget as Gtk.Label).use_markup = true;
+				/*
 				Gtk.Frame makefile = new Gtk.Frame ("Generated Makefile:");
-				(makefile.label_widget as Gtk.Label).use_markup = true;
-
+				(makefile.label_widget as Gtk.Label).use_markup = true;*/
 				// Setup each part
-	      setup_package_list(packages);
-	      setup_custom_flags(valacflags);
-	      setup_makefile(makefile);
+				setup_package_list(make_settings);
+				setup_custom_flags(make_settings);
+				setup_make_zone(make_build);
 
-	      // Packing the make settings
-	      make_settings.pack_start(packages,true,true,8);
-	      make_settings.pack_start(valacflags,true,true,8);
-	      make_settings.pack_start(makefile,true,true,8);
+				// Packing the make settings
+				//make_settings.pack_start(packages,true,true,8);
+				//make_settings.pack_start(valacflags,true,true,8);
+				master_box.pack_start(make_settings,true,true,8);
+				master_box.pack_start(make_build,true,true,8);
+				//make_box.pack_start(makefile,true,true,8);
 
-	      // Packing the dashboard
+				// Packing the dashboard
 				this.dashboard.pack_start(header, false, false,8);
-				this.dashboard.pack_start(make_settings, true, true, 8);
+				this.dashboard.pack_start(master_box, true, true, 8);
 				this.editor.append_page(this.dashboard, tab_title);
 			}
 
-			private void setup_package_list(Gtk.Frame frame) {
-				Gtk.Box content = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
-	      Gtk.ListStore package_model = new Gtk.ListStore (Columns.N_COLUMNS, typeof (bool), typeof (string));
-	      Gtk.TreeView package_view = new Gtk.TreeView.with_model(package_model);
+			private void setup_package_list(Gtk.Box box) {
+				// This box will hold the tree view and entry
+				Gtk.Box package_box = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
+				// The frame will wrap the tree view
+				Gtk.Frame packages = new Gtk.Frame ("Packages and/or Libraries:");
+				(packages.label_widget as Gtk.Label).use_markup = true;
+				// Package list listing system (might get things from project class)
+				Gtk.ListStore package_model = new Gtk.ListStore (Columns.N_COLUMNS, typeof (bool), typeof (string));
+				Gtk.TreeView package_view = new Gtk.TreeView.with_model(package_model);
+				prepare_generic_make_list(package_model, package_view);
+				// Adding itens to the list
+				Gtk.TreeIter iter;
+				package_model.append(out iter);
+				package_model.set(iter, Columns.TOGGLE, true, Columns.TEXT, "item 1");
+				package_model.append (out iter);
+				package_model.set(iter, Columns.TOGGLE, false, Columns.TEXT, "item 2");
+				// User entry system
+				Gtk.Box entry_box = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0);
+				Gtk.Entry entry = new Gtk.Entry();
+				// Creating buttons
+				Gtk.Button add_entry    = new Gtk.Button();
+				Gtk.Button delete_entry = new Gtk.Button();
+				// Setting button images
+				add_entry.image    = new Gtk.Image.from_stock(Gtk.Stock.ADD, Gtk.IconSize.MENU);
+				delete_entry.image = new Gtk.Image.from_stock(Gtk.Stock.DELETE, Gtk.IconSize.MENU);
+				// Button settings
+				add_entry.always_show_image = true;
+				delete_entry.always_show_image = true;
+				add_entry.set_tooltip_text("Add Package");
+				delete_entry.set_tooltip_text("Remove Package");
+				// Packing buttons
+				entry_box.pack_start(entry,true,true,0);
+				entry_box.pack_end(delete_entry,false,false,2);
+				entry_box.pack_end(add_entry,false,false,2);
+				// Packing up stuff
+				packages.add(package_view);
+				package_box.pack_start(packages, true, true, 0);
+				package_box.pack_start(entry_box, false, false, 2);
+				box.pack_start(package_box, true, true, 0);
+			}
+
+			private void setup_custom_flags(Gtk.Box box) {
+				// This box will hold the tree view and entry
+				Gtk.Box package_box = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
+				// The frame will wrap the tree view
+				Gtk.Frame packages = new Gtk.Frame ("Compiler Flags:");
+				(packages.label_widget as Gtk.Label).use_markup = true;
+				// Package list listing system (might get things from project class)
+				Gtk.ListStore package_model = new Gtk.ListStore (Columns.N_COLUMNS, typeof (bool), typeof (string));
+				Gtk.TreeView package_view = new Gtk.TreeView.with_model(package_model);
+				prepare_generic_make_list(package_model, package_view);
+				// Adding itens to the list
+				Gtk.TreeIter iter;
+				package_model.append(out iter);
+				package_model.set(iter, Columns.TOGGLE, true, Columns.TEXT, "item 1");
+				package_model.append (out iter);
+				package_model.set(iter, Columns.TOGGLE, false, Columns.TEXT, "item 2");
+				// User entry system
+				Gtk.Box entry_box = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0);
+				Gtk.Entry entry = new Gtk.Entry();
+				// Creating buttons
+				Gtk.Button add_entry    = new Gtk.Button();
+				Gtk.Button delete_entry = new Gtk.Button();
+				// Setting button images
+				add_entry.image    = new Gtk.Image.from_stock(Gtk.Stock.ADD, Gtk.IconSize.MENU);
+				delete_entry.image = new Gtk.Image.from_stock(Gtk.Stock.DELETE, Gtk.IconSize.MENU);
+				// Button settings
+				add_entry.always_show_image = true;
+				delete_entry.always_show_image = true;
+				add_entry.set_tooltip_text("Add Package");
+				delete_entry.set_tooltip_text("Remove Package");
+				// Packing buttons
+				entry_box.pack_start(entry,true,true,0);
+				entry_box.pack_end(delete_entry,false,false,2);
+				entry_box.pack_end(add_entry,false,false,2);
+				// Packing up stuff
+				packages.add(package_view);
+				package_box.pack_start(packages, true, true, 0);
+				package_box.pack_start(entry_box, false, false, 2);
+				box.pack_start(package_box, true, true, 0);
+			}
+
+			private void prepare_generic_make_list(Gtk.ListStore package_model, Gtk.TreeView package_view) {
+				// Boilerplate :(
 				Gtk.CellRendererToggle  toggle = new Gtk.CellRendererToggle();
 				toggle.toggled.connect((toggle, path) => {
 					Gtk.TreePath tree_path = new Gtk.TreePath.from_string(path);
@@ -210,77 +289,37 @@ namespace Plugins {
 				column.add_attribute(text, "text", Columns.TEXT);
 				package_view.append_column(column);
 				package_view.set_headers_visible(false);
-				Gtk.TreeIter iter;
-				package_model.append(out iter);
-				package_model.set(iter, Columns.TOGGLE, true, Columns.TEXT, "item 1");
-				package_model.append (out iter);
-				package_model.set(iter, Columns.TOGGLE, false, Columns.TEXT, "item 2");
-
-				// User entry
-				Gtk.Box entry_box = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0);
-				Gtk.Entry entry = new Gtk.Entry();
-				Gtk.Button entry_button = new Gtk.Button();
-				entry_button.image = new Gtk.Image.from_stock(Gtk.Stock.ADD, Gtk.IconSize.MENU);
-				entry_button.always_show_image = true;
-				entry_box.pack_start(entry,true,true,0);
-				entry_box.pack_end(entry_button,false,false,0);
-
-	      // Packing packages
-	      content.pack_start(package_view,true,true,0);
-	      content.pack_end(entry_box,false,false,0);
-	      frame.add(content);
 			}
 
-			private void setup_custom_flags(Gtk.Frame frame) {
-				Gtk.Box content = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
-	      Gtk.ListStore package_model = new Gtk.ListStore (Columns.N_COLUMNS, typeof (bool), typeof (string));
-	      Gtk.TreeView package_view = new Gtk.TreeView.with_model(package_model);
-				Gtk.CellRendererToggle  toggle = new Gtk.CellRendererToggle();
-				toggle.toggled.connect((toggle, path) => {
-					Gtk.TreePath tree_path = new Gtk.TreePath.from_string(path);
-					Gtk.TreeIter iter;
-					package_model.get_iter(out iter, tree_path);
-					package_model.set(iter, Columns.TOGGLE, !toggle.active);
-				});
-				Gtk.TreeViewColumn column = new Gtk.TreeViewColumn();
-				column.pack_start(toggle, false);
-				column.add_attribute(toggle, "active", Columns.TOGGLE);
-				package_view.append_column(column);
-				Gtk.CellRendererText text = new Gtk.CellRendererText();
-				column = new Gtk.TreeViewColumn();
-				column.pack_start(text, true);
-				column.add_attribute(text, "text", Columns.TEXT);
-				package_view.append_column(column);
-				package_view.set_headers_visible(false);
-				Gtk.TreeIter iter;
-				package_model.append(out iter);
-				package_model.set(iter, Columns.TOGGLE, true, Columns.TEXT, "item 1");
-				package_model.append (out iter);
-				package_model.set(iter, Columns.TOGGLE, false, Columns.TEXT, "item 2");
-
-				// User entry
-				Gtk.Box entry_box = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0);
-				Gtk.Entry entry = new Gtk.Entry();
-				Gtk.Button entry_button = new Gtk.Button();
-				entry_button.image = new Gtk.Image.from_stock(Gtk.Stock.ADD, Gtk.IconSize.MENU);
-				entry_button.always_show_image = true;
-				entry_box.pack_start(entry,true,true,0);
-				entry_box.pack_end(entry_button,false,false,0);
-
-	      // Packing packages
-	      content.pack_start(package_view,true,true,0);
-	      content.pack_end(entry_box,false,false,0);
-	      frame.add(content);
-			}
-
-			private void setup_makefile(Gtk.Frame frame) {
-				Gtk.Box content = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
-				Gtk.ScrolledWindow scroll = new Gtk.ScrolledWindow(null, null);
-				Gtk.TextView text_view = new Gtk.TextView ();
-				text_view.editable = false;
-				scroll.add(text_view);
-	      content.pack_start(scroll,true,true,0);
-	      frame.add(content);
+			private void setup_make_zone(Gtk.Box box) {
+				// This box will hold the preview and the output
+				Gtk.Box makefile_master = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
+				// this box will hold the preview, a label and an build command
+				Gtk.Box makefile_preview = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
+				// The frame will wrap the scrolled window
+				Gtk.Frame makefile = new Gtk.Frame ("Makefile Preview:");
+				(makefile.label_widget as Gtk.Label).use_markup = true;
+				// Scrolled window will wrap the text view
+				Gtk.ScrolledWindow makefile_scroll = new Gtk.ScrolledWindow(null, null);
+				Gtk.TextView makefile_view = new Gtk.TextView ();
+				// Tes, you can modify the makefile at runtime :D
+				makefile_view.editable = true;
+				makefile_scroll.add(makefile_view);
+				makefile.add(makefile_scroll);
+				// The frame will wrap the terminal window
+				Gtk.Frame terminal = new Gtk.Frame ("Makefile Preview:");
+				(terminal.label_widget as Gtk.Label).use_markup = true;
+				// Terminal Output
+				Gtk.ScrolledWindow terminal_scroll = new Gtk.ScrolledWindow(null, null);
+				Gtk.TextView terminal_view = new Gtk.TextView ();
+				terminal_view.editable = false;
+				terminal_scroll.add(terminal_view);
+				terminal.add(terminal_scroll);
+				// Packing stuff
+				makefile_preview.pack_start(makefile,true,true,0);
+				makefile_preview.pack_start(terminal,true,true,8);
+				makefile_master.pack_start(makefile_preview,true,true,0);
+				box.pack_start(makefile_master, true, true, 0);
 			}
 
 			private void setup_new_editor(File file) {

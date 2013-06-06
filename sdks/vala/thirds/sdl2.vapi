@@ -1,3 +1,13 @@
+/*
+ *  This Source Code Form is subject to the terms of the Mozilla Public
+ *  License, v. 2.0. If a copy of the MPL was not distributed with this
+ *  file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ *                          Copyright(C) 2013
+ *                   Christian Ferraz Lemos de Sousa
+ *                      Pedro Henrique Lara Campos
+ *
+ */
 //FOR: SDL2.0 - This is not official, to be futurely changed for the official binding
 //Maintainer: PedroHLC
 [CCode (cprefix="SDL_", cheader_filename="SDL2/SDL.h")]
