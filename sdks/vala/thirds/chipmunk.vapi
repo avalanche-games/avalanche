@@ -1,14 +1,4 @@
-/*
- *  This Source Code Form is subject to the terms of the Mozilla Public
- *  License, v. 2.0. If a copy of the MPL was not distributed with this
- *  file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
- *                          Copyright(C) 2013
- *                   Christian Ferraz Lemos de Sousa
- *                      Pedro Henrique Lara Campos
- *
- */
-//FOR: Chipmunk 6.1.4 - This is not official, to be futurely changed for the official binding
+//FOR: Chipmunk 6.1.4
 //Maintainer: PedroHLC
 
 [CCode (cprefix = "cp", lower_case_cprefix = "cp")]

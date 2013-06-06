@@ -61,8 +61,8 @@ h3. On Linux
 
 p. Add Gtk3, Glib, libgee* and SDL2** to the package dependency list. 
 
-p. * We are not using libgee for now. ** Before the stable SDL2 release it will be static linked on Linux too, because
-not every distro support unstable pacakges.
+p. * We are not using libgee for now. ** Before SDL2 stable releases, it should be static linked on Linux too, since
+not every distro supports unstable pacakges.
 
 h3. On Mac
 
