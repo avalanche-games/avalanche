@@ -1115,7 +1115,7 @@ namespace SDL {
 	}// Scancode
 	
 	[CCode (cname="SDL_Keysym", cheader="SDL2/SDL_keyboard.h")]
-	public class Key {
+	public struct Key {
 		SDL.Scancode scancode;
 		SDL.Keycode sym;
 		uint16 mod;
