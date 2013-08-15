@@ -160,6 +160,7 @@ namespace SDL {
 	}// Rect
 	
 	[CCode (cname="SDL_Color", cheader_filename="SDL2/SDL_pixels.h")]
+	[SimpleType]
 	public struct Color {
 		public uint8 r;
 		public uint8 g;
