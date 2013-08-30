@@ -227,7 +227,7 @@ namespace SDL {
 		public static void calc_gamma_ramp(float gamma, out uint16 ramp);
 		
 		[CCode (cname="SDL_GetPixelFormatName")]
-		public static string get_pixelformatname(uint32 format);
+		public static unowned string? get_pixelformatname(uint32 format);
 		
 		[CCode (cname="SDL_PixelFormatEnumToMasks")]
 		public static bool enum_tomasks(uint32 format,
