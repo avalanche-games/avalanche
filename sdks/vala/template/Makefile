@@ -1,15 +1,5 @@
-##
-#  This Source Code Form is subject to the terms of the Mozilla Public
-#  License, v. 2.0. If a copy of the MPL was not distributed with this
-#  file, You can obtain one at http://mozilla.org/MPL/2.0/.
-#
-#                          Copyright(C) 2013
-#                   Christian Ferraz Lemos de Sousa
-#                      Pedro Henrique Lara Campos
-##
-
 VALAC = valac
-VFLAG = -X -Ofast -X '-lSDL2' -X '-lSDL2_image' -X '-lchipmunk' --vapidir=$(AVALANCHE_DIR)/sdks/vala/thirds
+VFLAG = -X -Ofast -X '-lSDL2' -X '-lSDL2_image' -X '-lchipmunk'
 VPKGS = --pkg sdl2 --pkg sdl2-image --pkg posix --pkg chipmunk
 VBASE = $(wildcard $(AVALANCHE_DIR)/sdks/vala/avalanche/*.vala)
 SRC = ./$(wildcard src/*.vala)
