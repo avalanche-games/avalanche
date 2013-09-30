@@ -43,9 +43,7 @@ public class PhysicsTestState : Aval.ScreenState,  GLib.Object {
 		// Now that it's all set up, we simulate all the objects in the space by
 		// stepping forward through time in small increments called steps.
 		// It is *highly* recommended to use a fixed size time step.
-		for(double time = 0; time < 2; time += TIME_STEP){
-			space.step (TIME_STEP);
-		}
+		space.step (TIME_STEP);
 	}
 	
 	public void draw () {

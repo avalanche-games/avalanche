@@ -1,0 +1,1 @@
+../../../sdks/vala/template/Makefile

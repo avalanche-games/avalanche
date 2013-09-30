@@ -1,4 +1,5 @@
 //FOR: Chipmunk 6.1.4
+//TODO: Search everything that might be mising; remove '_private' variables; update to 6.2.0
 //Maintainer: PedroHLC
 
 [CCode (cprefix = "cp", lower_case_cprefix = "cp")]
@@ -525,7 +526,7 @@ namespace cp {
 		[CCode (cname = "cpSpaceAddBody")]
 		public unowned cp.Body add_body (cp.Body body);
 		[CCode (cname = "cpSpaceAddCollisionHandler")]
-		public void add_collision_handler (cp.CollisionType a, cp.CollisionType b, cp.CollisionBeginFunc begin, cp.CollisionPreSolveFunc pre_solve, cp.CollisionPostSolveFunc post_solve, cp.CollisionSeparateFunc separate, void* data);
+		public void add_collision_handler (cp.CollisionType a, cp.CollisionType b, cp.CollisionBeginFunc? begin, cp.CollisionPreSolveFunc pre_solve, cp.CollisionPostSolveFunc? post_solve, cp.CollisionSeparateFunc? separate, void* data);
 		[CCode (cname = "cpSpaceAddConstraint")]
 		public unowned cp.Constraint add_constraint (cp.Constraint constraint);
 		[CCode (cname = "cpSpaceAddPostStepCallback")]
@@ -990,6 +991,8 @@ namespace cp {
 		public cp.Vect total_impulse_with_friction ();
 		[CCode (cname = "cpArbiterTotalKE")]
 		public double total_k_e ();
+		[CCode (cname = "cpArbiterGetShapes")]
+		public void get_shapes(cp.Shape *a, cp.Shape *b);
 	}
 	
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]

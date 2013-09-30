@@ -22,21 +22,26 @@ public class Animation {
 	private uint8 last_y;
 	private SDL.Rect input;
 	private SDL.Rect output;
+	private uint8 counter;
+	private uint8 frame_time;
 	
-	public Animation (SDL.Texture _spritesheet, uint16 _frame_width, uint16 _frame_height, uint8 last_frame_x, uint8 last_frame_y, uint8 start_frame_y) {
+	public Animation (SDL.Texture _spritesheet, uint16 _frame_width, uint16 _frame_height, uint8 last_frame_x, uint8 last_frame_y, uint8 start_frame_y, uint8 frame_time, SDL.Point screen_pos) {
 		this.spritesheet = _spritesheet;
 		this.frame_width = _frame_width;
 		this.frame_height = _frame_height;
 		this.last_x = last_frame_x;
 		this.last_y = last_frame_y;
 		this.actual_y = start_frame_y;
-		screen_pos = {0, 0};
+		this.screen_pos = screen_pos;
+		this.frame_time = frame_time;
+		this.counter = 0;
+		update_rects ();
 	}
 	
 	public void set_x (uint8 nvalue) {
 		actual_x = nvalue;
 		while (actual_x > last_x)
-			actual_x -= last_x;
+			actual_x = last_x;
 	}
 	
 	public void next () {
@@ -44,13 +49,20 @@ public class Animation {
 			actual_x = 0;
 		else
 			actual_x++;
-		update_rects ();
+	}
+	
+	public void tick () {
+		counter++;
+		if (counter > frame_time){
+			next ();
+			counter = 0;
+		}
 	}
 	
 	public void set_y (uint8 nvalue) {
 		actual_y = nvalue;
 		while (actual_y > last_y)
-			actual_y -= last_y;
+			actual_y = last_y;
 	}
 	
 	public void update_rects () {

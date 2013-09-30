@@ -1,2 +1,4 @@
 #!/usr/bin/sh
-cp ./vala /usr/local/share -R
+export VAPI_PATH="/usr/local/share/vala/vapi/"
+mkdir "$VAPI_PATH" -p
+cp ./vala/* "$VAPI_PATH" -R --force
