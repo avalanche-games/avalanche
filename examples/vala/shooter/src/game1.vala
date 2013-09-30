@@ -119,6 +119,7 @@ public class Game1 : Aval.ScreenState,  GLib.Object {
 			if (ep.get_x () == 7)
 				explosions.remove_index (i);
 			
+			// Update animation
 			else {
 				ep.tick ();
 				ep.update_rects ();
@@ -151,7 +152,9 @@ public class Game1 : Aval.ScreenState,  GLib.Object {
 		}
 		
 		// Physics step forward
-		space.step (TIME_STEP);
+		for(double time = 0; time < 2; time += TIME_STEP){
+			space.step (TIME_STEP);
+		}
 		
 		// Update the collision MANUALLY
 		update_collisions ();
