@@ -46,7 +46,7 @@ public class Player {
 		health = 100;
 		
 		// Set a constant player move speed
-		player_move_speed = 8.0f;
+		player_move_speed = 4.0f;
 		
 		// Set to no movement
 		moving = {false};
@@ -61,17 +61,24 @@ public class Player {
 	}
 	
 	public void update (SDL.Event e) {		
-		// Use the Keyboard / Dpad
-		// TODO: Make it smoother
-		if (e.type == SDL.EventType.KEYDOWN)
-			if (e.key.keysym.sym == SDL.Keycode.LEFT)
-				body.p.x -= player_move_speed;
-			else if (e.key.keysym.sym == SDL.Keycode.RIGHT)
-				body.p.x += player_move_speed;
-			else if (e.key.keysym.sym == SDL.Keycode.UP)
-				body.p.y -= player_move_speed;
-			else if (e.key.keysym.sym == SDL.Keycode.DOWN)
-				body.p.y += player_move_speed;
+		// Check Keyboard / Dpad
+		if (e.type == SDL.EventType.KEYDOWN){
+			if (e.key.keysym.sym == SDL.Keycode.LEFT) moving[0] = true;
+			else if (e.key.keysym.sym == SDL.Keycode.RIGHT) moving[1] = true;
+			else if (e.key.keysym.sym == SDL.Keycode.UP) moving[2] = true;
+			else if (e.key.keysym.sym == SDL.Keycode.DOWN) moving[3] = true;
+		}else if (e.type == SDL.EventType.KEYUP){
+			if (e.key.keysym.sym == SDL.Keycode.LEFT) moving[0] = false;
+			else if (e.key.keysym.sym == SDL.Keycode.RIGHT) moving[1] = false;
+			else if (e.key.keysym.sym == SDL.Keycode.UP) moving[2] = false;
+			else if (e.key.keysym.sym == SDL.Keycode.DOWN) moving[3] = false;
+		}
+		
+		// Realize movement
+		if (moving[0] == true) body.p.x -= player_move_speed;
+		if (moving[1] == true) body.p.x += player_move_speed;
+		if (moving[2] == true) body.p.y -= player_move_speed;
+		if (moving[3] == true) body.p.y += player_move_speed;
 		
 		// Make sure that the player does not go out of bounds
 		// TODO: Find a better method

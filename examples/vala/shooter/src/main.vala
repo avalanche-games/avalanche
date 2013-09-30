@@ -18,7 +18,7 @@ public class Main : Aval.Game {
 		
 		// Create window and render separately.
 		WINDOW = new SDL.Window ("Shooter", SDL.Window.POS_CENTERED,
-			SDL.Window.POS_CENTERED, 800, 600, SDL.WindowFlags.SHOWN);
+			SDL.Window.POS_CENTERED, 800, 480, SDL.WindowFlags.SHOWN);
 		WIN_RENDERER = new SDL.Renderer (WINDOW, -1, SDL.RendererFlags.ACCELERATED | SDL.RendererFlags.PRESENTVSYNC);
 		
 		// Select the first screenstate
