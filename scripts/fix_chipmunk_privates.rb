@@ -12,7 +12,8 @@
 	if File.exists?(file)
 		lines  = []
 		IO.read(file).each_line do |line|
-			lines << line if line.scan(/\_private\;$/).empty?
+			ltmp = "#{line.rstrip}\n"
+			lines << ltmp if ltmp.scan(/\_private\;$/).empty?
 		end
 		IO.write(file.gsub(/chipmunk/, "chipmunk.gen"), lines.join(""))
 		break
