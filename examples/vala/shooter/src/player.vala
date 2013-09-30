@@ -5,9 +5,6 @@ public class Player {
 	SDL.Texture player_texture;
 	Aval.Animation player_animation;
 	
-	// Position of the player relative to the top left corner of thescreen
-	//SDL.Point position;
-	
 	// State of the player
 	public bool active;
 	
@@ -21,12 +18,12 @@ public class Player {
 	bool moving[4];
 	
 	// Width and height of the player ship image
-	const int player_width = 115;
-	const int player_height = 69;
+	public static const int PLAYER_WIDTH = 115;
+	public static const int PLAYER_HEIGHT = 69;
 	
 	// Physics
-	private cp.Body body;
-	private cp.SegmentShape shape;
+	public cp.Body body;
+	public cp.SegmentShape shape;
 	static const double MASS = 5;
 	
 	public Player (string texture_path, SDL.Point start_position, cp.Space space) {
@@ -34,10 +31,7 @@ public class Player {
 		player_texture = SDLImage.load_texture (Aval.Game.WIN_RENDERER, texture_path);
 		
 		// Create player animation
-		player_animation = new Aval.Animation (player_texture, (uint16)player_width, (uint16)player_height, 7, 0, 0, 4, {0, 0});
-		
-		// Set the starting position of the player around the middle of the screen and to the back
-		//position = start_position;
+		player_animation = new Aval.Animation (player_texture, (uint16)PLAYER_WIDTH, (uint16)PLAYER_HEIGHT, 7, 0, 0, 4, {0, 0});
 		
 		// Set the player to be active
 		active = true;
@@ -46,18 +40,19 @@ public class Player {
 		health = 100;
 		
 		// Set a constant player move speed
-		player_move_speed = 4.0f;
+		player_move_speed = 8.0f;
 		
 		// Set to no movement
 		moving = {false};
 		
 		// Physics
-		double moment = cp.moment_for_box (MASS, player_width, player_height);
+		double moment = cp.moment_for_box (MASS, PLAYER_WIDTH, PLAYER_HEIGHT);
 		body = new cp.Body (MASS, moment);
-		body.set_pos ({start_position.x, start_position.y});
 		space.add_body (body);
-		shape = new cp.SegmentShape (body, {0, 0}, {player_width, player_height}, 0);
+		shape = new cp.SegmentShape (body, {0, 0}, {PLAYER_WIDTH*0.8f, PLAYER_HEIGHT}, 0);
 		space.add_shape (shape);
+		// Set the starting position of the player around the middle of the screen and to the back
+		body.set_pos ({start_position.x, start_position.y});
 	}
 	
 	public void update (SDL.Event e) {		
@@ -94,7 +89,7 @@ public class Player {
 			body.p.y = screen_size.y;
 		
 		// Update animation
-		player_animation.screen_pos = {(int)body.p.x-(player_width/2), (int)body.p.y-(player_height/2)};
+		player_animation.screen_pos = {(int)body.p.x-(PLAYER_WIDTH/2), (int)body.p.y-(PLAYER_HEIGHT/2)};
 		player_animation.tick ();
 		player_animation.update_rects ();
 	}

@@ -38,6 +38,14 @@ public class Animation {
 		update_rects ();
 	}
 	
+	public uint8 get_x () {
+		return actual_x;
+	}
+	
+	public uint8 get_y () {
+		return actual_y;
+	}
+	
 	public void set_x (uint8 nvalue) {
 		actual_x = nvalue;
 		while (actual_x > last_x)

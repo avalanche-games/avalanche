@@ -997,8 +997,7 @@ namespace cp {
 	
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
-	[SimpleType]
-	public struct BB {
+	public class BB {
 		public double l;
 		public double b;
 		public double r;
@@ -1006,8 +1005,32 @@ namespace cp {
 		
 		[CCode (cname = "cpBBNew")]
 		public BB (double l, double b, double r, double t);
+		[CCode (cname = "cpBBNewForCircle")]
+		public BB.for_circle (cp.Vect p, float r);
+		[CCode (cname = "cpBBMerge")]
+		public BB.from_merge (cp.BB a, cp.BB b);
+		[CCode (cname = "cpBBIntersects")]
+		public bool intersects (cp.BB b);
+		[CCode (cname = "cpBBIntersectsSegment")]
+		public bool intersects_segment (cp.Vect a, cp.Vect b);
+		[CCode (cname = "cpBBContainsBB")]
+		public bool contains (cp.BB other);
+		[CCode (cname = "cpBBContainsVect")]
+		public bool contains_vect (cp.Vect v);
+		[CCode (cname = "cpBBExpand")]
+		public cp.BB expand (cp.Vect v);
+		[CCode (cname = "cpBBMerge")]
+		public cp.BB merge (cp.BB b);
 		[CCode (cname = "cpBBWrapVect")]
 		public cp.Vect wrap_vect (cp.Vect v);
+		[CCode (cname = "cpBBArea")]
+		public float area ();
+		[CCode (cname = "cpBBMergedArea")]
+		public float merged_area (cp.BB b);
+		[CCode (cname = "cpBBSegmentQuery")]
+		public float segment_query (cp.Vect a, cp.Vect b);
+		[CCode (cname = "cpBBClampVect")]
+		public cp.Vect clamp_vect (cp.Vect v);
 	}
 	
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]

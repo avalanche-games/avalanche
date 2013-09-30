@@ -5,9 +5,6 @@ public class Enemy {
 	unowned SDL.Texture enemy_texture;
 	Aval.Animation enemy_animation;
 	
-	// Position of the enemy ship relative to the top left corner of thescreen
-	//SDL.Point position;
-	
 	// State of the enemy ship
 	public bool active;
 	
@@ -21,19 +18,19 @@ public class Enemy {
 	double enemy_move_speed;
 	
 	// Width and height of the enemy ship image
-	const int enemy_width = 47;
-	const int enemy_height = 61;
+	public static const int ENEMY_WIDTH = 47;
+	public static const int ENEMY_HEIGHT = 61;
 	
 	// Physics
-	private cp.Body body;
-	private cp.SegmentShape shape;
+	public cp.Body body;
+	public cp.SegmentShape shape;
 	static const double MASS = 2;
 	
 	public Enemy (SDL.Texture enemy_texture, int screen_width, int screen_height, cp.Space space) {
 		this.enemy_texture = enemy_texture;
 		
 		// Create enemy animation
-		enemy_animation = new Aval.Animation (enemy_texture, (uint16)enemy_width, (uint16)enemy_height, 7, 0, 0, 4, {0, 0});
+		enemy_animation = new Aval.Animation (enemy_texture, (uint16)ENEMY_WIDTH, (uint16)ENEMY_HEIGHT, 7, 0, 0, 4, {0, 0});
 		
 		// Randomly generate the position of the enemy
 		SDL.Point start_position = {screen_width, Main.RANDOM.int_range(0, screen_height)};
@@ -51,11 +48,11 @@ public class Enemy {
 		enemy_move_speed = 6f;
 		
 		// Physics
-		double moment = cp.moment_for_box (MASS, enemy_width, enemy_height);
+		double moment = cp.moment_for_box (MASS, ENEMY_WIDTH, ENEMY_HEIGHT);
 		body = new cp.Body (MASS, moment);
 		body.set_pos ({start_position.x, start_position.y});
 		space.add_body (body);
-		shape = new cp.SegmentShape (body, {0, 0}, {enemy_width, enemy_height}, 0);
+		shape = new cp.SegmentShape (body, {0, 0}, {ENEMY_WIDTH, ENEMY_HEIGHT}, 0);
 		space.add_shape (shape);
 	}
 	
@@ -70,7 +67,7 @@ public class Enemy {
 		}
 	
 		// Update animation
-		enemy_animation.screen_pos = {(int)body.p.x-(enemy_width/2), (int)body.p.y-(enemy_height/2)};
+		enemy_animation.screen_pos = {(int)body.p.x-(ENEMY_WIDTH/2), (int)body.p.y-(ENEMY_HEIGHT/2)};
 		enemy_animation.tick ();
 		enemy_animation.update_rects ();
 	}
