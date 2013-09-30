@@ -10,7 +10,7 @@ namespace cp {
 		[CCode (cname = "cpArrayNew")]
 		public Array (int size);
 	}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class BBTree : cp.SpatialIndex {
@@ -23,34 +23,27 @@ namespace cp {
 		[CCode (cname = "cpBBTreeSetVelocityFunc")]
 		public void tree_set_velocity_func (cp.BBTreeVelocityFunc func);
 	}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h", free_function = "cpBodyFree")]
 	[Compact]
 	public class Body {
 		public double a;
-		public cp.Arbiter arbiter_list_private;
-		public weak cp.Constraint constraint_list_private;
 		public void* data;
 		public cp.Vect f;
 		public double i;
 		public double i_inv;
 		public double m;
 		public double m_inv;
-		public weak cp.ComponentNode node_private;
 		public cp.Vect p;
 		public weak cp.BodyPositionFunc position_func;
 		public cp.Vect rot;
-		public weak cp.Shape shape_list_private;
-		public weak cp.Space space_private;
 		public double t;
 		public cp.Vect v;
-		public cp.Vect v_bias_private;
 		public double v_limit;
 		public weak cp.BodyVelocityFunc velocity_func;
 		public double w;
-		public double w_bias_private;
 		public double w_limit;
-		
+
 		[CCode (cname = "cpBodyNew")]
 		public Body (double m, double i);
 		[CCode (cname = "cpBodyActivate")]
@@ -96,7 +89,7 @@ namespace cp {
 		[CCode (cname = "cpBodyUpdateVelocity")]
 		public void update_velocity (cp.Vect gravity, double damping, double dt);
 	}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class CircleShape : cp.Shape {
@@ -104,7 +97,7 @@ namespace cp {
 		public double r;
 		public weak cp.Shape shape;
 		public cp.Vect tc;
-		
+
 		[CCode (cname = "cpCircleShapeNew")]
 		public CircleShape (cp.Body body, double radius, cp.Vect offset);
 		[CCode (cname = "cpCircleShapeGetOffset")]
@@ -112,7 +105,7 @@ namespace cp {
 		[CCode (cname = "cpCircleShapeGetRadius")]
 		public double shape_get_radius ();
 	}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class CollisionHandler {
@@ -124,7 +117,7 @@ namespace cp {
 		public weak cp.CollisionPreSolveFunc pre_solve;
 		public weak cp.CollisionSeparateFunc separate;
 	}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class ComponentNode {
@@ -132,7 +125,7 @@ namespace cp {
 		public weak cp.Body next;
 		public weak cp.Body root;
 	}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h", free_function = "cpConstraintFree")]
 	[Compact]
 	public class Constraint {
@@ -140,16 +133,12 @@ namespace cp {
 		public weak cp.Body b;
 		public void* data;
 		public double error_bias;
-		public weak cp.ConstraintClass klass_private;
 		public double max_bias;
 		public double max_force;
-		public weak cp.Constraint next_a_private;
-		public weak cp.Constraint next_b_private;
 		public weak cp.ConstraintPostSolveFunc post_solve;
 		public weak cp.ConstraintPreSolveFunc pre_solve;
-		public weak cp.Space space_private;
 	}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class ConstraintClass {
@@ -158,22 +147,22 @@ namespace cp {
 		public weak cp.ConstraintGetImpulseImpl get_impulse;
 		public weak cp.ConstraintPreStepImpl pre_step;
 	}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class Contact {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class ContactBufferHeader {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class ContactPointSet {
 		public int count;
 		public void* points;
 	}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class DampedRotarySpring : cp.Constraint {
@@ -186,13 +175,13 @@ namespace cp {
 		public double stiffness;
 		public double target_wrn;
 		public double w_coef;
-		
+
 		[CCode (cname = "cpDampedRotarySpringNew")]
 		public DampedRotarySpring (cp.Body a, cp.Body b, double restAngle, double stiffness, double damping);
 		[CCode (cname = "cpDampedRotarySpringGetClass")]
 		public static unowned cp.ConstraintClass get_class ();
 	}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class DampedSpring : cp.Constraint {
@@ -210,13 +199,13 @@ namespace cp {
 		public double stiffness;
 		public double target_vrn;
 		public double v_coef;
-		
+
 		[CCode (cname = "cpDampedSpringNew")]
 		public DampedSpring (cp.Body a, cp.Body b, cp.Vect anchr1, cp.Vect anchr2, double restLength, double stiffness, double damping);
 		[CCode (cname = "cpDampedSpringGetClass")]
 		public static unowned cp.ConstraintClass get_class ();
 	}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class GearJoint : cp.Constraint {
@@ -227,7 +216,7 @@ namespace cp {
 		public double phase;
 		public double ratio;
 		public double ratio_inv;
-		
+
 		[CCode (cname = "cpGearJointNew")]
 		public GearJoint (cp.Body a, cp.Body b, double phase, double ratio);
 		[CCode (cname = "cpGearJointGetClass")]
@@ -236,7 +225,7 @@ namespace cp {
 		public void set_ratio (double value);
 		//public static void set_ratio (cp.Constraint constraint, double value);
 	}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class GrooveJoint : cp.Constraint {
@@ -252,7 +241,7 @@ namespace cp {
 		public weak cp.Mat2x2 k;
 		public cp.Vect r1;
 		public cp.Vect r2;
-		
+
 		[CCode (cname = "cpGrooveJointNew")]
 		public GrooveJoint (cp.Body a, cp.Body b, cp.Vect groove_a, cp.Vect groove_b, cp.Vect anchr2);
 		[CCode (cname = "cpGrooveJointGetClass")]
@@ -264,11 +253,11 @@ namespace cp {
 		public void set_groove_b (cp.Vect value);
 		//public static void set_groove_b (cp.Constraint constraint, cp.Vect value);
 	}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h", free_function = "cpHashSetFree")]
 	[Compact]
 	public class HashSet {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class Mat2x2 {
@@ -277,7 +266,7 @@ namespace cp {
 		public double c;
 		public double d;
 	}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class NearestPointQueryInfo {
@@ -285,7 +274,7 @@ namespace cp {
 		public cp.Vect p;
 		public weak cp.Shape shape;
 	}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class PinJoint : cp.Constraint {
@@ -299,13 +288,13 @@ namespace cp {
 		public double n_mass;
 		public cp.Vect r1;
 		public cp.Vect r2;
-		
+
 		[CCode (cname = "cpPinJointNew")]
 		public PinJoint (cp.Body a, cp.Body b, cp.Vect anchr1, cp.Vect anchr2);
 		[CCode (cname = "cpPinJointGetClass")]
 		public static unowned cp.ConstraintClass get_class ();
 	}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class PivotJoint : cp.Constraint {
@@ -317,7 +306,7 @@ namespace cp {
 		public weak cp.Mat2x2 k;
 		public cp.Vect r1;
 		public cp.Vect r2;
-		
+
 		[CCode (cname = "cpPivotJointNew")]
 		public PivotJoint (cp.Body a, cp.Body b, cp.Vect pivot);
 		[CCode (cname = "cpPivotJointGetClass")]
@@ -325,7 +314,7 @@ namespace cp {
 		[CCode (cname = "cpPivotJointNew2")]
 		public PivotJoint.two (cp.Body a, cp.Body b, cp.Vect anchr1, cp.Vect anchr2);
 	}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class PolyShape : cp.Shape {
@@ -336,7 +325,7 @@ namespace cp {
 		public cp.Vect t_verts;
 		[CCode (array_length = false)]
 		public weak cp.Vect[] verts;
-		
+
 		[CCode (cname = "cpPolyShapeNew")]
 		public PolyShape (cp.Body body, [CCode (array_length_pos = 1.9)] cp.Vect[] verts, cp.Vect offset);
 		[CCode (cname = "cpPolyShapeGetNumVerts")]
@@ -346,7 +335,7 @@ namespace cp {
 		public cp.Vect get_vert (int idx);
 		//public static cp.Vect get_vert (cp.Shape shape, int idx);
 	}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class RatchetJoint : cp.Constraint {
@@ -357,13 +346,13 @@ namespace cp {
 		public double j_acc;
 		public double phase;
 		public double ratchet;
-		
+
 		[CCode (cname = "cpRatchetJointNew")]
 		public RatchetJoint (cp.Body a, cp.Body b, double phase, double ratchet);
 		[CCode (cname = "cpRatchetJointGetClass")]
 		public static unowned cp.ConstraintClass joint_get_class ();
 	}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class RotaryLimitJoint : cp.Constraint {
@@ -373,13 +362,13 @@ namespace cp {
 		public double j_acc;
 		public double max;
 		public double min;
-		
+
 		[CCode (cname = "cpRotaryLimitJointNew")]
 		public RotaryLimitJoint (cp.Body a, cp.Body b, double min, double max);
 		[CCode (cname = "cpRotaryLimitJointGetClass")]
 		public static unowned cp.ConstraintClass get_class ();
 	}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class SegmentShape : cp.Shape {
@@ -393,7 +382,7 @@ namespace cp {
 		public cp.Vect ta;
 		public cp.Vect tb;
 		public cp.Vect tn;
-		
+
 		[CCode (cname = "cpSegmentShapeNew")]
 		public SegmentShape (cp.Body body, cp.Vect a, cp.Vect b, double radius);
 		[CCode (cname = "cpSegmentShapeGetA")]
@@ -407,7 +396,7 @@ namespace cp {
 		[CCode (cname = "cpSegmentShapeSetNeighbors")]
 		public void set_neighbors (cp.Vect prev, cp.Vect next);
 	}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h", free_function = "cpShapeFree")]
 	[Compact]
 	public class Shape {
@@ -417,16 +406,11 @@ namespace cp {
 		public void* data;
 		public double e;
 		public cp.Group group;
-		public cp.HashValue hashid_private;
-		public weak cp.ShapeClass klass_private;
 		public cp.Layers layers;
-		public weak cp.Shape next_private;
-		public weak cp.Shape prev_private;
 		public weak bool sensor;
-		public weak cp.Space space_private;
 		public cp.Vect surface_v;
 		public double u;
-		
+
 		[CCode (cname = "cpShapeCacheBB")]
 		public cp.BB cache_b_b ();
 		[CCode (cname = "cpShapeNearestPointQuery")]
@@ -440,7 +424,7 @@ namespace cp {
 		[CCode (cname = "cpShapeUpdate")]
 		public cp.BB update (cp.Vect pos, cp.Vect rot);
 	}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class ShapeClass {
@@ -450,7 +434,7 @@ namespace cp {
 		public weak cp.ShapeSegmentQueryImpl segment_query;
 		public cp.ShapeType type;
 	}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class SimpleMotor : cp.Constraint {
@@ -458,13 +442,13 @@ namespace cp {
 		public double i_sum;
 		public double j_acc;
 		public double rate;
-		
+
 		[CCode (cname = "cpSimpleMotorNew")]
 		public SimpleMotor (cp.Body a, cp.Body b, double rate);
 		[CCode (cname = "cpSimpleMotorGetClass")]
 		public static unowned cp.ConstraintClass get_class ();
 	}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class SlideJoint : cp.Constraint {
@@ -479,46 +463,28 @@ namespace cp {
 		public double n_mass;
 		public cp.Vect r1;
 		public cp.Vect r2;
-		
+
 		[CCode (cname = "cpSlideJointNew")]
 		public SlideJoint (cp.Body a, cp.Body b, cp.Vect anchr1, cp.Vect anchr2, double min, double max);
 		[CCode (cname = "cpSlideJointGetClass")]
 		public static unowned cp.ConstraintClass get_class ();
 	}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h", free_function = "cpSpaceFree")]
 	[Compact]
 	public class Space {
-		public weak cp.SpatialIndex active_shapes_private;
-		public weak cp.Array allocated_buffers_private;
-		public weak cp.Array arbiters_private;
-		public weak cp.Array bodies_private;
-		public weak cp.HashSet cached_arbiters_private;
 		public double collision_bias;
-		public weak cp.HashSet collision_handlers_private;
 		public weak cp.Timestamp collision_persistence;
 		public double collision_slop;
-		public weak cp.Array constraints_private;
-		public weak cp.ContactBufferHeader contact_buffers_head_private;
-		public double curr_dt_private;
 		public double damping;
 		public void* data;
-		public weak cp.CollisionHandler default_handler_private;
 		public weak bool enable_contact_graph;
 		public cp.Vect gravity;
 		public double idle_speed_threshold;
 		public int iterations;
-		public int locked_private;
-		public weak cp.Array pooled_arbiters_private;
-		public weak cp.Array post_step_callbacks_private;
-		public weak cp.Array roused_bodies_private;
-		public weak bool skip_post_step_private;
 		public double sleep_time_threshold;
-		public weak cp.Array sleeping_components_private;
-		public weak cp.Timestamp stamp_private;
 		[CCode (cname = "staticBody")] public weak cp.Body static_body;
-		public weak cp.SpatialIndex static_shapes_private;
-		
+
 		[CCode (cname = "cpSpaceNew")]
 		public Space ();
 		[CCode (cname = "cpSpaceActivateShapesTouchingShape")]
@@ -586,14 +552,14 @@ namespace cp {
 		[CCode (cname = "cpSpaceUseSpatialHash")]
 		public void use_spatial_hash (double dim, int count);
 	}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h", free_function = "cpSpaceHashFree")]
 	[Compact]
 	public class SpaceHash {
 		[CCode (cname = "cpSpaceHashResize")]
 		public void hash_resize (double celldim, int numcells);
 	}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class SpatialIndex {
@@ -602,7 +568,7 @@ namespace cp {
 		public weak cp.SpatialIndexClass klass;
 		public weak cp.SpatialIndex static_index;
 	}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class SpatialIndexClass {
@@ -618,339 +584,339 @@ namespace cp {
 		public weak cp.SpatialIndexRemoveImpl remove;
 		public weak cp.SpatialIndexSegmentQueryImpl segment_query;
 	}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class SplittingPlane {
 		public double d;
 		public cp.Vect n;
 	}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class Sweep1D {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class Timestamp {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class blkcnt_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class blksize_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class caddr_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class clock_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class clockid_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class daddr_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class dev_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class div_t {
 		public int quot;
 		public int rem;
 	}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class double_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class fd_mask {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class fd_set {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class float_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class fsblkcnt_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class fsfilcnt_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class fsid_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class gid_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class id_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class ino_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class int_fast16_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class int_fast32_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class int_fast64_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class int_fast8_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class int_least16_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class int_least32_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class int_least64_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class int_least8_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class intmax_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class intptr_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class key_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class ldiv_t {
 		public long quot;
 		public long rem;
 	}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class lldiv_t {
 		public long quot;
 		public long rem;
 	}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class loff_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class mode_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class nlink_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class off_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class pid_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class pthread_attr_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class pthread_barrier_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class pthread_barrierattr_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class pthread_condattr_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class pthread_key_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class pthread_mutexattr_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class pthread_once_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class pthread_rwlock_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class pthread_rwlockattr_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class pthread_spinlock_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class pthread_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class quad_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class sigset_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class size_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class ssize_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class suseconds_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class time_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class timer_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class u_char {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class u_int {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class u_long {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class u_quad_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class u_short {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class uid_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class uint16_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class uint32_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class uint64_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class uint8_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class uint_fast16_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class uint_fast32_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class uint_fast64_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class uint_fast8_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class uint_least16_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class uint_least32_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class uint_least64_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class uint_least8_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class uintmax_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class uintptr_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class ulong {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class ushort {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class wchar_t {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public struct Arbiter {
@@ -958,19 +924,7 @@ namespace cp {
 		public double u;
 		public cp.Vect surface_vr;
 		public void* data;
-		public weak cp.Shape a_private;
-		public weak cp.Shape b_private;
-		public weak cp.Body body_a_private;
-		public weak cp.Body body_b_private;
-		public void* thread_a_private;
-		public void* thread_b_private;
-		public int num_contacts_private;
-		public weak cp.Contact contacts_private;
-		public weak cp.Timestamp stamp_private;
-		public weak cp.CollisionHandler handler_private;
-		public weak bool swapped_coll_private;
-		public cp.ArbiterState state_private;
-		
+
 		[CCode (cname = "cpArbiterGetContactPointSet")]
 		public unowned cp.ContactPointSet get_contact_point_set ();
 		[CCode (cname = "cpArbiterGetCount")]
@@ -994,7 +948,7 @@ namespace cp {
 		[CCode (cname = "cpArbiterGetShapes")]
 		public void get_shapes(cp.Shape *a, cp.Shape *b);
 	}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	[SimpleType]
@@ -1003,29 +957,29 @@ namespace cp {
 		public double b;
 		public double r;
 		public double t;
-		
+
 		[CCode (cname = "cpBBNew")]
 		public BB (double l, double b, double r, double t);
 		[CCode (cname = "cpBBWrapVect")]
 		public cp.Vect wrap_vect (cp.Vect v);
 	}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[SimpleType]
 	public struct CollisionType : uint {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[SimpleType]
 	public struct Group : uint {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[SimpleType]
 	public struct HashValue : uint {}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[SimpleType]
 	public struct Layers : uint {}
-	
+
 	[CCode (cname = "cpMomentForBox")]
 	public static double moment_for_box (double m, double width, double height);
 	[CCode (cname = "cpMomentForBox2")]
@@ -1036,20 +990,20 @@ namespace cp {
 	public static double moment_for_poly (double m, int num_verts, [CCode (array_length_pos = 1.9)] cp.Vect[] verts, cp.Vect offset);
 	[CCode (cname = "cpMomentForSegment")]
 	public static double moment_for_segment (double m, cp.Vect a, cp.Vect b);
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	public struct SegmentQueryInfo {
 		public weak cp.Shape shape;
 		public double t;
 		public cp.Vect n;
 	}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[SimpleType]
 	public struct Vect {
 		public double x;
 		public double y;
-		
+
 		[CCode (cname = "cpvforangle")]
 		public Vect.for_angle (double a);
 		[CCode (cname = "cpvslerp")]
@@ -1059,7 +1013,7 @@ namespace cp {
 		[CCode (cname = "cpvstr")]
 		public unowned string to_string ();
 	}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h", cprefix = "cpArbiterState", has_type_id = false)]
 	public enum ArbiterState {
 		[CCode (cname = "cpArbiterStateFirstColl")]
@@ -1068,7 +1022,7 @@ namespace cp {
 		IGNORE,
 		CACHED
 	}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h", cprefix = "CP_", has_type_id = false)]
 	public enum ShapeType {
 		CIRCLE_SHAPE,
@@ -1076,7 +1030,7 @@ namespace cp {
 		POLY_SHAPE,
 		NUM_SHAPES
 	}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h", has_target = false)]
 	public delegate cp.Vect BBTreeVelocityFunc (void* obj);
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
@@ -1171,8 +1125,8 @@ namespace cp {
 	public delegate double SpatialIndexSegmentQueryFunc (void* obj1, void* obj2);
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	public delegate void SpatialIndexSegmentQueryImpl (cp.SpatialIndex index, void* obj, cp.Vect a, cp.Vect b, double t_exit, cp.SpatialIndexSegmentQueryFunc func);
-	
-	
+
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	public static void init ();
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
@@ -1187,7 +1141,7 @@ namespace cp {
 	public static double area_for_poly (int num_verts, out cp.Vect verts);
 	[CCode (cheader_filename = "chipmunk/chipmunk.h", cname = "cpAreaForSegment")]
 	public static double area_for_segment (cp.Vect a, cp.Vect b, double r);
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class BoxShape : cp.PolyShape {
@@ -1196,7 +1150,7 @@ namespace cp {
 		[CCode (cheader_filename = "chipmunk/chipmunk.h", cname = "cpBoxShapeNew2")]
 		public static BoxShape (cp.Body body, cp.BB box);
 	}
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h", cname = "cpCentroidForPoly")]
 	public static cp.Vect centroid_for_poly (int num_verts, out cp.Vect verts);
 	[CCode (cheader_filename = "chipmunk/chipmunk.h", cname = "cpConvexHull")]
@@ -1207,7 +1161,7 @@ namespace cp {
 	public static void recenter_poly (int num_verts, out cp.Vect verts);
 	[CCode (cheader_filename = "chipmunk/chipmunk.h", cname = "cpSpatialIndexCollideStatic")]
 	public static void spatial_index_collide_static (cp.SpatialIndex dynamic_index, cp.SpatialIndex static_index, cp.SpatialIndexQueryFunc func, void* data);
-	
+
 	[CCode (cheader_filename = "chipmunk/chipmunk.h", cname = "matherr")]
 	public static int matherr (void* __exc);
 	[CCode (cheader_filename = "chipmunk/chipmunk.h", cname = "system")]
