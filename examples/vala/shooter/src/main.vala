@@ -15,6 +15,9 @@ public class Main : Aval.Game {
 		// Intialize SDL, SDLImage and Avalanche.
 		init(SDL.InitFlag.EVERYTHING, SDLImage.InitFlags.PNG);
 		
+		// Initialize SDLMixer
+		SDLMixer.open (48000, SDL.AudioFormat.S16SYS, 2, 4096);
+		
 		// Initialize our random number generator
 		RANDOM = new Rand();
 		

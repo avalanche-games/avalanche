@@ -32,6 +32,15 @@ public class Game1 : Aval.ScreenState,  GLib.Object {
 	// Frame counter
 	long frame_count;
 	
+	// The sound that is played when a laser is fired
+	SDLMixer.Chunk laser_sound;
+	
+	// The sound used when the player or an enemy dies
+	SDLMixer.Chunk explosion_sound;
+	
+	// The music played during gameplay
+	SDLMixer.Music gameplay_music;
+	
 	// Width and height of the player ship image
 	public static const uint16 EXPLOSION_WIDTH = 134;
 	public static const uint16 EXPLOSION_HEIGHT = 134;
@@ -75,6 +84,16 @@ public class Game1 : Aval.ScreenState,  GLib.Object {
 		
 		// Create projectiles array
 		explosions = new Array<Aval.Animation> ();
+		
+		// Load the music
+		gameplay_music = new SDLMixer.Music ("../res/gameMusic.mp3");
+		
+		// Load the laser and explosion sound effect
+		laser_sound = new SDLMixer.Chunk.WAV ("../res/laserFire.wav");
+		explosion_sound = new SDLMixer.Chunk.WAV ("../res/explosion.wav");
+		
+		// Start the music right away
+		gameplay_music.play (-1);
 		
 		// Intialize timers
 		frame_count = 0;
@@ -201,11 +220,17 @@ public class Game1 : Aval.ScreenState,  GLib.Object {
 		projectiles.append_val (new Projectile (projectile_texture,
 			{(int)player.body.p.x + (Player.PLAYER_WIDTH / 2), (int)player.body.p.y},
 			space));
+		
+		// Play the laser sound
+		SDLMixer.DEFAULT_CHANNEL.play (laser_sound, -1);
 	}
 	
 	public void add_explosion (SDL.Point pos) {
 		explosions.append_val (new Aval.Animation (explosion_texture,
 			EXPLOSION_WIDTH, EXPLOSION_HEIGHT, 11, 0, 0, 1, pos));
+		
+		// Play the explosion sound
+		SDLMixer.DEFAULT_CHANNEL.play (explosion_sound, -1);
 	}
 	
 	private void update_collisions () {
