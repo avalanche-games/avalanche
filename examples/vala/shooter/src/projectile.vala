@@ -1,6 +1,6 @@
 namespace Shooter {
 
-public class Projectile {
+public class Projectile : GLib.Object {
 	// Image representing the Projectile
 	unowned SDL.Texture texture;
 	
@@ -40,7 +40,9 @@ public class Projectile {
 		body = new cp.Body (MASS, moment);
 		body.set_pos ({start_position.x, start_position.y});
 		space.add_body (body);
-		shape = new cp.SegmentShape (body, {0, 0}, {PROJECTILE_WIDTH, PROJECTILE_HEIGHT}, 0);
+		int half_width = PROJECTILE_WIDTH/2;
+		int half_height = PROJECTILE_HEIGHT/2;
+		shape = new cp.SegmentShape (body, {-half_width, -half_height}, {half_width, half_height}, 0);
 		space.add_shape (shape);
 	}
 	

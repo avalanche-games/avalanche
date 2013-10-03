@@ -22,12 +22,13 @@ public class Main : Aval.Game {
 		RANDOM = new Rand();
 		
 		// Setup Avalanche
+		// If you're using SDL.RendererFlags.PRESENTVSYNC you must set this to 0
 		set_fps (60);
 		
 		// Create window and render separately.
 		WINDOW = new SDL.Window ("Shooter", SDL.Window.POS_CENTERED,
 			SDL.Window.POS_CENTERED, WW, WH, SDL.WindowFlags.SHOWN);
-		WIN_RENDERER = new SDL.Renderer (WINDOW, -1, SDL.RendererFlags.ACCELERATED | SDL.RendererFlags.PRESENTVSYNC);
+		WIN_RENDERER = new SDL.Renderer (WINDOW, -1, SDL.RendererFlags.ACCELERATED);
 		
 		// Select the first screenstate
 		change_state (new Game1 ());

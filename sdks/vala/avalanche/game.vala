@@ -15,15 +15,11 @@ public class Game {
 	public static SDL.Window? WINDOW;
 	public static SDL.Renderer? WIN_RENDERER;
 	public static Aval.ScreenState? STATE;
-	internal static uint32 FRAME_EACHONE_TIME;
-	internal static uint32 FRAME_LAST_SEC;
-	internal static uint32 FRAME_NEXT_SEC;
-	internal static uint8 FRAME_CURR;
+	private static SDLGraphics.FramerateManager frm;
 	
 	public static void init (SDL.InitFlag sdl_flags, SDLImage.InitFlags img_flags) {
 		SDL.init (sdl_flags);
 		SDLImage.init (img_flags);
-		fps_endsec (SDL.Timer.get_ticks ());
 		
 		// CHDIR on executable path
 		string path=".";
@@ -39,13 +35,16 @@ public class Game {
 			path = (string)path_buf;
 		#endif
 		Posix.chdir (path);
+		
+		frm = {0, 0, 0, 0, 60};
+		frm.init ();
 	}
 	
 	public static void main_loop () {
 		Aval.ScreenState enginer = STATE;
 		
 		SDL.Event e;
-		for (e = {0} ;; SDL.Event.poll (out e)) {
+		for (e = {0};; SDL.Event.poll (out e)) {
 			// Update state
 			STATE.on_update (e);
 			
@@ -65,22 +64,10 @@ public class Game {
 		}
 	}
 	
-	internal static void fps_endsec (uint32 start_ticks) {
-		FRAME_LAST_SEC = start_ticks;
-		FRAME_NEXT_SEC = start_ticks +1000;
-		FRAME_CURR = 0;
-	}
-	
 	public static void loop_frame () {	
-		// FPS controlling - Temporary version
-		uint32 current_ticks = SDL.Timer.get_ticks ();
-		SDL.Timer.delay (FRAME_EACHONE_TIME);
-		if (current_ticks >= FRAME_NEXT_SEC)
-			fps_endsec (current_ticks);
-		FRAME_CURR++;
-		
 		// Render
 		WIN_RENDERER.clear();
+		frm.run ();
 		STATE.draw ();
 		WIN_RENDERER.present ();
 	}
@@ -97,8 +84,8 @@ public class Game {
 		STATE = nstate;
 	}
 	
-	public static void set_fps (uint8 nframe_rate) {
-		FRAME_EACHONE_TIME = (1000 / nframe_rate);
+	public static void set_fps (int nframe_rate) {
+		frm.set_rate (nframe_rate);
 	}
 }// Game
 

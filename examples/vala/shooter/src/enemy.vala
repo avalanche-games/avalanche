@@ -1,6 +1,6 @@
 namespace Shooter {
 
-public class Enemy {
+public class Enemy : GLib.Object  {
 	// Animation representing the enemy
 	unowned SDL.Texture enemy_texture;
 	Aval.Animation enemy_animation;
@@ -20,6 +20,8 @@ public class Enemy {
 	// Width and height of the enemy ship image
 	public static const int ENEMY_WIDTH = 47;
 	public static const int ENEMY_HEIGHT = 61;
+	private static const int half_width = ENEMY_WIDTH/2;
+	private static const int half_height = ENEMY_HEIGHT/2;
 	
 	// Physics
 	public cp.Body body;
@@ -52,7 +54,7 @@ public class Enemy {
 		body = new cp.Body (MASS, moment);
 		body.set_pos ({start_position.x, start_position.y});
 		space.add_body (body);
-		shape = new cp.SegmentShape (body, {0, 0}, {ENEMY_WIDTH, ENEMY_HEIGHT}, 0);
+		shape = new cp.SegmentShape (body, {-half_width, -half_height}, {half_width, half_height}, 0);
 		space.add_shape (shape);
 	}
 	

@@ -164,10 +164,12 @@ public class Game1 : Aval.ScreenState,  GLib.Object {
 		
 		// Update the Projectiles
 		for (int i = (int)projectiles.length - 1; i >= 0; i--) {
-			projectiles.index (i).update ();
+			unowned Projectile pj = projectiles.index (i);
+			pj.update ();
 			
-			if (projectiles.index (i).active == false)
+			if (pj.active == false){
 				projectiles.remove_index (i);
+			}
 		}
 		
 		// Physics step forward
@@ -209,9 +211,7 @@ public class Game1 : Aval.ScreenState,  GLib.Object {
 	
 	private void add_enemy () {
 		// Create an enemy, intialize and add to the enemies list
-		enemies.append_val (new Enemy (enemy_texture,
-			Main.WW, Main.WH,
-			space));
+		enemies.append_val (new Enemy (enemy_texture, Main.WW, Main.WH, space));
 	}
 	
 	public void add_projectile () {
@@ -222,7 +222,7 @@ public class Game1 : Aval.ScreenState,  GLib.Object {
 			space));
 		
 		// Play the laser sound
-		SDLMixer.DEFAULT_CHANNEL.play (laser_sound, -1);
+		SDLMixer.DEFAULT_CHANNEL.play (laser_sound, 0);
 	}
 	
 	public void add_explosion (SDL.Point pos) {
@@ -230,7 +230,7 @@ public class Game1 : Aval.ScreenState,  GLib.Object {
 			EXPLOSION_WIDTH, EXPLOSION_HEIGHT, 11, 0, 0, 1, pos));
 		
 		// Play the explosion sound
-		SDLMixer.DEFAULT_CHANNEL.play (explosion_sound, -1);
+		SDLMixer.DEFAULT_CHANNEL.play (explosion_sound, 0);
 	}
 	
 	private void update_collisions () {

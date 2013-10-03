@@ -97,7 +97,7 @@ namespace cp {
 		public void update_velocity (cp.Vect gravity, double damping, double dt);
 	}
 	
-	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
+	[CCode (cheader_filename = "chipmunk/chipmunk.h", free_function = "cpShapeFree")]
 	[Compact]
 	public class CircleShape : cp.Shape {
 		public cp.Vect c;
@@ -380,7 +380,7 @@ namespace cp {
 		public static unowned cp.ConstraintClass get_class ();
 	}
 	
-	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
+	[CCode (cheader_filename = "chipmunk/chipmunk.h", free_function = "cpShapeFree")]
 	[Compact]
 	public class SegmentShape : cp.Shape {
 		public cp.Vect a;
@@ -1212,7 +1212,7 @@ namespace cp {
 	[CCode (cheader_filename = "chipmunk/chipmunk.h", cname = "cpAreaForSegment")]
 	public static double area_for_segment (cp.Vect a, cp.Vect b, double r);
 	
-	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
+	[CCode (cheader_filename = "chipmunk/chipmunk.h", free_function = "cpShapeFree")]
 	[Compact]
 	public class BoxShape : cp.PolyShape {
 		[CCode (cheader_filename = "chipmunk/chipmunk.h", cname = "cpBoxShapeInit2")]

@@ -49,7 +49,8 @@ public class Player {
 		double moment = cp.moment_for_box (MASS, PLAYER_WIDTH, PLAYER_HEIGHT);
 		body = new cp.Body (MASS, moment);
 		space.add_body (body);
-		shape = new cp.SegmentShape (body, {0, 0}, {PLAYER_WIDTH*0.8f, PLAYER_HEIGHT}, 0);
+		int half_height = PLAYER_HEIGHT/2;
+		shape = new cp.SegmentShape (body, {-PLAYER_WIDTH/2, -half_height}, {PLAYER_WIDTH*0.4f, half_height}, 0);
 		space.add_shape (shape);
 		// Set the starting position of the player around the middle of the screen and to the back
 		body.set_pos ({start_position.x, start_position.y});
