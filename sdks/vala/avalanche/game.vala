@@ -20,6 +20,7 @@ public class Game {
 	public static void init (SDL.InitFlag sdl_flags, SDLImage.InitFlags img_flags) {
 		SDL.init (sdl_flags);
 		SDLImage.init (img_flags);
+		SDLTTF.init();
 		
 		// CHDIR on executable path
 		string path=".";
@@ -53,7 +54,7 @@ public class Game {
 				break;
 			
 			// Draw screen
-			loop_frame ();
+			else loop_frame ();
 			
 			// Quit the game correctly
 			// -To jump this, threat the event and set it type to 0

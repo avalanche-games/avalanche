@@ -12,7 +12,10 @@ public class Enemy : GLib.Object  {
 	public int damage;
 	
 	// Amount of hit points that enemy has
-	public uint health;
+	public int health;
+	
+	// The amount of score the enemy will give to the player
+	public int val;
 	
 	// A movement speed for the enemy
 	double enemy_move_speed;
@@ -45,6 +48,9 @@ public class Enemy : GLib.Object  {
 		
 		// Set the enemy starting health
 		health = 10;
+		
+		// Set the score value of the enemy
+		val = 100;
 		
 		// Set a constant enemy move speed
 		enemy_move_speed = 6f;

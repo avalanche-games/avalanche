@@ -5,9 +5,6 @@ public class Player {
 	SDL.Texture player_texture;
 	Aval.Animation player_animation;
 	
-	// State of the player
-	public bool active;
-	
 	// Amount of hit points that player has
 	public uint health;
 	
@@ -32,9 +29,6 @@ public class Player {
 		
 		// Create player animation
 		player_animation = new Aval.Animation (player_texture, (uint16)PLAYER_WIDTH, (uint16)PLAYER_HEIGHT, 7, 0, 0, 4, {0, 0});
-		
-		// Set the player to be active
-		active = true;
 		
 		// Set the player starting health
 		health = 100;

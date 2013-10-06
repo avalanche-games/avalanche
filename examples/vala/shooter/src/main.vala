@@ -10,6 +10,10 @@ public class Main : Aval.Game {
 	
 	#if AVALANCE_WIN
 		[CCode (cname="WinMain")]
+	#else
+		#if AVALANCHE_ANDROID
+			[CCode (cname="Java_avalanche_Launcher_start")]
+		#endif
 	#endif
 	public static int main () {
 		// Intialize SDL, SDLImage and Avalanche.
@@ -31,7 +35,7 @@ public class Main : Aval.Game {
 		WIN_RENDERER = new SDL.Renderer (WINDOW, -1, SDL.RendererFlags.ACCELERATED);
 		
 		// Select the first screenstate
-		change_state (new Game1 ());
+		change_state (new Splash ("../res/mainMenu.png", new Game1 ()));
 		
 		// Core
 		while (STATE != null) {

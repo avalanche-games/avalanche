@@ -41,6 +41,16 @@ public class Game1 : Aval.ScreenState,  GLib.Object {
 	// The music played during gameplay
 	SDLMixer.Music gameplay_music;
 	
+	//Number that holds the player score
+	int score;
+	
+	// The font used to display UI elements
+	SDLTTF.Font font;
+	
+	// Easiest way to render text
+	Aval.Text score_text;
+	Aval.Text health_text;
+	
 	// Width and height of the player ship image
 	public static const uint16 EXPLOSION_WIDTH = 134;
 	public static const uint16 EXPLOSION_HEIGHT = 134;
@@ -53,6 +63,7 @@ public class Game1 : Aval.ScreenState,  GLib.Object {
 		// Set initial values
 		enemy_spawn_interval = 60;
 		fire_interval = 8;
+		score = 0;
 		
 		// Create an empty space.
 		space = new cp.Space();
@@ -94,6 +105,15 @@ public class Game1 : Aval.ScreenState,  GLib.Object {
 		
 		// Start the music right away
 		gameplay_music.play (-1);
+		
+		// Load the score font
+		font = new SDLTTF.Font ("../res/DroidSansMono.ttf", 18);
+		
+		// Score and health text renderer
+		score_text = new Aval.Text (font, {255, 255, 255, 0}, {0, 0});
+		health_text = new Aval.Text (font, {255, 255, 255, 0}, {0, 20});
+		score_text.set_text ("WAITING ANY SCORE");
+		health_text.set_text ("FULL HEALTH");
 		
 		// Intialize timers
 		frame_count = 0;
@@ -157,6 +177,10 @@ public class Game1 : Aval.ScreenState,  GLib.Object {
 					// Add an explosion
 					add_explosion({(int)en.body.p.x - EXPLOSION_WIDTH / 2,
 						(int)en.body.p.y - EXPLOSION_HEIGHT / 2});
+						
+					//Add to the player's score
+					score += en.val;
+					score_text.set_text ("SCORE: %i".printf (score));
 				}
 				enemies.remove_index (i);
 			}
@@ -205,6 +229,12 @@ public class Game1 : Aval.ScreenState,  GLib.Object {
 		
 		// Draw the Player
 		player.draw ();
+			
+		// Draw the score
+		score_text.draw ();
+		
+		// Draw the player health
+		health_text.draw ();
 	}
 	
 	public void on_leave () {}
@@ -242,13 +272,15 @@ public class Game1 : Aval.ScreenState,  GLib.Object {
 			if (player.shape.bb.intersects (en.shape.bb)) {
 				// Subtract the health from the player based on the enemy damage
 				player.health -= en.damage;
+				health_text.set_text ("HEALTH: %u".printf (player.health));
 				
 				// Since the enemy collided with the player destroy it
 				en.health = 0;
 				
 				// If the player health is less than zero we died
-				if (player.health <= 0)
-					player.active = false; 
+				if (player.health <= 0) {
+					Aval.Game.change_state (new Splash ("../res/endMenu.png", null));
+				}
 			}
 			
 			// Projectile vs Enemy Collision
@@ -266,4 +298,4 @@ public class Game1 : Aval.ScreenState,  GLib.Object {
 }// Game1
 
 
-}// AvalancheTemplate
+}// Shooter
