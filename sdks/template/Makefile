@@ -14,7 +14,7 @@ else ifeq ($(CROSS), ANDROID)
 	VFLAG := --cc=/opt/android-ndk/toolchains/arm-linux-androideabi-4.8/prebuilt/linux-x86/bin/arm-linux-androideabi-gcc \
 		-X --sysroot=/opt/android-ndk/platforms/android-9/arch-arm/ \
 		-X -march=armv5 -X -Wl,--fix-cortex-a8 \
-		-X -static $(VFLAG) -X --shared
+		$(VFLAG) -X --shared
 	VFLAG += -X -L/opt/android-ndk/platforms/android-9/arch-arm/usr/lib/
 	VFLAG += -X -I/opt/android-ndk/platforms/android-9/arch-arm/usr/include/
 	OS = Android
