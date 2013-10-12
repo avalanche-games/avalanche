@@ -12,7 +12,7 @@
 namespace Aval {
 
 public class Text {
-	private weak SDLTTF.Font font;
+	private unowned SDLTTF.Font font;
 	private SDL.Color stdcolor;
 	
 	private SDL.Texture? texture;

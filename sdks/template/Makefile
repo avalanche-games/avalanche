@@ -1,7 +1,7 @@
 VALAC = valac
 VFLAG += -X -O4 -X '-lSDL2' -X '-lSDL2_image' -X '-lSDL2_mixer' -X '-lSDL2_ttf' -X '-lSDL2_gfx' -X '-lchipmunk'
 VPKGS += --pkg sdl2 --pkg sdl2-image --pkg sdl2-mixer --pkg sdl2-ttf --pkg sdl2-gfx --pkg posix --pkg chipmunk
-VBASE += $(wildcard $(AVALANCHE_DIR)/sdks/vala/avalanche/*.vala)
+VBASE += $(wildcard $(AVALANCHE_DIR)/sdks/avalanche/*.vala)
 SRC = ./$(wildcard src/*.vala)
 BIN   = ./bin/game
 
@@ -11,7 +11,10 @@ ifeq ($(CROSS), WIN)
 	OS = Windows_NT
 else ifeq ($(CROSS), ANDROID)
 	PKG_CONFIG_PATH=/opt/android-ndk/platforms/android-9/arch-arm/usr/lib/pkgconfig
-	VFLAG := --cc=agcc -X -static
+	VFLAG := --cc=/opt/android-ndk/toolchains/arm-linux-androideabi-4.8/prebuilt/linux-x86/bin/arm-linux-androideabi-gcc \
+		-X --sysroot=/opt/android-ndk/platforms/android-9/arch-arm/ \
+		-X -march=armv5 -X -Wl,--fix-cortex-a8 \
+		-X -static $(VFLAG) -X --shared
 	VFLAG += -X -L/opt/android-ndk/platforms/android-9/arch-arm/usr/lib/
 	VFLAG += -X -I/opt/android-ndk/platforms/android-9/arch-arm/usr/include/
 	OS = Android
@@ -23,7 +26,7 @@ ifeq ($(OS), Windows_NT)
 	CLEAN := rm -f $(BIN)
 	VFLAG += -X -mwindows -D AVALANCE_WIN
 else ifeq ($(OS), Android)
-	VBASE += $(AVALANCHE_DIR)/sdks/vala/avalanche/avalanche_jni.h
+	VBASE += $(AVALANCHE_DIR)/sdks/avalanche/avalanche_jni.h
 	BIN =  ./bin/libandroid_game.so
 	VFLAG+= -D AVALANCE_UNIX -D AVALANCHE_LINUX -D AVALANCHE_ANDROID
 else

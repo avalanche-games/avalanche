@@ -6,7 +6,7 @@ public class Player {
 	Aval.Animation player_animation;
 	
 	// Amount of hit points that player has
-	public uint health;
+	public int health;
 	
 	// A movement speed for the player
 	double player_move_speed;

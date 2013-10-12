@@ -1,1 +1,1 @@
-../../../sdks/vala/template/Makefile
+../../sdks/template/Makefile

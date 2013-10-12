@@ -272,7 +272,7 @@ public class Game1 : Aval.ScreenState,  GLib.Object {
 			if (player.shape.bb.intersects (en.shape.bb)) {
 				// Subtract the health from the player based on the enemy damage
 				player.health -= en.damage;
-				health_text.set_text ("HEALTH: %u".printf (player.health));
+				health_text.set_text ("HEALTH: %d".printf (player.health));
 				
 				// Since the enemy collided with the player destroy it
 				en.health = 0;
