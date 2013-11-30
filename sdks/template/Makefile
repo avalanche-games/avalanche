@@ -17,6 +17,7 @@ else ifeq ($(CROSS), ANDROID)
 		$(VFLAG) -X --shared
 	VFLAG += -X -L/opt/android-ndk/platforms/android-9/arch-arm/usr/lib/
 	VFLAG += -X -I/opt/android-ndk/platforms/android-9/arch-arm/usr/include/
+	VBASE += $(AVALANCHE_DIR)/sdks/avalanche/avalanche_jni.h
 	OS = Android
 endif
 

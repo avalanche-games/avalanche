@@ -1,4 +1,4 @@
-//FOR: Chipmunk 6.2.0
+//FOR: Chipmunk 6.1.4
 //TODO: remove '_private' variables;
 //Maintainer: PedroHLC
 
@@ -22,8 +22,6 @@ namespace cp {
 		public void optimize ();
 		[CCode (cname = "cpBBTreeSetVelocityFunc")]
 		public void tree_set_velocity_func (cp.BBTreeVelocityFunc func);
-		[CCode (cname = "cpBBCenter")]
-		public cp.Vect center ();
 	}
 	
 	[CCode (cheader_filename = "chipmunk/chipmunk.h", free_function = "cpBodyFree")]
@@ -328,32 +326,25 @@ namespace cp {
 		public PivotJoint.two (cp.Body a, cp.Body b, cp.Vect anchr1, cp.Vect anchr2);
 	}
 	
-	[CCode (cname="cpPolyShape", cheader_filename = "chipmunk/chipmunk.h")]
+	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public class PolyShape : cp.Shape {
 		public int num_verts;
 		public weak cp.SplittingPlane planes;
 		public weak cp.Shape shape;
 		public weak cp.SplittingPlane t_planes;
-		public float r;
 		public cp.Vect t_verts;
 		[CCode (array_length = false)]
 		public weak cp.Vect[] verts;
 		
-		[CCode (cname = "cpPolyShapeNew2")]
-		public PolyShape.with_radius (cp.Body body, [CCode (array_length_pos = 1.9)] cp.Vect[] verts, cp.Vect offset, float radius);
 		[CCode (cname = "cpPolyShapeNew")]
 		public PolyShape (cp.Body body, [CCode (array_length_pos = 1.9)] cp.Vect[] verts, cp.Vect offset);
 		[CCode (cname = "cpPolyShapeGetNumVerts")]
 		public int get_num_verts ();
 		[CCode (cname = "cpPolyShapeSetVerts")]
 		public void set_verts ([CCode (array_length_pos = 0.9)] cp.Vect[] verts);
-		[CCode (cname = "cpPolyShapeSetRadius")]
-		public void set_radius (float radius);
 		[CCode (cname = "cpPolyShapeGetVert")]
 		public cp.Vect get_vert (int idx);
-		[CCode (cname = "cpPolyShapeGetRadius")]
-		public float get_radius ();
 	}
 	
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
@@ -550,10 +541,6 @@ namespace cp {
 		public bool contains_body (cp.Body body);
 		[CCode (cname = "cpSpaceContainsConstraint")]
 		public bool contains_constraint (cp.Constraint constraint);
-		[CCode (cname = "cpSpaceConvertBodyToStatic")]
-		public void body_tostatic (cp.Body body);
-		[CCode (cname = "cpSpaceConvertBodyToDynamic")]
-		public void body_todynamic (cp.Body body, float mass, float moment);
 		[CCode (cname = "cpSpaceContainsShape")]
 		public bool contains_shape (cp.Shape shape);
 		[CCode (cname = "cpSpaceEachBody")]
@@ -964,10 +951,6 @@ namespace cp {
 	[Compact]
 	public class wchar_t {}
 	
-	[CCode (cname="uint32_t", cheader_filename = "chipmunk/chipmunk.h")]
-	[Compact]
-	public class CollisionID {}
-	
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	[Compact]
 	public struct Arbiter {
@@ -1197,7 +1180,7 @@ namespace cp {
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	public delegate void SpatialIndexIteratorFunc (void* obj);
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
-	public delegate cp.CollisionID SpatialIndexQueryFunc (void* obj1, void* obj2, cp.CollisionID id, void *data);
+	public delegate void SpatialIndexQueryFunc (void* obj1, void* obj2, void *data);
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	public delegate void SpatialIndexQueryImpl (cp.SpatialIndex index, void* obj, cp.BB bb, cp.SpatialIndexQueryFunc func);
 	[CCode (cheader_filename = "chipmunk/chipmunk.h", has_target = false)]
@@ -1232,12 +1215,10 @@ namespace cp {
 	[CCode (cheader_filename = "chipmunk/chipmunk.h", free_function = "cpShapeFree")]
 	[Compact]
 	public class BoxShape : cp.PolyShape {
-		[CCode (cheader_filename = "chipmunk/chipmunk.h", cname = "cpBoxShapeNew")]
-		public static BoxShape.with_height (cp.Body body, cp.BB box, float height);
+		[CCode (cheader_filename = "chipmunk/chipmunk.h", cname = "cpBoxShapeInit2")]
+		public unowned cp.BoxShape init2 (cp.Body body, cp.BB box);
 		[CCode (cheader_filename = "chipmunk/chipmunk.h", cname = "cpBoxShapeNew2")]
 		public static BoxShape (cp.Body body, cp.BB box);
-		[CCode (cheader_filename = "chipmunk/chipmunk.h", cname = "cpBoxShapeNew3")]
-		public static BoxShape.with_radius (cp.Body body, cp.BB box, float radius);
 	}
 	
 	[CCode (cheader_filename = "chipmunk/chipmunk.h", cname = "cpCentroidForPoly")]
