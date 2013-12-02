@@ -45,13 +45,14 @@ public class Game {
 		Aval.ScreenState enginer = STATE;
 		
 		SDL.Event e;
-		for (e = {0};; SDL.Event.poll (out e)) {
+		for (e = {0};; SDL.Event.poll (out e)) {			
 			// Update state
 			STATE.on_update (e);
 			
-			// Quit the loop if this is no longer the actual STATE
-			if (STATE != enginer)
+			// Quit the loop if this is no longer the actual STATE (again)
+			if (STATE != enginer) {
 				break;
+			}
 			
 			// Draw screen
 			else loop_frame ();

@@ -22,12 +22,13 @@ public class Splash : Aval.ScreenState,  GLib.Object {
 	
 	public void on_update (SDL.Event e) {
 		if (frame_count == 360) {
+			stdout.puts(""); // This solves a bug which should never exists
 			Aval.Game.change_state (next_state);
 			return;
 		} else if (frame_count < 120) { // Fade in
 			alpha += FADE_PERFRAME;
 		} else if (frame_count > 239) { // Fade out
-			alpha -= FADE_PERFRAME;;
+			alpha -= FADE_PERFRAME;
 		} else
 			alpha = 255;
 		

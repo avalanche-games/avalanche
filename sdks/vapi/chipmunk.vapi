@@ -26,7 +26,7 @@ namespace cp {
 		public cp.Vect center ();
 	}
 	
-	[CCode (cheader_filename = "chipmunk/chipmunk.h", free_function = "cpBodyFree")]
+	[CCode (cheader_filename = "chipmunk/chipmunk.h", free_function = "cpBodyFree", destroy_function = "cpBodyDestroy")]
 	[Compact]
 	public class Body {
 		public double a;
@@ -99,7 +99,7 @@ namespace cp {
 		public void update_velocity (cp.Vect gravity, double damping, double dt);
 	}
 	
-	[CCode (cheader_filename = "chipmunk/chipmunk.h", free_function = "cpShapeFree")]
+	[CCode (cheader_filename = "chipmunk/chipmunk.h", free_function = "cpShapeFree", destroy_function = "cpShapeDestroy")]
 	[Compact]
 	public class CircleShape : cp.Shape {
 		public cp.Vect c;
@@ -389,7 +389,7 @@ namespace cp {
 		public static unowned cp.ConstraintClass get_class ();
 	}
 	
-	[CCode (cheader_filename = "chipmunk/chipmunk.h", free_function = "cpShapeFree")]
+	[CCode (cheader_filename = "chipmunk/chipmunk.h", free_function = "cpShapeFree", destroy_function = "cpShapeDestroy")]
 	[Compact]
 	public class SegmentShape : cp.Shape {
 		public cp.Vect a;
@@ -417,7 +417,7 @@ namespace cp {
 		public void set_neighbors (cp.Vect prev, cp.Vect next);
 	}
 	
-	[CCode (cheader_filename = "chipmunk/chipmunk.h", free_function = "cpShapeFree")]
+	[CCode (cheader_filename = "chipmunk/chipmunk.h", free_function = "cpShapeFree", destroy_function = "cpShapeDestroy")]
 	[Compact]
 	public class Shape {
 		public cp.BB bb;
@@ -495,7 +495,7 @@ namespace cp {
 		public static unowned cp.ConstraintClass get_class ();
 	}
 	
-	[CCode (cheader_filename = "chipmunk/chipmunk.h", free_function = "cpSpaceFree")]
+	[CCode (cheader_filename = "chipmunk/chipmunk.h", free_function = "cpSpaceFree", destroy_function = "cpSpaceDestroy")]
 	[Compact]
 	public class Space {
 		public weak cp.SpatialIndex active_shapes_private;
@@ -607,7 +607,7 @@ namespace cp {
 		public void hash_resize (double celldim, int numcells);
 	}
 	
-	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
+	[CCode (cheader_filename = "chipmunk/chipmunk.h", free_function = "cpSpatialIndexFree", destroy_function = "cpSpatialIndexDestroy")]
 	[Compact]
 	public class SpatialIndex {
 		public weak cp.SpatialIndexBBFunc bbfunc;
@@ -1229,7 +1229,7 @@ namespace cp {
 	[CCode (cheader_filename = "chipmunk/chipmunk.h", cname = "cpAreaForSegment")]
 	public static double area_for_segment (cp.Vect a, cp.Vect b, double r);
 	
-	[CCode (cheader_filename = "chipmunk/chipmunk.h", free_function = "cpShapeFree")]
+	[CCode (cheader_filename = "chipmunk/chipmunk.h", free_function = "cpShapeFree", destroy_function = "cpShapeDestroy")]
 	[Compact]
 	public class BoxShape : cp.PolyShape {
 		[CCode (cheader_filename = "chipmunk/chipmunk.h", cname = "cpBoxShapeNew")]

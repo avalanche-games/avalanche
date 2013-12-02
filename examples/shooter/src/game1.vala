@@ -280,6 +280,7 @@ public class Game1 : Aval.ScreenState,  GLib.Object {
 				// If the player health is less than zero we died
 				if (player.health <= 0) {
 					Aval.Game.change_state (new Splash ("../res/endMenu.png", null));
+					return; // Important
 				}
 			}
 			
