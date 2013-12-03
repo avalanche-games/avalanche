@@ -562,6 +562,8 @@ namespace cp {
 		public void each_constraint (cp.SpaceConstraintIteratorFunc func, void* data);
 		[CCode (cname = "cpSpaceEachShape")]
 		public void each_shape (cp.SpaceShapeIteratorFunc func, void* data);
+		[CCode (cname = "cpSpaceGetIterations")]
+		public int get_iterations ();
 		[CCode (cname = "cpSpaceNearestPointQuery")]
 		public void nearest_point_query (cp.Vect point, double max_distance, cp.Layers layers, cp.Group group, cp.SpaceNearestPointQueryFunc func, void* data);
 		[CCode (cname = "cpSpaceNearestPointQueryNearest")]

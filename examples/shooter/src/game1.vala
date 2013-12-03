@@ -178,9 +178,13 @@ public class Game1 : Aval.ScreenState,  GLib.Object {
 					add_explosion({(int)en.body.p.x - EXPLOSION_WIDTH / 2,
 						(int)en.body.p.y - EXPLOSION_HEIGHT / 2});
 						
-					//Add to the player's score
+					// Add to the player's score
 					score += en.val;
 					score_text.set_text ("SCORE: %i".printf (score));
+					
+					// Remove body from space - Important
+					space.remove_body (en.body);
+					space.remove_shape (en.shape);
 				}
 				enemies.remove_index (i);
 			}
@@ -192,6 +196,11 @@ public class Game1 : Aval.ScreenState,  GLib.Object {
 			pj.update ();
 			
 			if (pj.active == false){
+					
+				// Remove body from space - Important
+				space.remove_body (pj.body);
+				space.remove_shape (pj.shape);
+				
 				projectiles.remove_index (i);
 			}
 		}

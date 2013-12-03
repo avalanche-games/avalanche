@@ -21,6 +21,7 @@ else ifeq ($(CROSS), ANDROID)
 	OS = Android
 endif
 
+
 ifeq ($(DEBUG), 1)
 	VFLAG += --enable-gobject-tracing --enable-checking -g
 endif
