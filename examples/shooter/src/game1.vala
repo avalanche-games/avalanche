@@ -172,8 +172,7 @@ public class Game1 : Aval.ScreenState,  GLib.Object {
 			
 			if (en.active == false) {
 				// If not active and health <= 0
-				if (en.health <= 0)
-				{
+				if (en.health <= 0) {
 					// Add an explosion
 					add_explosion({(int)en.body.p.x - EXPLOSION_WIDTH / 2,
 						(int)en.body.p.y - EXPLOSION_HEIGHT / 2});
@@ -181,11 +180,14 @@ public class Game1 : Aval.ScreenState,  GLib.Object {
 					// Add to the player's score
 					score += en.val;
 					score_text.set_text ("SCORE: %i".printf (score));
-					
-					// Remove body from space - Important
-					space.remove_body (en.body);
-					space.remove_shape (en.shape);
 				}
+					
+				// Remove body from space
+				en.physics_dispose (space);
+				
+				// Free memory
+				en.dispose ();
+				
 				enemies.remove_index (i);
 			}
 		}
@@ -195,11 +197,9 @@ public class Game1 : Aval.ScreenState,  GLib.Object {
 			unowned Projectile pj = projectiles.index (i);
 			pj.update ();
 			
-			if (pj.active == false){
-					
-				// Remove body from space - Important
-				space.remove_body (pj.body);
-				space.remove_shape (pj.shape);
+			if (pj.active == false) {
+				// Remove body from space
+				pj.physics_dispose (space);
 				
 				projectiles.remove_index (i);
 			}
@@ -246,7 +246,50 @@ public class Game1 : Aval.ScreenState,  GLib.Object {
 		health_text.draw ();
 	}
 	
-	public void on_leave () {}
+	public void on_leave () {
+		// My mon said that I should clean all my own dirty
+		// - Vala is smart and do A LOT of those automatically, but nothing better than be precautious
+		player.physics_dispose (space);
+		player.dispose ();
+		player = null;
+		
+		for (int i = (int)enemies.length - 1; i >= 0; i--) {
+			unowned Enemy en = enemies.index (i);
+			en.physics_dispose (space);
+			en.dispose ();
+			enemies.remove_index (i);
+		}
+		enemies = null;
+		
+		for (int i = (int)projectiles.length - 1; i >= 0; i--) {
+			unowned Projectile pj = projectiles.index (i);
+			pj.physics_dispose (space);
+			projectiles.remove_index (i);
+		}
+		projectiles = null;
+		
+		space = null;
+		
+		background_main = null;
+		background_layer1.dispose ();
+		background_layer2.dispose ();
+		background_layer1 = null;
+		background_layer2 = null;
+		
+		enemy_texture = null;
+		explosion_texture = null;
+		
+		laser_sound = null;
+		explosion_sound = null;
+		gameplay_music = null;
+		
+		score_text = null;
+		health_text = null;
+		
+		font = null;
+		
+		explosions = null;
+	}
 	
 	private void add_enemy () {
 		// Create an enemy, intialize and add to the enemies list

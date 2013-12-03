@@ -60,6 +60,13 @@ public class Projectile : GLib.Object {
 			{(int)body.p.x - PROJECTILE_WIDTH / 2, (int)body.p.y - PROJECTILE_HEIGHT / 2,
 			PROJECTILE_WIDTH, PROJECTILE_HEIGHT});
 	}
+	
+	public void physics_dispose (cp.Space space) {
+		space.remove_body (this.body);
+		space.remove_shape (this.shape);
+		body = null;
+		shape = null;
+	}
 } // Projectile
 
 

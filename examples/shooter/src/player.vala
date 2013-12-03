@@ -93,6 +93,18 @@ public class Player {
 		// Draw the animation
 		player_animation.draw ();
 	}
+	
+	public void dispose () {
+		player_texture = null;
+		player_animation = null;
+	}
+	
+	public void physics_dispose (cp.Space space) {
+		space.remove_body (this.body);
+		space.remove_shape (this.shape);
+		body = null;
+		shape = null;
+	}
 } // Player
 
 

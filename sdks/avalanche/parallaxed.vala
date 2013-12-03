@@ -53,6 +53,10 @@ public class Parallaxed {
 			Aval.Game.WIN_RENDERER.copy (texture, {0, 0, texture_width, texture_height},
 				{xpositions[i], base_y, texture_width, (force_height == 0 ? texture_height : force_height)});
 	}
+	
+	public void dispose () {
+		texture = null;
+	}
 }// Parallaxed
 
 

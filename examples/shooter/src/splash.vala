@@ -46,7 +46,10 @@ public class Splash : Aval.ScreenState,  GLib.Object {
 		Aval.Game.WIN_RENDERER.copy (background, rect, rect);
 	}
 	
-	public void on_leave () {}
+	public void on_leave () {
+		// Let's be good boys and free memory by ourselves
+		background = null;
+	}
 } // End
 
 }// Shooter

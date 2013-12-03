@@ -1,6 +1,6 @@
 namespace Shooter {
 
-public class Enemy : GLib.Object  {
+public class Enemy  {
 	// Animation representing the enemy
 	unowned SDL.Texture enemy_texture;
 	Aval.Animation enemy_animation;
@@ -83,6 +83,17 @@ public class Enemy : GLib.Object  {
 	public void draw () {
 		// Draw the animation
 		enemy_animation.draw ();
+	}
+	
+	public void dispose () {
+		enemy_animation = null;
+	}
+	
+	public void physics_dispose (cp.Space space) {
+		space.remove_body (this.body);
+		space.remove_shape (this.shape);
+		body = null;
+		shape = null;
 	}
 } // Enemy
 
