@@ -5,25 +5,27 @@ VBASE += $(wildcard $(AVALANCHE_DIR)/sdks/avalanche/*.vala)
 SRC = ./$(wildcard src/*.vala)
 BIN   = ./bin/game
 
-ifeq ($(CROSS), WIN)
+ifeq ($(CROSS), WIN32)
 	PKG_CONFIG_PATH=/usr/i486-mingw32/lib/pkgconfig
 	VFLAG += --cc=i486-mingw32-gcc
 	OS = Windows_NT
 else ifeq ($(CROSS), ANDROID)
-	PKG_CONFIG_PATH=/opt/android-ndk/platforms/android-9/arch-arm/usr/lib/pkgconfig
-	VFLAG := --cc=/opt/android-ndk/toolchains/arm-linux-androideabi-4.8/prebuilt/linux-x86/bin/arm-linux-androideabi-gcc \
-		-X --sysroot=/opt/android-ndk/platforms/android-9/arch-arm/ \
-		-X -march=armv5 -X -Wl,--fix-cortex-a8 \
-		$(VFLAG) -X --shared
-	VFLAG += -X -L/opt/android-ndk/platforms/android-9/arch-arm/usr/lib/
-	VFLAG += -X -I/opt/android-ndk/platforms/android-9/arch-arm/usr/include/
-	VBASE += $(AVALANCHE_DIR)/sdks/avalanche/avalanche_jni.h
+	#SOON
+	
+	JNI = 1
 	OS = Android
 endif
 
 
 ifeq ($(DEBUG), 1)
-	VFLAG += --enable-gobject-tracing --enable-checking -g
+	VFLAG += --enable-gobject-tracing --enable-checking -g --save-temps
+endif
+
+
+ifeq ($(JNI), 1)
+	VBASE += $(AVALANCHE_DIR)/sdks/avalanche/avalanche_jni.h
+	VFLAG+= -D AVALANCHE_JNI
+	SHARED = 1
 endif
 
 
@@ -32,8 +34,6 @@ ifeq ($(OS), Windows_NT)
 	CLEAN := rm -f $(BIN)
 	VFLAG += -X -mwindows -D AVALANCE_WIN
 else ifeq ($(OS), Android)
-	VBASE += $(AVALANCHE_DIR)/sdks/avalanche/avalanche_jni.h
-	BIN =  ./bin/libandroid_game.so
 	VFLAG+= -D AVALANCE_UNIX -D AVALANCHE_LINUX -D AVALANCHE_ANDROID
 else
 	UNAME := $(shell uname)
@@ -42,6 +42,16 @@ else
 		VFLAG+= -D AVALANCE_UNIX -D AVALANCHE_LINUX
 	else ifeq ($(UNAME), Darwin)
 		VFLAG+= -D AVALANCE_UNIX -D AVALANCHE_DARWIN
+	endif
+endif
+
+
+ifeq ($(SHARED), 1)
+	VFLAG+= -X -shared
+	ifeq ($(OS), Windows_NT)
+		BIN =  ./bin/game.dll
+	else
+		BIN =  ./bin/libgame.so
 	endif
 endif
 

@@ -55,6 +55,7 @@ public class Parallaxed {
 	}
 	
 	public void dispose () {
+		// Just for precaution - Vala does this automatically
 		texture = null;
 	}
 }// Parallaxed

@@ -11,11 +11,11 @@ public class Main : Aval.Game {
 	#if AVALANCE_WIN
 		[CCode (cname="WinMain")]
 	#else
-		#if AVALANCHE_ANDROID
-			[CCode (cname="Java_avalanche_Launcher_start")]
+		#if AVALANCHE_JNI
+			[CCode (cname="Java_Avalanche_launch")]
 		#endif
 	#endif
-	public static int main () {
+	public static void main () {
 		// Intialize SDL, SDLImage and Avalanche.
 		init(SDL.InitFlag.EVERYTHING, SDLImage.InitFlags.PNG);
 		
@@ -45,8 +45,6 @@ public class Main : Aval.Game {
 		
 		// Quit SDL and valanche module.
 		quit ();
-		
-		return 0;
 	}
 }// Main
 

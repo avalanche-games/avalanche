@@ -1,3 +1,16 @@
+/* For when compiling with JNI=1 */
 #include <jni.h>
 
-JNIEXPORT int JNICALL Java_avalanche_Launcher_start(JNIEnv * env);
+#ifndef _Included_Avalanche
+#define _Included_Avalanche
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+JNIEXPORT void JNICALL Java_Avalanche_launch
+  (JNIEnv *, jobject);
+
+#ifdef __cplusplus
+}
+#endif
+#endif
