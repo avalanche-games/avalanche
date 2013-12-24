@@ -1,5 +1,5 @@
 VALAC = valac
-VFLAG += -X -O4 -X '-lSDL2' -X '-lSDL2_image' -X '-lSDL2_mixer' -X '-lSDL2_ttf' -X '-lSDL2_gfx' -X '-lchipmunk'
+VFLAG += -X -O4 -X '-lSDL2_image' -X '-lSDL2_mixer' -X '-lSDL2_ttf' -X '-lSDL2_gfx' -X '-lSDL2' -X '-lchipmunk'
 VPKGS += --pkg sdl2 --pkg sdl2-image --pkg sdl2-mixer --pkg sdl2-ttf --pkg sdl2-gfx --pkg posix --pkg chipmunk
 VBASE += $(wildcard $(AVALANCHE_DIR)/sdks/avalanche/*.vala)
 SRC = ./$(wildcard src/*.vala)
@@ -10,7 +10,18 @@ ifeq ($(CROSS), WIN32)
 	VFLAG += --cc=i486-mingw32-gcc
 	OS = Windows_NT
 else ifeq ($(CROSS), ANDROID)
-	#SOON
+	ANDROID_TOOLCHAIN ?= /opt/android-toolchain/
+	
+	PKG_CONFIG_PATH = "$(ANDROID_TOOLCHAIN)/sysroot/usr/lib/pkgconfig"
+	LDFLAGS = '-Wl,--fix-cortex-a8' 
+	CFLAGS = '-march=armv7-a -mfloat-abi=softfp -mfpu=neon' 
+	
+	VFLAG := --cc=$(ANDROID_TOOLCHAIN)/bin/arm-linux-androideabi-gcc \
+		-X -L"$(ANDROID_TOOLCHAIN)/arm-linux-androideabi/lib" \
+		-X -L"$(ANDROID_TOOLCHAIN)/sysroot/usr/lib" \
+		-X -I"$(ANDROID_TOOLCHAIN)/sysroot/usr/include" \
+		-X '-Wl,-Bstatic' -X '-lffi' -X '-lintl' -X '-liconv' $(VFLAG) \
+		-X '-Wl,-Bdynamic' -X '-llog' -X '-lc' -X '-lm' -X '-lz' -X '-ldl' -X '-lGLESv1_CM' -X '-lGLESv2' -X '-lstdc++'
 	
 	JNI = 1
 	OS = Android
@@ -24,7 +35,7 @@ endif
 
 ifeq ($(JNI), 1)
 	VBASE += $(AVALANCHE_DIR)/sdks/avalanche/avalanche_jni.h
-	VFLAG+= -D AVALANCHE_JNI
+	VFLAG += -D AVALANCHE_JNI
 	SHARED = 1
 endif
 

@@ -1,12 +1,13 @@
 /* For when compiling with JNI=1 */
-public class Avalanche {
+package avalanche;
+public class Game {
    static {
       System.loadLibrary("game");
    }
    
-   private native void launch();
+   public native void launch();
  
    public static void main(String[] args) {
-      new Avalanche().launch();
+      new Game().launch();
    }
 }

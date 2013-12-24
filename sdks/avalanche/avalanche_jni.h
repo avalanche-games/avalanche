@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-JNIEXPORT void JNICALL Java_Avalanche_launch
+JNIEXPORT void JNICALL Java_avalanche_Game_launch
   (JNIEnv *, jobject);
 
 #ifdef __cplusplus

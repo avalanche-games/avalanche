@@ -12,7 +12,7 @@ public class Main : Aval.Game {
 		[CCode (cname="WinMain")]
 	#else
 		#if AVALANCHE_JNI
-			[CCode (cname="Java_Avalanche_launch")]
+			[CCode (cname="Java_avalanche_Game_launch")]
 		#endif
 	#endif
 	public static void main () {
