@@ -23,8 +23,10 @@ public class Game {
 		SDLTTF.init();
 		
 		// CHDIR on executable path
-		string path=".";
-		#if AVALANCE_WIN
+		string path;
+		#if AVALANCHE_JNI
+			path = ".";
+		#elif AVALANCE_WIN
 			path = GLib.Win32.get_package_installation_directory_of_module (null);
 			path += "\\bin";
 		#elif AVALANCE_UNIX
@@ -35,7 +37,7 @@ public class Game {
 			dirend[0] = '\0';
 			path = (string)path_buf;
 		#endif
-		Posix.chdir (path);
+		GLib.Environment.set_current_dir(path);
 		
 		frm = {0, 0, 0, 0, 60};
 		frm.init ();

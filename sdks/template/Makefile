@@ -18,7 +18,7 @@ endif
 
 
 ifeq ($(DEBUG), 1)
-	VFLAG += --enable-gobject-tracing --enable-checking -g --save-temps
+	VFLAG += --enable-gobject-tracing --enable-checking -g
 endif
 
 
