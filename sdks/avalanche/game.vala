@@ -23,21 +23,20 @@ public class Game {
 		SDLTTF.init();
 		
 		// CHDIR on executable path
-		string path;
-		#if AVALANCHE_JNI
-			path = ".";
+		#if AVALANCHE_ANDROID
+			// TODO OR NOT TODO
+		#elif AVALANCHE_JNI
+			GLib.Environment.set_current_dir ("../res");
 		#elif AVALANCE_WIN
-			path = GLib.Win32.get_package_installation_directory_of_module (null);
-			path += "\\bin";
+			string path = GLib.Win32.get_package_installation_directory_of_module (null);
+			path += "\\res";
+			GLib.Environment.set_current_dir ((string)path);
 		#elif AVALANCE_UNIX
 			char path_buf[1024];
-			char *dirend;
 			Posix.readlink ("/proc/self/exe", path_buf);
-			dirend = (char*)Posix.strrchr ((string)path_buf, '/');
-			dirend[0] = '\0';
-			path = (string)path_buf;
+			Posix.chdir ((string)path_buf + "/../");
+			Posix.chdir ("./res/");
 		#endif
-		GLib.Environment.set_current_dir(path);
 		
 		frm = {0, 0, 0, 0, 60};
 		frm.init ();

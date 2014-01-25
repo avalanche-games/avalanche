@@ -5,9 +5,9 @@ VBASE += $(wildcard $(AVALANCHE_DIR)/sdks/avalanche/*.vala)
 SRC = ./$(wildcard src/*.vala)
 BIN   = ./bin/game
 
-ifeq ($(CROSS), WIN32)
-	PKG_CONFIG_PATH=/usr/i486-mingw32/lib/pkgconfig
-	VFLAG += --cc=i486-mingw32-gcc
+ifeq ($(CROSS), MINGW)
+	PKG_CONFIG_PATH=/usr/$(MINGW_PREFIX)-mingw32/lib/pkgconfig
+	VFLAG += --cc=$(MINGW_PREFIX)-mingw32-gcc --pkg sdl2-windows
 	OS = Windows_NT
 else ifeq ($(CROSS), ANDROID)
 	ANDROID_TOOLCHAIN ?= /opt/android-toolchain/
@@ -21,7 +21,8 @@ else ifeq ($(CROSS), ANDROID)
 		-X -L"$(ANDROID_TOOLCHAIN)/sysroot/usr/lib" \
 		-X -I"$(ANDROID_TOOLCHAIN)/sysroot/usr/include" \
 		-X '-Wl,-Bstatic' -X '-lffi' -X '-lintl' -X '-liconv' $(VFLAG) \
-		-X '-Wl,-Bdynamic' -X '-llog' -X '-lc' -X '-lm' -X '-lz' -X '-ldl' -X '-lGLESv1_CM' -X '-lGLESv2' -X '-lstdc++'
+		-X '-Wl,-Bdynamic' -X '-llog' -X '-lc' -X '-lm' -X '-lz' -X '-ldl' -X '-lGLESv1_CM' -X '-lGLESv2' -X '-lstdc++' \
+		--pkg sdl2-android
 	
 	JNI = 1
 	OS = Android
@@ -43,7 +44,7 @@ endif
 ifeq ($(OS), Windows_NT)
 	BIN =  ./bin/game.exe
 	CLEAN := rm -f $(BIN)
-	VFLAG += -X -mwindows -D AVALANCE_WIN
+	VFLAG += -X -mwindows -D AVALANCHE_WIN
 else ifeq ($(OS), Android)
 	VFLAG+= -D AVALANCE_UNIX -D AVALANCHE_LINUX -D AVALANCHE_ANDROID
 else
@@ -61,6 +62,8 @@ ifeq ($(SHARED), 1)
 	VFLAG+= -X -shared
 	ifeq ($(OS), Windows_NT)
 		BIN =  ./bin/game.dll
+	else ifeq ($(OS), Android)
+		BIN =  ./bin/libgame-android.so
 	else
 		BIN =  ./bin/libgame.so
 	endif

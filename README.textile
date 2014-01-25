@@ -1,104 +1,52 @@
 h1. Avalanche
-
-p. We are a team made of developers that learned to program while developing games, our major goal is to make an engine
-that makes easier for game making, without reducing performance or limiting like other tools. We also want it to be
-Free and Open Source.
-
-p. Please note that being Free and Open Source does not excludes the possibility of writing proprietary profitable
-games, so we also make it easy to create such projects.
-
-p. Finishing, we also desire to create some games, and create a community about Indie Game.
+p. On this project our major goal is to make an engine that makes easier for game making, without reducing performance or limiting like other tools. We also want it to be Free and Open Source. And that's why we chose it to be done using Vala.
+p. Please note that being Free and Open Source does not excludes the possibility of writing proprietary profitable games, so we also make it easy to create such projects.
+p. On our examples we use SDL2 and Chipmunk, which are completely optional.
+p. Support for android is on the way: We're already able to compile ours examples to an android compatible library and run it, but it seems like SDL is not responding normally.
+* Editor development is suspended for undefined time.
 
 h1. Building
-
 h2. General Requirements
-
-p. You will need to install these packages to build any Avalanche thing:
-
-* "GCC":http://gcc.gnu.org/ (Linux) or "Mingw":http://www.mingw.org/ (Windows)
+p. Our engine uses Vala, so you're gonna need at least this tools:
+* "GCC":http://gcc.gnu.org/ (Linux) or "MinGW-w64":http://mingw-w64.sourceforge.net/ (Windows)
 * "GLib":https://developer.gnome.org/glib/
 * "Vala":https://live.gnome.org/Vala/
 
-We might add others packages to this list, so keep your eyes open.
-
-h2. Others Requirements
-
-p. To build the editor, also install:
-
-* "libgee":https://live.gnome.org/Libgee
-* "gtk3":http://www.gtk.org/
-* "gtksourceview3":http://projects.gnome.org/gtksourceview/
-* "json-glib":https://live.gnome.org/JsonGlib/
-(not everything is required for running)
-
-p. To build an example or SDK template, also install:
-
+p. To build any of our examples, also install:
 * "SDL 2":http://www.libsdl.org/hg.php
-* "SDL-Image 2":http://www.libsdl.org/projects/SDL_image/
+* "SDL2_Image":http://www.libsdl.org/projects/SDL_image/
+* "SDL2_TTF":http://www.libsdl.org/projects/SDL_ttf/
+* "SDL2_Mixer":http://www.libsdl.org/projects/SDL_mixer/
+* "SDL2-GFX":http://www.ferzkopp.net/joomla/software-mainmenu-14/4-ferzkopps-linux-software/19-sdlgfx
 * "Chipmunk Physics":http://chipmunk-physics.net/
-(everything is optional)
+
+p. To build to android, you can:
+* Download one of ours pre-built toolchains (which includes every necessary library) on page "Useful files":https://github.com/avalanche-games/avalanche/wiki/Useful-files in our wiki.
+* Or, if you prefer to, build from Android NDK a standalone toolchain and then compile every needed library,
 
 h3. Deploy on Linux
-
-p. Linux developers, can use package managers, to install programs and it dependencies, so they don't have reasons to build anything statically, just make a package to your targeted distro and let the package manager do it is work.
+p. Linux developers, can use package managers, to install programs and it dependencies, so they don't have reasons to build anything statically, just make a package to your targeted distribution and let the package manager do it is work.
 
 h3. Deploy on Windows
-
-p. On Windows our builds include every library you need, in the deploy tab you can choose if you will build the game
-statically or dynamically. Because of the LGPL coverage, you should use the DLL model on Windows.
+p. On Windows you'll find a pre-built package for adding all requirements to MinGW-w64 on page "Useful files":https://github.com/avalanche-games/avalanche/wiki/Useful-files in our wiki.
 
 h3. Deploy on Mac
-
 p. * TODO *
 
 h2. Play a Game
 
 h3. On Windows
-
 p. You might include needed DLLs, but do not forget their licenses when needed.
 
 h3. On Linux
-
-p. Add Gtk3, Glib, libgee* and SDL2** to the package dependency list. 
-
-p. * We are not using libgee for now. ** Before SDL2 stable releases, it should be static linked on Linux too, since
-not every distro supports unstable pacakges.
+p. Add Glib and SDL2 to the package dependency list.
 
 h3. On Mac
-
-p. * TODO (should be like on Windows)*
-
-
-h2. Building the Editor
-
-h3. Linux
-
-p. Open the Avalanche's source folder in a Terminal and run `make`, if everything is alright then `sudo make install`,
-you will be prompted to input your password to install the editor in the system, after that just search for avalanche
-in your desktop.
-
-p. If you got some errors during the make process, double check if the dependencies are all right, then check if the
-last commit is building on Travis, if it is so create a issue using our issues standards.
-
-h3. Windows
-
-p. Just install the dependencies (I might add some help here), open the terminal, type make, if no make command is
-found then make sure that Mingw is in your path and then go to the Avalanche's folder using *cd* and run `make`, if
-everything succeeds now type `make install`.
-
-h3. On Mac
-
-p. *Not Tested*
-
-p. Install the libs with Homebrew and try to build using `make OSNAME=Linux`, if everything is ok then create a issue
-with the logs here, this way you are helping us with Avalanche's Mac support.
+p. * TODO *
 
 h2. Hacking
 
-p. If you want to contribute to the project, first, note that everything you pull to this project is copyrighted to the
-contributors. If you do not want to be an official contributor, just fork the project and pull your commits to the main
-repository, you should also keep our coding style:
-
+p. If you want to contribute to the project, first, note that everything you pull to this project is copyrighted to the contributors (which will include you). If you do not want to be an official contributor, just fork the project and pull your commits to the main repository, you should also keep our coding style:
 <pre>
 // Root namespace on a fake '-1' indentations level
 namespace A {
@@ -135,19 +83,15 @@ public enum  SomeEnum {
 
 }// A
 </pre>
-
 p. If you follow those styles guidelines your commit might be accepted.
 
 h2. Problems
-
 p. If something is bothering you, you should really create an issue on our GitHub, we have no restriction about the
 issues that you should create, but we ask you to:
-
 p. Give information about your Operational System, GCC version, Vala version, and everything you tried to do to fix
 the problem, if some commit were added, sending it might help solving the problem.
 
 h3. About Build Issues
-
 p. You should avoid to create issues to unsupported ways of building the editor.
 For build issues use a name like `Build Error on Operational System - Details`, where "Operational System" is
 your "Windows / Mac / Linux Distro" version, "Details" might be what you think that is causing the problem.
@@ -155,35 +99,16 @@ your "Windows / Mac / Linux Distro" version, "Details" might be what you think t
 h1. Team
 
 h3. Main Team:
-
 * Christian Ferraz Lemos de Sousa (founder, feature planner, main programmer, build scripts)
 * Pedro Henrique Lara Campos (founder, API planner, main programmer, janitor)
 
 h3. Colaborators:
-
-* Rafael Fidelis (proposed mac tester)
+* No colaborators yet
 
 h3. Special Thanks:
-
-* Community (ideas and help)
+* No special thanks yet
 
 h1. Licensing
-
-h2. Avalanche Editor
-
-<pre>
-  This Source Code Form is subject to the terms of the Mozilla Public
-  License, v. 2.0. If a copy of the MPL was not distributed with this
-  file, You can obtain one at http://mozilla.org/MPL/2.0/.
-                                ---
-                          Copyright(C) 2013
-                   Christian Ferraz Lemos de Sousa
-                      Pedro Henrique Lara Campos
-</pre>
-
-
-h2. Game Player
-
 <pre>
                           Copyright(C) 2013
                    Christian Ferraz Lemos de Sousa

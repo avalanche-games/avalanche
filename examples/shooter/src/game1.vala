@@ -69,23 +69,23 @@ public class Game1 : Aval.ScreenState,  GLib.Object {
 		space = new cp.Space();
 		
 		// Load background
-		background_main = SDLImage.load_texture (Aval.Game.WIN_RENDERER, "../res/mainbackground.png");
+		background_main = SDLImage.load_texture (Aval.Game.WIN_RENDERER, "mainbackground.png");
 		
 		// Load the parallaxing background
-		background_layer1 = new Aval.Parallaxed ("../res/bgLayer1.png", Main.WW , -1, 0, Main.WH);
-		background_layer2 = new Aval.Parallaxed ("../res/bgLayer2.png", Main.WW , -2, 0, Main.WH);
+		background_layer1 = new Aval.Parallaxed ("bgLayer1.png", Main.WW , -1, 0, Main.WH);
+		background_layer2 = new Aval.Parallaxed ("bgLayer2.png", Main.WW , -2, 0, Main.WH);
 		
 		// Initialize the player class
-		player = new Player ("../res/shipAnimation.png", {Main.WW /2, Main.WH /2}, space);
+		player = new Player ("shipAnimation.png", {Main.WW /2, Main.WH /2}, space);
 		
 		// Load enemy image file directly to texture
-		enemy_texture = SDLImage.load_texture (Aval.Game.WIN_RENDERER, "../res/mineAnimation.png");
+		enemy_texture = SDLImage.load_texture (Aval.Game.WIN_RENDERER, "mineAnimation.png");
 		
 		// Load projectile image file directly to texture
-		projectile_texture = SDLImage.load_texture (Aval.Game.WIN_RENDERER, "../res/laser.png");
+		projectile_texture = SDLImage.load_texture (Aval.Game.WIN_RENDERER, "laser.png");
 		
 		// Load explosion image file directly to texture
-		explosion_texture = SDLImage.load_texture (Aval.Game.WIN_RENDERER, "../res/explosion.png");
+		explosion_texture = SDLImage.load_texture (Aval.Game.WIN_RENDERER, "explosion.png");
 		
 		// Create enemies array
 		enemies = new Array<Enemy> ();
@@ -97,17 +97,17 @@ public class Game1 : Aval.ScreenState,  GLib.Object {
 		explosions = new Array<Aval.Animation> ();
 		
 		// Load the music
-		gameplay_music = new SDLMixer.Music ("../res/gameMusic.mp3");
+		gameplay_music = new SDLMixer.Music ("gameMusic.mp3");
 		
 		// Load the laser and explosion sound effect
-		laser_sound = new SDLMixer.Chunk.WAV ("../res/laserFire.wav");
-		explosion_sound = new SDLMixer.Chunk.WAV ("../res/explosion.wav");
+		laser_sound = new SDLMixer.Chunk.WAV ("laserFire.wav");
+		explosion_sound = new SDLMixer.Chunk.WAV ("explosion.wav");
 		
 		// Start the music right away
 		gameplay_music.play (-1);
 		
 		// Load the score font
-		font = new SDLTTF.Font ("../res/DroidSansMono.ttf", 18);
+		font = new SDLTTF.Font ("DroidSansMono.ttf", 18);
 		
 		// Score and health text renderer
 		score_text = new Aval.Text (font, {255, 255, 255, 0}, {0, 0});
@@ -331,7 +331,7 @@ public class Game1 : Aval.ScreenState,  GLib.Object {
 				
 				// If the player health is less than zero we died
 				if (player.health <= 0) {
-					Aval.Game.change_state (new Splash ("../res/endMenu.png", null));
+					Aval.Game.change_state (new Splash ("endMenu.png", null));
 					return; // Important
 				}
 			}

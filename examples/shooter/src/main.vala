@@ -8,12 +8,10 @@ public class Main : Aval.Game {
 	
 	public static Rand RANDOM;
 	
-	#if AVALANCE_WIN
+	#if AVALANCHE_JNI
+		[CCode (cname="Java_avalanche_Game_launch")]
+	#elif AVALANCHE_WIN
 		[CCode (cname="WinMain")]
-	#else
-		#if AVALANCHE_JNI
-			[CCode (cname="Java_avalanche_Game_launch")]
-		#endif
 	#endif
 	public static void main () {
 		// Intialize SDL, SDLImage and Avalanche.
@@ -35,7 +33,7 @@ public class Main : Aval.Game {
 		WIN_RENDERER = new SDL.Renderer (WINDOW, -1, SDL.RendererFlags.ACCELERATED);
 		
 		// Select the first screenstate
-		change_state (new Splash ("../res/mainMenu.png", new Game1 ()));
+		change_state (new Splash ("mainMenu.png", new Game1 ()));
 		
 		// Core
 		while (STATE != null) {
