@@ -6,6 +6,8 @@ SRC = ./$(wildcard src/*.vala)
 BIN   = ./bin/game
 
 ifeq ($(CROSS), MINGW)
+	MINGW_PREFIX ?= i686-w64-mingw32
+	
 	PKG_CONFIG_PATH=/usr/$(MINGW_PREFIX)-mingw32/lib/pkgconfig
 	VFLAG += --cc=$(MINGW_PREFIX)-mingw32-gcc --pkg sdl2-windows
 	OS = Windows_NT
