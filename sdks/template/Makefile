@@ -6,7 +6,7 @@ SRC = ./$(wildcard src/*.vala)
 BIN   = ./bin/game
 
 ifeq ($(CROSS), MINGW)
-	MINGW_PREFIX ?= i686-w64-mingw32
+	MINGW_PREFIX ?= i686-w64
 	
 	PKG_CONFIG_PATH=/usr/$(MINGW_PREFIX)-mingw32/lib/pkgconfig
 	VFLAG += --cc=$(MINGW_PREFIX)-mingw32-gcc --pkg sdl2-windows
@@ -48,14 +48,14 @@ ifeq ($(OS), Windows_NT)
 	CLEAN := rm -f $(BIN)
 	VFLAG += -X -mwindows -D AVALANCHE_WIN
 else ifeq ($(OS), Android)
-	VFLAG+= -D AVALANCE_UNIX -D AVALANCHE_LINUX -D AVALANCHE_ANDROID
+	VFLAG+= -D AVALANCHE_UNIX -D AVALANCHE_LINUX -D AVALANCHE_ANDROID
 else
 	UNAME := $(shell uname)
 	ifeq ($(UNAME), Linux)
 		BIN =  ./bin/game.elf
-		VFLAG+= -D AVALANCE_UNIX -D AVALANCHE_LINUX
+		VFLAG+= -D AVALANCHE_UNIX -D AVALANCHE_LINUX
 	else ifeq ($(UNAME), Darwin)
-		VFLAG+= -D AVALANCE_UNIX -D AVALANCHE_DARWIN
+		VFLAG+= -D AVALANCHE_UNIX -D AVALANCHE_DARWIN
 	endif
 endif
 

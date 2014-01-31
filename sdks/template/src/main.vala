@@ -1,7 +1,7 @@
 namespace AvalancheTemplate {
 
 public class Main : Aval.Game {
-	#if AVALANCE_WIN
+	#if AVALANCHE_WIN
 		[CCode (cname="WinMain")]
 	#endif
 	public static int main () {
