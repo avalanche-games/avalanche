@@ -1,64 +1,24 @@
 h1. Avalanche
 
-p. On this project our major goal is to make an engine that makes easier for game making, without reducing performance or limiting like other tools. We also want it to be Free and Open Source. And that's why we chose it to be done using Vala.
+p. On this project our major goal game making easier, without reducing performance or limiting like other tools. We also want it to be Free and Open Source.
 
 p. Please note that being Free and Open Source does not excludes the possibility of writing proprietary profitable games, so we also make it easy to create such projects.
 
-p. On our examples we also use SDL2 and Chipmunk, which are completely optional.
+p. On our examples we also use SDL2 and Chipmunk, which are completely optional. Our projects already runs on Android
 
 * Support for android is on the way: We're already able to compile ours examples to an android compatible library and run it, but it seems like SDL is not responding normally.
 
 * Editor development is suspended for undefined time.
 
-h1. Building
+h2. How to install and compile?
 
-h2. General Requirements
+p. Everything is going to be explained in Avalanche's wiki, Consider taking a look at this pages:
 
-p. Our engine uses Vala, so you're gonna need at least this tools:
+* "FAQ":https://github.com/avalanche-games/avalanche/wiki/FAQ
 
-* "GCC":http://gcc.gnu.org/ (Linux) or "MinGW-w64":http://mingw-w64.sourceforge.net/ (Windows)
-* "GLib":https://developer.gnome.org/glib/
-* "Vala":https://live.gnome.org/Vala/
+* "Getting Started (for Linux users)":https://github.com/avalanche-games/avalanche/wiki/Getting-Started-(for-Linux-users)
 
-p. To build any of our examples, also install:
-
-* "SDL 2":http://www.libsdl.org/hg.php
-* "SDL2_Image":http://www.libsdl.org/projects/SDL_image/
-* "SDL2_TTF":http://www.libsdl.org/projects/SDL_ttf/
-* "SDL2_Mixer":http://www.libsdl.org/projects/SDL_mixer/
-* "SDL2-GFX":http://www.ferzkopp.net/joomla/software-mainmenu-14/4-ferzkopps-linux-software/19-sdlgfx
-* "Chipmunk Physics":http://chipmunk-physics.net/
-
-p. To build to android, you can:
-
-* Download one of ours pre-built toolchains (which includes every necessary library) on page "Useful files":https://github.com/avalanche-games/avalanche/wiki/Useful-files in our wiki.
-* Or, if you prefer to, build from Android NDK a standalone toolchain and then compile every needed library,
-
-h3. Deploy on Linux
-
-p. Linux developers, can use package managers, to install programs and it dependencies, so they don't have reasons to build anything statically, just make a package to your targeted distribution and let the package manager do it is work.
-
-h3. Deploy on Windows
-
-p. On Windows you'll find a pre-built package for adding all requirements to MinGW-w64 on page "Useful files":https://github.com/avalanche-games/avalanche/wiki/Useful-files in our wiki.
-
-h3. Deploy on Mac
-
-p. * TODO *
-
-h2. Play a Game
-
-h3. On Windows
-
-p. You might include needed DLLs, but do not forget their licenses when needed.
-
-h3. On Linux
-
-p. Add Glib and SDL2 to the package dependency list.
-
-h3. On Mac
-
-p. * TODO *
+* "All wiki pages":https://github.com/avalanche-games/avalanche/wiki/_pages
 
 h2. Hacking
 
@@ -109,14 +69,7 @@ p. If something is bothering you, you should really create an issue on our GitHu
 issues that you should create, but we ask you to:
 
 p. Give information about your Operational System, GCC version, Vala version, and everything you tried to do to fix
-the problem, if some commit were added, sending it might help solving the problem.
-
-h3. About Build Issues
-
-p. You should avoid to create issues to unsupported ways of building the editor.
-
-For build issues use a name like `Build Error on Operational System - Details`, where "Operational System" is
-your "Windows / Mac / Linux Distro" version, "Details" might be what you think that is causing the problem.
+the problem, if some commits or patchs were added, sending them might help solving the problem.
 
 h1. Team
 

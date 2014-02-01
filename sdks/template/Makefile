@@ -13,13 +13,14 @@ ifeq ($(CROSS), MINGW)
 	OS = Windows_NT
 else ifeq ($(CROSS), ANDROID)
 	ANDROID_TOOLCHAIN ?= /opt/android-toolchain/
+	ANDROID_PREFIX ?= arm-linux-androideabi
 	
 	PKG_CONFIG_PATH = "$(ANDROID_TOOLCHAIN)/sysroot/usr/lib/pkgconfig"
 	LDFLAGS = '-Wl,--fix-cortex-a8' 
 	CFLAGS = '-march=armv7-a -mfloat-abi=softfp -mfpu=neon' 
 	
-	VFLAG := --cc=$(ANDROID_TOOLCHAIN)/bin/arm-linux-androideabi-gcc \
-		-X -L"$(ANDROID_TOOLCHAIN)/arm-linux-androideabi/lib" \
+	VFLAG := --cc=$(ANDROID_TOOLCHAIN)/bin/$(ANDROID_PREFIX)-gcc \
+		-X -L"$(ANDROID_TOOLCHAIN)/$(ANDROID_PREFIX)/lib" \
 		-X -L"$(ANDROID_TOOLCHAIN)/sysroot/usr/lib" \
 		-X -I"$(ANDROID_TOOLCHAIN)/sysroot/usr/include" \
 		-X '-Wl,-Bstatic' -X '-lffi' -X '-lintl' -X '-liconv' $(VFLAG) \
