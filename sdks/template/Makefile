@@ -23,10 +23,15 @@ else ifeq ($(CROSS), ANDROID)
 		-X -L"$(ANDROID_TOOLCHAIN)/sysroot/usr/lib" \
 		-X -I"$(ANDROID_TOOLCHAIN)/sysroot/usr/include" \
 		-X '-Wl,-Bstatic' -X '-lffi' -X '-lintl' -X '-liconv' $(VFLAG) \
-		-X '-Wl,-Bdynamic' -X '-llog' -X '-lc' -X '-lm' -X '-lz' -X '-ldl' -X '-lGLESv1_CM' -X '-lGLESv2' -X '-lstdc++' \
+		-X '-Wl,-Bdynamic' -X '-llog' -X '-lc' -X '-lm' -X '-lz' -X '-ldl' -X '-lGLESv1_CM' -X '-lGLESv2' -X '-landroid' -X '-lstdc++' \
 		--pkg sdl2-android
 	
-	JNI = 1
+	# ANDROID USES SDL JNI CALLS
+	JNI = 0
+	
+	VBASE += $(AVALANCHE_DIR)/sdks/avalanche/avalanche_android_main.c
+	VFLAG += -D AVALANCHE_JNI
+	SHARED = 1
 	OS = Android
 endif
 
