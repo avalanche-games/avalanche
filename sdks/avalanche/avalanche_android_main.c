@@ -23,5 +23,5 @@ void Java_org_libsdl_app_SDLActivity_nativeInit(JNIEnv* env, jclass cls, jobject
     status = main(1, argv);
 
     /* Do not issue an exit or the whole application will terminate instead of just the SDL thread */
-    /* exit(status); */
+    if (status == 0) exit(0);
 }

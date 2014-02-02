@@ -13,7 +13,8 @@ public class Main : Aval.Game {
 		
 		// Create window and render separately.
 		WINDOW = new SDL.Window ("VALA-Avalanche Example", SDL.Window.POS_CENTERED,
-			SDL.Window.POS_CENTERED, 640, 480, SDL.WindowFlags.SHOWN);
+			SDL.Window.POS_CENTERED, 640, 480, SDL.WindowFlags.SHOWN | SDL.WindowFlags.RESIZABLE);
+		Aval.Game.WINDOW.get_size(out WW, out WH);
 		WIN_RENDERER = new SDL.Renderer (WINDOW, -1, SDL.RendererFlags.ACCELERATED | SDL.RendererFlags.PRESENTVSYNC);
 		
 		// Select the first screenstate

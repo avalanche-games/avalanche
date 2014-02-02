@@ -18,9 +18,16 @@ public class Splash : Aval.ScreenState,  GLib.Object {
 		background.set_blend_mod (SDL.BlendMode.BLEND);
 		frame_count = 0;
 		alpha = 0;
+		set_outrect ();
 	}
 	
-	public void on_update (SDL.Event e) {
+	public void on_event (SDL.Event e) {
+		if (e.type == SDL.EventType.WINDOWEVENT &&
+			e.window.event == SDL.WindowEventID.RESIZED)
+			set_outrect ();
+	}
+	
+	public void on_update () {
 		if (frame_count == 360) {
 			Aval.Game.change_state (next_state);
 			return;
@@ -41,9 +48,24 @@ public class Splash : Aval.ScreenState,  GLib.Object {
 		frame_count++;
 	}
 	
-	static const SDL.Rect rect = {0, 0, 840, 480};
+	static const SDL.Rect inrect = {0, 0, 840, 480};
+	static SDL.Rect outrect;
 	public void draw () {
-		Aval.Game.WIN_RENDERER.copy (background, rect, rect);
+		Aval.Game.WIN_RENDERER.copy (background, inrect, outrect);
+	}
+	
+	private void set_outrect () {
+		// Do not make image larger than it is.
+		int secure_width = (Aval.Game.WW <= inrect.w ? Aval.Game.WW : inrect.w);
+		
+		// Keeps aspect ratio
+		int proportional_height = (int)Math.round(
+			(double)inrect.h / (double)inrect.w * (double)secure_width
+			);
+		outrect = {(Aval.Game.WW - secure_width) / 2,
+			(Aval.Game.WH - proportional_height) / 2,
+			secure_width,
+			proportional_height};
 	}
 	
 	public void on_leave () {

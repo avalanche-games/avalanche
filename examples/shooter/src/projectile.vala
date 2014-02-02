@@ -51,7 +51,7 @@ public class Projectile : GLib.Object {
 		body.p.x += projectile_move_speed;
 		
 		// Deactivate the bullet if it goes out of screen
-		if (body.p.x + PROJECTILE_WIDTH / 2 > Main.WW)
+		if (body.p.x + PROJECTILE_WIDTH / 2 > Aval.Game.WW)
 			active = false;
 	}
 	

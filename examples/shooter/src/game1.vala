@@ -72,11 +72,11 @@ public class Game1 : Aval.ScreenState,  GLib.Object {
 		background_main = SDLImage.load_texture (Aval.Game.WIN_RENDERER, "mainbackground.png");
 		
 		// Load the parallaxing background
-		background_layer1 = new Aval.Parallaxed ("bgLayer1.png", Main.WW , -1, 0, Main.WH);
-		background_layer2 = new Aval.Parallaxed ("bgLayer2.png", Main.WW , -2, 0, Main.WH);
+		background_layer1 = new Aval.Parallaxed ("bgLayer1.png", Aval.Game.WW , -1, 0, Aval.Game.WH);
+		background_layer2 = new Aval.Parallaxed ("bgLayer2.png", Aval.Game.WW , -2, 0, Aval.Game.WH);
 		
 		// Initialize the player class
-		player = new Player ("shipAnimation.png", {Main.WW /2, Main.WH /2}, space);
+		player = new Player ("shipAnimation.png", {Aval.Game.WW /2, Aval.Game.WH /2}, space);
 		
 		// Load enemy image file directly to texture
 		enemy_texture = SDLImage.load_texture (Aval.Game.WIN_RENDERER, "mineAnimation.png");
@@ -121,12 +121,31 @@ public class Game1 : Aval.ScreenState,  GLib.Object {
 		next_fire_time = fire_interval;
 	}
 	
-	public void on_update (SDL.Event e) {
+	public void on_event (SDL.Event e) {
+		// In case window was resized
+		if (e.type == SDL.EventType.WINDOWEVENT &&
+			e.window.event == SDL.WindowEventID.RESIZED) {
+			// Updates our parallaxes sizes
+			background_layer1.set_outrect (Aval.Game.WW, Aval.Game.WH);
+			background_layer2.set_outrect (Aval.Game.WW, Aval.Game.WH);
+			// Let's reset player position
+			player.body.set_pos({Aval.Game.WW /2, Aval.Game.WH /2});
+			// Also reset enemies
+			dispose_enemies ();
+			enemies = new Array<Enemy> ();
+			// And projectiles
+			dispose_projectiles ();
+			projectiles = new Array<Projectile> ();
+		}
+		player.on_event(e);
+	}
+	
+	public void on_update () {
 		// Timers tick
 		frame_count += 1;
 		
 		// Update player
-		player.update (e);
+		player.update ();
 		
 		// Update the parallaxing background
 		background_layer1.update ();
@@ -217,8 +236,7 @@ public class Game1 : Aval.ScreenState,  GLib.Object {
 	public void draw () {		
 		// Draw the background
 		Aval.Game.WIN_RENDERER.copy (background_main,
-			{0, 0, background_layer1.texture_width, background_layer1.texture_height},
-			{0, 0, Main.WW, background_layer1.force_height});
+			{0, 0, 800, 480}, {0, 0, Aval.Game.WW, Aval.Game.WH});
 		
 		// Draw the moving background
 		background_layer1.draw ();
@@ -246,13 +264,7 @@ public class Game1 : Aval.ScreenState,  GLib.Object {
 		health_text.draw ();
 	}
 	
-	public void on_leave () {
-		// My mon said that I should clean all my own dirty
-		// - Vala is smart and do A LOT of those automatically, but nothing better than be precautious
-		player.physics_dispose (space);
-		player.dispose ();
-		player = null;
-		
+	private void dispose_enemies () {
 		for (int i = (int)enemies.length - 1; i >= 0; i--) {
 			unowned Enemy en = enemies.index (i);
 			en.physics_dispose (space);
@@ -260,13 +272,26 @@ public class Game1 : Aval.ScreenState,  GLib.Object {
 			enemies.remove_index (i);
 		}
 		enemies = null;
-		
+	}
+	
+	private void dispose_projectiles () {
 		for (int i = (int)projectiles.length - 1; i >= 0; i--) {
 			unowned Projectile pj = projectiles.index (i);
 			pj.physics_dispose (space);
 			projectiles.remove_index (i);
 		}
 		projectiles = null;
+	}
+	
+	public void on_leave () {
+		// My mon said that I should clean all my own dirty
+		// - Vala is smart and do A LOT of those automatically, but nothing better than be precautious
+		player.physics_dispose (space);
+		player.dispose ();
+		player = null;
+		
+		dispose_enemies ();
+		dispose_projectiles ();
 		
 		space = null;
 		
@@ -293,7 +318,7 @@ public class Game1 : Aval.ScreenState,  GLib.Object {
 	
 	private void add_enemy () {
 		// Create an enemy, intialize and add to the enemies list
-		enemies.append_val (new Enemy (enemy_texture, Main.WW, Main.WH, space));
+		enemies.append_val (new Enemy (enemy_texture, Aval.Game.WW, Aval.Game.WH, space));
 	}
 	
 	public void add_projectile () {

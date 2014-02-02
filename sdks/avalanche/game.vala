@@ -16,6 +16,8 @@ public class Game {
 	public static SDL.Renderer? WIN_RENDERER;
 	public static Aval.ScreenState? STATE;
 	private static SDLGraphics.FramerateManager frm;
+	public static int WW;
+	public static int WH;
 	
 	public static void init (SDL.InitFlag sdl_flags, SDLImage.InitFlags img_flags) {
 		SDL.init (sdl_flags);
@@ -46,9 +48,36 @@ public class Game {
 		Aval.ScreenState enginer = STATE;
 		
 		SDL.Event e;
-		for (e = {0};; SDL.Event.poll (out e)) {
+		while (true) {
+			while(true) {
+				SDL.Event.poll (out e);
+				if (e.type == 0) break;
+				
+				// When window is resized, store new resolution
+				if (e.type == SDL.EventType.WINDOWEVENT) {
+					SDL.WindowEvent we = e.window;
+					if (we.event == SDL.WindowEventID.SIZE_CHANGED) {
+						WW = we.data1;
+						WH = we.data2;
+					}
+				}
+				// Quit the game correctly
+				// -To jump this, threat the event and set it type to 0
+				else if (e.type == SDL.EventType.QUIT) {
+					Aval.Game.change_state (null);
+					break;
+				}
+				
+				// Let STATE also handle it
+				STATE.on_event (e);
+			}
+			
+			// Quit the loop if this is no longer the actual STATE
+			if (STATE != enginer)
+				break;
+			
 			// Update state
-			STATE.on_update (e);
+			STATE.on_update ();
 			
 			// Quit the loop if this is no longer the actual STATE (again)
 			if (STATE != enginer)
@@ -56,13 +85,6 @@ public class Game {
 			
 			// Draw screen
 			else loop_frame ();
-			
-			// Quit the game correctly
-			// -To jump this, threat the event and set it type to 0
-			if (e.type == SDL.EventType.QUIT){
-				Aval.Game.change_state (null);
-				break;
-			}
 		}
 	}
 	

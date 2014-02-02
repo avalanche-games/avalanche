@@ -34,6 +34,8 @@ else ifeq ($(CROSS), ANDROID)
 	VFLAG += -D AVALANCHE_JNI
 	SHARED = 1
 	OS = Android
+else
+	VFLAG += -X -lm
 endif
 
 

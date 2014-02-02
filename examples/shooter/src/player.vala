@@ -13,6 +13,7 @@ public class Player {
 	
 	// Movemet holder
 	bool moving[4];
+	int touch_move[2];
 	
 	// Width and height of the player ship image
 	public static const int PLAYER_WIDTH = 115;
@@ -50,7 +51,7 @@ public class Player {
 		body.set_pos ({start_position.x, start_position.y});
 	}
 	
-	public void update (SDL.Event e) {		
+	public void on_event (SDL.Event e) {	
 		// Check Keyboard / Dpad
 		if (e.type == SDL.EventType.KEYDOWN){
 			if (e.key.keysym.sym == SDL.Keycode.LEFT) moving[0] = true;
@@ -62,26 +63,52 @@ public class Player {
 			else if (e.key.keysym.sym == SDL.Keycode.RIGHT) moving[1] = false;
 			else if (e.key.keysym.sym == SDL.Keycode.UP) moving[2] = false;
 			else if (e.key.keysym.sym == SDL.Keycode.DOWN) moving[3] = false;
+		}else if (e.type == SDL.EventType.FINGERMOTION ||
+			e.type == SDL.EventType.FINGERDOWN){
+			double fx = Math.round((double)e.tfinger.x * (double)Aval.Game.WW);
+			double fy = Math.round((double)e.tfinger.y * (double)Aval.Game.WH);
+			
+			if(fx < body.p.x) touch_move[0]= -(int)player_move_speed;
+			else if(fx > body.p.x) touch_move[0]= (int)player_move_speed;
+			
+			if (((int)(fx - body.p.x)).abs () < player_move_speed && touch_move[0] != 0)
+				touch_move[0] =  (fx < body.p.x ? (int)(fx - body.p.x) : (int)(body.p.x - fx));
+			
+			else if(fy < body.p.y) touch_move[1]= -(int)player_move_speed;
+			else if(fy > body.p.y) touch_move[1]= (int)player_move_speed;
+			
+			if (((int)(fy - body.p.y)).abs () < player_move_speed && touch_move[1] != 0)
+				touch_move[1] =  (fy < body.p.y ? (int)(fy - body.p.y) : (int)(body.p.y - fy));
+		}else if (e.type == SDL.EventType.FINGERUP) {
+			touch_move = {0};
+		}
+	}
+	
+	public void update () {
+		// Realize movement
+		if (touch_move[0] != 0)
+			body.p.x += touch_move[0];
+		else {
+			if (moving[0] == true) body.p.x -= player_move_speed;
+			if (moving[1] == true) body.p.x += player_move_speed;
 		}
 		
-		// Realize movement
-		if (moving[0] == true) body.p.x -= player_move_speed;
-		if (moving[1] == true) body.p.x += player_move_speed;
-		if (moving[2] == true) body.p.y -= player_move_speed;
-		if (moving[3] == true) body.p.y += player_move_speed;
+		if (touch_move[0] != 0)
+			body.p.y += touch_move[1];
+		else {
+			if (moving[2] == true) body.p.y -= player_move_speed;
+			if (moving[3] == true) body.p.y += player_move_speed;
+		}
 		
 		// Make sure that the player does not go out of bounds
-		// TODO: Find a better method
-		SDL.Point screen_size = {0};
-		Aval.Game.WINDOW.get_size(out screen_size.x, out screen_size.y);
 		if (body.p.x < 0)
 			body.p.x = 0;
-		if (body.p.x > screen_size.x)
-			body.p.x = screen_size.x;
+		if (body.p.x > Aval.Game.WW)
+			body.p.x = Aval.Game.WW;
 		if (body.p.y < 0)
 			body.p.y = 0;
-		if (body.p.y > screen_size.y)
-			body.p.y = screen_size.y;
+		if (body.p.y > Aval.Game.WH)
+			body.p.y = Aval.Game.WH;
 		
 		// Update animation
 		player_animation.screen_pos = {(int)body.p.x-(PLAYER_WIDTH/2), (int)body.p.y-(PLAYER_HEIGHT/2)};

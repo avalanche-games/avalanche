@@ -1,11 +1,6 @@
 namespace Shooter {
 
 public class Main : Aval.Game {
-	// Window static width
-	public static const int WW = 800;
-	// Window static height
-	public static const int WH = 480;
-	
 	public static Rand RANDOM;
 	
 	#if AVALANCHE_JNI
@@ -29,7 +24,8 @@ public class Main : Aval.Game {
 		
 		// Create window and render separately.
 		WINDOW = new SDL.Window ("Shooter", SDL.Window.POS_CENTERED,
-			SDL.Window.POS_CENTERED, WW, WH, SDL.WindowFlags.SHOWN);
+			SDL.Window.POS_CENTERED, 800, 480, SDL.WindowFlags.SHOWN | SDL.WindowFlags.RESIZABLE);
+		Aval.Game.WINDOW.get_size(out WW, out WH);
 		WIN_RENDERER = new SDL.Renderer (WINDOW, -1, SDL.RendererFlags.ACCELERATED);
 		
 		// Select the first screenstate
