@@ -10,7 +10,7 @@ public class SampleIMGState : Aval.ScreenState,  GLib.Object {
 	
         public void on_enter () {
 		// Loads sample image and put on a texture.
-		sample_tex = SDLImage.load_texture (Aval.Game.WIN_RENDERER, "../res/sample.png");
+		sample_tex = SDLImage.load_texture (Aval.Game.WIN_RENDERER, "sample.png");
 	}
 	
 	public void on_event (SDL.Event e) {

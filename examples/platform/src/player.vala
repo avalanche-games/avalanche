@@ -15,6 +15,7 @@ public class Player {
 	bool moving[2];
 	bool attacking;
 	bool guarding;
+	bool jumping;
 	
 	// Player template info
 	public static const string PLAYER_IMG = "skel.png";
@@ -46,7 +47,7 @@ public class Player {
 	// Physics
 	public cp.Body body;
 	public cp.PolyShape shape;
-	static const double MASS = 8;
+	static const double MASS = 4;
 	
 	public Player (SDL.Point start_position, cp.Space space) {
 		// Load player ship image file directly to texture
@@ -110,6 +111,15 @@ public class Player {
 				attacking = false;
 				guarding = true;
 			}
+			else if (e.key.keysym.sym == SDL.Keycode.SPACE){
+				if(!jumping) {
+					body.apply_impulse({0, 10}, {0});
+					player_animation.set_mask (AN_JUMP);
+				}
+				moving = {false};
+				attacking = false;
+				guarding = false;
+			}
 		}else if (e.type == SDL.EventType.KEYUP){
 			if (e.key.keysym.sym == SDL.Keycode.LEFT || e.key.keysym.sym == SDL.Keycode.a){
 				if(moving[0] && !moving[1]) player_animation.set_mask (AN_IDLE);
@@ -126,6 +136,10 @@ public class Player {
 			else if (e.key.keysym.sym == SDL.Keycode.LALT){
 				if(guarding && !moving[0] && !moving[1] && !attacking) player_animation.set_mask (AN_IDLE);
 				guarding = false;
+			}
+			else if (e.key.keysym.sym == SDL.Keycode.SPACE){
+				if(jumping && !moving[0] && !moving[1] && !attacking && !guarding) player_animation.set_mask (AN_IDLE);
+				jumping = false;
 			}
 		}
 	}
