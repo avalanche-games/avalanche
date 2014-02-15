@@ -10,7 +10,7 @@ public class Level {
 		// Add a static LINE SEGMENT shape for the ground.
 		// We attach it to space.static_body to tell Chipmunk it shouldn't be movable.
 		// * ground.u = ground friction
-		ground = new cp.SegmentShape (space.static_body, {-100, Aval.Game.WH * 0.86f}, {Aval.Game.WW+100, Aval.Game.WH * 0.86f}, 1);
+		ground = new cp.SegmentShape (space.static_body, {-100, Aval.Game.WH * 0.86f - 32}, {Aval.Game.WW+100, Aval.Game.WH * 0.86f - 32}, 1);
 		ground.u = 1;
 		space.add_shape (ground);
 	}

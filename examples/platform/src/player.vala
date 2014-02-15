@@ -113,12 +113,13 @@ public class Player {
 			}
 			else if (e.key.keysym.sym == SDL.Keycode.SPACE){
 				if(!jumping) {
-					body.apply_impulse({0, 10}, {0});
+					body.apply_impulse({0, -20}, {0});
 					player_animation.set_mask (AN_JUMP);
 				}
 				moving = {false};
 				attacking = false;
 				guarding = false;
+				jumping = true;
 			}
 		}else if (e.type == SDL.EventType.KEYUP){
 			if (e.key.keysym.sym == SDL.Keycode.LEFT || e.key.keysym.sym == SDL.Keycode.a){
