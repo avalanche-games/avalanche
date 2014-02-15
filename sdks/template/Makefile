@@ -17,7 +17,7 @@ else ifeq ($(CROSS), ANDROID)
 	
 	PKG_CONFIG_PATH = "$(ANDROID_TOOLCHAIN)/sysroot/usr/lib/pkgconfig"
 	LDFLAGS = '-Wl,--fix-cortex-a8' 
-	CFLAGS = '-march=armv7-a -mfloat-abi=softfp -mfpu=neon' 
+	CFLAGS = '-march=armv5 -mfloat-abi=softfp -mfpu=neon' 
 	
 	VFLAG := --cc=$(ANDROID_TOOLCHAIN)/bin/$(ANDROID_PREFIX)-gcc \
 		-X -L"$(ANDROID_TOOLCHAIN)/$(ANDROID_PREFIX)/lib" \

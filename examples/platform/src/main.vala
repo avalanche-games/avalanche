@@ -1,4 +1,4 @@
-namespace AvalancheTemplate {
+namespace Platform {
 
 public class Main : Aval.Game {
 	public static Rand RANDOM;
@@ -23,13 +23,13 @@ public class Main : Aval.Game {
 		set_fps (60);
 		
 		// Create window and render separately.
-		WINDOW = new SDL.Window ("VALA-Avalanche Example", SDL.Window.POS_CENTERED,
-			SDL.Window.POS_CENTERED, 640, 480, SDL.WindowFlags.SHOWN | SDL.WindowFlags.RESIZABLE);
+		WINDOW = new SDL.Window ("Platformer", SDL.Window.POS_CENTERED,
+			SDL.Window.POS_CENTERED, 960, 544, SDL.WindowFlags.SHOWN | SDL.WindowFlags.RESIZABLE);
 		Aval.Game.WINDOW.get_size(out WW, out WH);
 		WIN_RENDERER = new SDL.Renderer (WINDOW, -1, SDL.RendererFlags.ACCELERATED);
 		
 		// Select the first screenstate
-		change_state (new SampleIMGState ());
+		change_state (new Game1 ());
 		
 		// Core
 		while (STATE != null) {
@@ -43,4 +43,4 @@ public class Main : Aval.Game {
 }// Main
 
 
-}// AvalancheTemplate
+}// Platform

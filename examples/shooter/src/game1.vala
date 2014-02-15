@@ -128,16 +128,15 @@ public class Game1 : Aval.ScreenState,  GLib.Object {
 			// Updates our parallaxes sizes
 			background_layer1.set_outrect (Aval.Game.WW, Aval.Game.WH);
 			background_layer2.set_outrect (Aval.Game.WW, Aval.Game.WH);
-			// Let's reset player position
-			player.body.set_pos({Aval.Game.WW /2, Aval.Game.WH /2});
-			// Also reset enemies
+			// Reset enemies
 			dispose_enemies ();
 			enemies = new Array<Enemy> ();
 			// And projectiles
 			dispose_projectiles ();
 			projectiles = new Array<Projectile> ();
 		}
-		player.on_event(e);
+		// Let player class also know about the event
+		player.on_event (e);
 	}
 	
 	public void on_update () {

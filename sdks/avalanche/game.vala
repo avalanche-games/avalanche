@@ -20,11 +20,7 @@ public class Game {
 	public static int WH;
 	
 	public static void init (SDL.InitFlag sdl_flags, SDLImage.InitFlags img_flags) {
-		SDL.init (sdl_flags);
-		SDLImage.init (img_flags);
-		SDLTTF.init();
-		
-		// CHDIR on executable path
+		// CHDIR on res path
 		#if AVALANCHE_ANDROID
 			// TODO OR NOT TODO
 		#elif AVALANCHE_JNI
@@ -39,6 +35,10 @@ public class Game {
 			Posix.chdir ((string)path_buf + "/../");
 			Posix.chdir ("./res/");
 		#endif
+		
+		SDL.init (sdl_flags);
+		SDLImage.init (img_flags);
+		SDLTTF.init();
 		
 		frm = {0, 0, 0, 0, 60};
 		frm.init ();
@@ -61,15 +61,16 @@ public class Game {
 						WH = we.data2;
 					}
 				}
-				// Quit the game correctly
-				// -To jump this, threat the event and set it type to 0
-				else if (e.type == SDL.EventType.QUIT) {
-					Aval.Game.change_state (null);
-					break;
-				}
 				
 				// Let STATE also handle it
 				STATE.on_event (e);
+				
+				// Quit the game correctly
+				// -To jump this, threat the event and set it type to 0
+				if (e.type == SDL.EventType.QUIT) {
+					Aval.Game.change_state (null);
+					break;
+				}
 			}
 			
 			// Quit the loop if this is no longer the actual STATE
