@@ -45,7 +45,7 @@ public class Player {
 	
 	// Physics
 	public cp.Body body;
-	public cp.SegmentShape shape;
+	public cp.PolyShape shape;
 	static const double MASS = 8;
 	
 	public Player (SDL.Point start_position, cp.Space space) {
@@ -71,7 +71,12 @@ public class Player {
 		double moment = cp.moment_for_box (MASS, PLAYER_WIDTH, PLAYER_HEIGHT);
 		body = new cp.Body (MASS, moment);
 		space.add_body (body);
-		shape = new cp.SegmentShape (body, {0, 0}, {PLAYER_WIDTH, PLAYER_HEIGHT}, 0);
+		shape = new cp.PolyShape (body, {
+			cp.Vect(0, 0),
+			cp.Vect(0, PLAYER_HEIGHT),
+			cp.Vect(PLAYER_WIDTH, PLAYER_HEIGHT),
+			cp.Vect(PLAYER_WIDTH, 0)
+		}, {0});
 		shape.u = 0.7;
 		space.add_shape (shape);
 		

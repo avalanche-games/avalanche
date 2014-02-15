@@ -1093,6 +1093,8 @@ namespace cp {
 		public double x;
 		public double y;
 		
+		[CCode (cname = "cpv")]
+		public Vect (double a, double b);
 		[CCode (cname = "cpvforangle")]
 		public Vect.for_angle (double a);
 		[CCode (cname = "cpvslerp")]
