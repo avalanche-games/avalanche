@@ -16,6 +16,7 @@ public class Player {
 	bool attacking;
 	bool guarding;
 	bool jumping;
+	bool inair;
 	bool crouching;
 	
 	// Player template info
@@ -62,12 +63,13 @@ public class Player {
 		health = 100;
 		
 		// Set a constant player move speed
-		player_move_speed = 2.0f;
+		player_move_speed = 1.6f;
 		
 		// Set to no movement
 		moving = {false};
 		attacking = false;
 		guarding = false;
+		inair = false;
 		
 		// Physics
 		body = new cp.Body (MASS, cp.INFINITY);
@@ -89,9 +91,10 @@ public class Player {
 	
 	public static void touched_ground (cp.Arbiter arb, cp.Space space, void *data) {
 		Player player = (Player)data;
-		if (player.jumping && !player.moving[0] && !player.moving[1] && !player.attacking && !player.guarding)
-			player.back_to_original_animation ();
-		player.jumping = false;
+		if (player.inair) {
+			player.inair = false;
+			player.reset_animation ();
+		}
 	}
 	
 	public void on_event (SDL.Event e) {	
@@ -99,94 +102,116 @@ public class Player {
 		if (e.type == SDL.EventType.KEYDOWN){
 			if (e.key.keysym.sym == SDL.Keycode.LEFT || e.key.keysym.sym == SDL.Keycode.a) {
 				player_animation.flip = SDL.RendererFlip.HORIZONTAL;
-				if (!moving[0] && !jumping) player_animation.set_mask (AN_WALK);
-				moving[0] = true;
-				attacking = false;
+				if (!moving[0]) {
+					moving[0] = true;
+					reset_animation ();
+				}
 			}
 			else if (e.key.keysym.sym == SDL.Keycode.RIGHT || e.key.keysym.sym == SDL.Keycode.d) {
 				player_animation.flip = SDL.RendererFlip.NONE;
-				if (!moving[1] && !jumping) player_animation.set_mask (AN_WALK);
-				moving[1] = true;
-				attacking = false;
+				if (!moving[1]) {
+					moving[1] = true;
+					reset_animation ();
+					stdout.printf ("Moving right\n");
+				}
 			}
 			else if (e.key.keysym.sym == SDL.Keycode.DOWN || e.key.keysym.sym == SDL.Keycode.s) {
 				if (!crouching) {
-					if (attacking)
-						player_animation.set_mask (AN_PUNCH_C);
-					else
-						player_animation.set_mask (AN_CROUCH);
+					crouching = true;
+					reset_animation (true);
 				}
-				moving = {false};
-				jumping = false;
-				crouching = true;
 			}
-			else if (e.key.keysym.sym == SDL.Keycode.LSHIFT) {
+			else if (e.key.keysym.sym == SDL.Keycode.LCTRL || e.key.keysym.sym == SDL.Keycode.KP_4) {
 				if (!attacking) {
-					if (crouching)
-						player_animation.set_mask (AN_PUNCH_C);
-					else
-						player_animation.set_mask (AN_PUNCH_S);
+					attacking = true;
+					reset_animation ();
 				}
-				moving = {false};
-				attacking = true;
 			}
-			else if (e.key.keysym.sym == SDL.Keycode.LALT) {
-				if (!guarding) player_animation.set_mask (AN_GUARD_S);
-				moving = {false};
-				attacking = false;
-				guarding = true;
+			else if (e.key.keysym.sym == SDL.Keycode.LALT || e.key.keysym.sym == SDL.Keycode.KP_6) {
+				if (!guarding) {
+					guarding = true;
+					reset_animation ();
+				}
 			}
-			else if (e.key.keysym.sym == SDL.Keycode.SPACE) {
-				if (!jumping) {
+			else if (e.key.keysym.sym == SDL.Keycode.SPACE || e.key.keysym.sym == SDL.Keycode.KP_5) {
+				if (!inair) {
+					inair = true;
 					body.apply_impulse({0, -20}, {0});
-					player_animation.set_mask (AN_JUMP);
 				}
-				attacking = false;
-				guarding = false;
-				jumping = true;
+				if (!jumping) {
+					jumping = true;
+					reset_animation (true);
+				}
 			}
 		}else if (e.type == SDL.EventType.KEYUP){
 			if (e.key.keysym.sym == SDL.Keycode.LEFT || e.key.keysym.sym == SDL.Keycode.a) {
-				if (moving[0] && !moving[1]) back_to_original_animation ();
-				moving[0] = false;
+				if (moving[0]) {
+					moving[0] = false;
+					reset_animation ();
+				}
 			}
 			else if (e.key.keysym.sym == SDL.Keycode.RIGHT || e.key.keysym.sym == SDL.Keycode.d) {
-				if (moving[1] && !moving[0]) back_to_original_animation ();
-				moving[1] = false;
+				if (moving[1]) {
+					moving[1] = false;
+					reset_animation ();
+				}
 			}
 			else if (e.key.keysym.sym == SDL.Keycode.DOWN || e.key.keysym.sym == SDL.Keycode.s) {
-				if (crouching && !moving[0] && !moving[1] && !guarding)
-					if (attacking)
-						player_animation.set_mask (AN_CROUCH);
-					else
-						player_animation.set_mask (AN_IDLE);
-				crouching = false;
+				if (crouching) {
+					crouching = false;
+					reset_animation ();
+				}
 			}
-			else if (e.key.keysym.sym == SDL.Keycode.LSHIFT) {
-				if (attacking && !moving[0] && !moving[1] && !guarding) back_to_original_animation ();
-				attacking = false;
+			else if (e.key.keysym.sym == SDL.Keycode.LSHIFT || e.key.keysym.sym == SDL.Keycode.KP_4) {
+				if (attacking) {
+					attacking = false;
+					reset_animation ();
+				}
 			}
-			else if (e.key.keysym.sym == SDL.Keycode.LALT) {
-				if (guarding && !moving[0] && !moving[1] && !attacking) back_to_original_animation ();
-				guarding = false;
+			else if (e.key.keysym.sym == SDL.Keycode.LALT || e.key.keysym.sym == SDL.Keycode.KP_6) {
+				if (guarding) {
+					guarding = false;
+					reset_animation ();
+				}
 			}
-			else if (e.key.keysym.sym == SDL.Keycode.SPACE) {
-				if (jumping && !moving[0] && !moving[1] && !attacking && !guarding) back_to_original_animation ();
-				jumping = false;
+			else if (e.key.keysym.sym == SDL.Keycode.SPACE || e.key.keysym.sym == SDL.Keycode.KP_5) {
+				if (jumping) jumping = false;
 			}
 		}
 	}
 	
-	private void back_to_original_animation () {
-		if (crouching) {
-			player_animation.set_mask (AN_CROUCH);
-			player_animation.set_x (99);
-		} else
-			player_animation.set_mask (AN_IDLE);
+	public void reset_animation (bool starting=false) {
+		if (inair)
+			if (attacking)
+				player_animation.set_mask (AN_PUNCH_A);
+			else if (guarding)
+				player_animation.set_mask (AN_GUARD_A);
+			else {
+				player_animation.set_mask (AN_JUMP);
+				if (!starting) player_animation.set_x (99);
+			}
+		else if (crouching)
+			if (attacking)
+				player_animation.set_mask (AN_PUNCH_C);
+			else if (guarding)
+				player_animation.set_mask (AN_GUARD_C);
+			else {
+				player_animation.set_mask (AN_CROUCH);
+				if (!starting) player_animation.set_x (99);
+			}
+		else
+			if (attacking)
+				player_animation.set_mask (AN_PUNCH_S);
+			else if (guarding)
+				player_animation.set_mask (AN_GUARD_S);
+			else if (moving[0] || moving[1])
+				player_animation.set_mask (AN_WALK);
+			else
+				player_animation.set_mask (AN_IDLE);
 	}
 	
 	public void update () {
-		if ((!moving[0] && !moving[1]) || (moving[0] && moving[1]))
+		if ((!moving[0] && !moving[1]) || (moving[0] && moving[1]) || (!inair && (guarding || attacking || crouching)))
 			body.v.x = 0;
 		else if (moving[0])
 			body.v.x = -player_move_speed;
