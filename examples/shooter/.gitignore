@@ -2,4 +2,6 @@
 /bin/*
 /android_project/bin/*
 /android_project/libs/armeabi/libgame-android.so
+/android_project/local.properties
+/android_project/gen/R.java.d
 hs_err*
