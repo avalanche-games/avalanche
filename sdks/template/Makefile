@@ -31,7 +31,6 @@ else ifeq ($(CROSS), ANDROID)
 	JNI = 0
 	
 	VBASE += $(AVALANCHE_DIR)/sdks/avalanche/avalanche_android_main.c
-	VFLAG += -D AVALANCHE_JNI
 	SHARED = 1
 	OS = Android
 else

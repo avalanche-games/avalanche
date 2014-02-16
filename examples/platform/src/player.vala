@@ -112,7 +112,6 @@ public class Player {
 				if (!moving[1]) {
 					moving[1] = true;
 					reset_animation ();
-					stdout.printf ("Moving right\n");
 				}
 			}
 			else if (e.key.keysym.sym == SDL.Keycode.DOWN || e.key.keysym.sym == SDL.Keycode.s) {
@@ -121,13 +120,13 @@ public class Player {
 					reset_animation (true);
 				}
 			}
-			else if (e.key.keysym.sym == SDL.Keycode.LCTRL || e.key.keysym.sym == SDL.Keycode.KP_4) {
+			else if (e.key.keysym.sym == SDL.Keycode.LSHIFT || e.key.keysym.sym == SDL.Keycode.KP_4) {
 				if (!attacking) {
 					attacking = true;
 					reset_animation ();
 				}
 			}
-			else if (e.key.keysym.sym == SDL.Keycode.LALT || e.key.keysym.sym == SDL.Keycode.KP_6) {
+			else if (e.key.keysym.sym == SDL.Keycode.LCTRL || e.key.keysym.sym == SDL.Keycode.KP_6) {
 				if (!guarding) {
 					guarding = true;
 					reset_animation ();
@@ -138,10 +137,10 @@ public class Player {
 					inair = true;
 					body.apply_impulse({0, -20}, {0});
 				}
-				if (!jumping) {
+				if (!jumping || !inair) {
 					jumping = true;
-					reset_animation (true);
 				}
+				reset_animation (true);
 			}
 		}else if (e.type == SDL.EventType.KEYUP){
 			if (e.key.keysym.sym == SDL.Keycode.LEFT || e.key.keysym.sym == SDL.Keycode.a) {
@@ -168,7 +167,7 @@ public class Player {
 					reset_animation ();
 				}
 			}
-			else if (e.key.keysym.sym == SDL.Keycode.LALT || e.key.keysym.sym == SDL.Keycode.KP_6) {
+			else if (e.key.keysym.sym == SDL.Keycode.LCTRL || e.key.keysym.sym == SDL.Keycode.KP_6) {
 				if (guarding) {
 					guarding = false;
 					reset_animation ();
@@ -204,7 +203,7 @@ public class Player {
 				player_animation.set_mask (AN_PUNCH_S);
 			else if (guarding)
 				player_animation.set_mask (AN_GUARD_S);
-			else if (moving[0] || moving[1])
+			else if (moving[0] || moving[1] && !(moving[0] && moving[1]))
 				player_animation.set_mask (AN_WALK);
 			else
 				player_animation.set_mask (AN_IDLE);

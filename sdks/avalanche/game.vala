@@ -32,6 +32,7 @@ public class Game {
 		#elif AVALANCHE_UNIX
 			char path_buf[1024];
 			Posix.readlink ("/proc/self/exe", path_buf);
+			path_buf[((string)path_buf).last_index_of_char('/')] = '\0';
 			Posix.chdir ((string)path_buf + "/../");
 			Posix.chdir ("./res/");
 		#endif
