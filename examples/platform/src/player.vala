@@ -69,8 +69,7 @@ public class Player {
 		guarding = false;
 		
 		// Physics
-		double moment = cp.moment_for_box (MASS, PLAYER_WIDTH, PLAYER_HEIGHT);
-		body = new cp.Body (MASS, moment);
+		body = new cp.Body (MASS, cp.INFINITY_MOMENT);
 		space.add_body (body);
 		shape = new cp.PolyShape (body, {
 			cp.Vect(0, 0),
@@ -89,13 +88,13 @@ public class Player {
 		// Check Keyboard / Dpad
 		if (e.type == SDL.EventType.KEYDOWN){
 			if (e.key.keysym.sym == SDL.Keycode.LEFT || e.key.keysym.sym == SDL.Keycode.a){
-				player_animation.hflip = true;
+				player_animation.flip = SDL.RendererFlip.HORIZONTAL;
 				if(!moving[0]) player_animation.set_mask (AN_WALK);
 				moving[0] = true;
 				attacking = false;
 			}
 			else if (e.key.keysym.sym == SDL.Keycode.RIGHT || e.key.keysym.sym == SDL.Keycode.d){
-				player_animation.hflip = false;
+				player_animation.flip = SDL.RendererFlip.NONE;
 				if(!moving[1]) player_animation.set_mask (AN_WALK);
 				moving[1] = true;
 				attacking = false;
@@ -150,6 +149,8 @@ public class Player {
 		if (moving[1] == true) body.p.x += player_move_speed;
 		
 		// Update animation
+		// Angle (converted from radians to degrees)
+		player_animation.angle = body.a*57.29578;
 		player_animation.screen_pos = {(int)body.p.x, (int)body.p.y}; //TO BE ADJUSTED TO VIEWPORT //TODO
 		player_animation.tick ();
 		player_animation.update_rects ();

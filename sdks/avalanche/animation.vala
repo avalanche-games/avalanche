@@ -14,7 +14,8 @@ namespace Aval {
 public class Animation {
 	private unowned SDL.Texture spritesheet;
 	public SDL.Point screen_pos;
-	public bool hflip;
+	public double angle;
+	public SDL.RendererFlip flip;
 	protected uint16 frame_width;
 	protected uint16 frame_height;
 	protected uint8 actual_x;
@@ -38,7 +39,8 @@ public class Animation {
 		this.first_x = first_x;
 		this.frame_time = frame_time;
 		this.counter = 0;
-		this.hflip = false;
+		this.angle = 0;
+		this.flip = SDL.RendererFlip.NONE;
 		update_rects ();
 	}
 	
@@ -90,7 +92,7 @@ public class Animation {
 	}
 	
 	public void draw () {
-		Aval.Game.WIN_RENDERER.copyex (spritesheet, input, output, 0, null, (hflip ? SDL.RendererFlip.HORIZONTAL : SDL.RendererFlip.NONE));
+		Aval.Game.WIN_RENDERER.copyex (spritesheet, input, output, angle, null, flip);
 	}
 }// Animation
 

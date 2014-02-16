@@ -1079,6 +1079,8 @@ namespace cp {
 	public static double moment_for_poly (double m, int num_verts, [CCode (array_length_pos = 1.9)] cp.Vect[] verts, cp.Vect offset);
 	[CCode (cname = "cpMomentForSegment")]
 	public static double moment_for_segment (double m, cp.Vect a, cp.Vect b);
+	[CCode (cname = "INFINITY")]
+	public static const double INFINITY_MOMENT;
 	
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	public struct SegmentQueryInfo {
