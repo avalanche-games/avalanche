@@ -4,16 +4,19 @@ export ANDROID_TOOLCHAIN=/opt/android-toolchain/
 export ANDROID_PJNAME="AvalancheShooterDemo"
 export AVALANCHE_DIR="../.."
 
-read -p " ..........................compiling"
+echo " ..........................compiling"
 CROSS=ANDROID make $*
-read -p " ..........................updating project"
+read -p "..........................Compilation finished, press RETURN to continue"
+echo " ..........................updating project"
 mkdir -p ./android_project/libs/armeabi/
-mv -f ./bin/lib/libgame-android.so ./android_project/libs/armeabi/
+mv -f ./lib/libgame-android.so ./android_project/libs/armeabi/
 android update project -n $ANDROID_PJNAME -p ./android_project --target "android-15"
 cd android_project
-read -p " ..........................striping"
+echo " ..........................striping"
 $ANDROID_TOOLCHAIN/bin/arm-linux-androideabi-strip ./libs/armeabi/libgame-android.so
-read -p " ..........................packing"
+echo " ..........................packing"
 ant debug
 cd bin
+read -p "..........................Plug or connect your adb compatible device, then press ENTER to continue"
+echo " ..........................installing"
 adb install -r $ANDROID_PJNAME-debug.apk

@@ -1,4 +1,5 @@
 /bin/
 /bin/*
 /android_project/bin/*
+/android_project/libs/armeabi/libgame-android.so
 hs_err*
