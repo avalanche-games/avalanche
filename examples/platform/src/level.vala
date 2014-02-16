@@ -12,6 +12,7 @@ public class Level {
 		// * ground.u = ground friction
 		ground = new cp.SegmentShape (space.static_body, {-100, Aval.Game.WH * 0.86f - 32}, {Aval.Game.WW+100, Aval.Game.WH * 0.86f - 32}, 1);
 		ground.u = 1;
+		ground.collision_type = 0;
 		space.add_shape (ground);
 	}
 	

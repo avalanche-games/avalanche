@@ -4,6 +4,9 @@
 
 [CCode (cprefix = "cp", lower_case_cprefix = "cp")]
 namespace cp {
+	[CCode (cname = "INFINITY")]
+	public static const double INFINITY;
+	
 	[CCode (cheader_filename = "chipmunk/chipmunk.h", free_function = "cpArrayFree")]
 	[Compact]
 	public class Array {
@@ -535,7 +538,12 @@ namespace cp {
 		[CCode (cname = "cpSpaceAddBody")]
 		public unowned cp.Body add_body (cp.Body body);
 		[CCode (cname = "cpSpaceAddCollisionHandler")]
-		public void add_collision_handler (cp.CollisionType a, cp.CollisionType b, cp.CollisionBeginFunc? begin, cp.CollisionPreSolveFunc pre_solve, cp.CollisionPostSolveFunc? post_solve, cp.CollisionSeparateFunc? separate, void* data);
+		public void add_collision_handler (cp.CollisionType a, cp.CollisionType b,
+			[CCode (delegate_target_cname = "cpCollisionBeginFunc")] cp.CollisionBeginFunc? begin,
+			[CCode (delegate_target_cname = "cpCollisionSeparateFunc")] cp.CollisionPreSolveFunc? pre_solve,
+			[CCode (delegate_target_cname = "cpCollisionPostSolveFunc")] cp.CollisionPostSolveFunc? post_solve,
+			[CCode (delegate_target_cname = "cpCollisionSeparateFunc")] cp.CollisionSeparateFunc? separate,
+			void* data);
 		[CCode (cname = "cpSpaceAddConstraint")]
 		public unowned cp.Constraint add_constraint (cp.Constraint constraint);
 		[CCode (cname = "cpSpaceAddPostStepCallback")]
@@ -593,7 +601,12 @@ namespace cp {
 		[CCode (cname = "cpSpaceSegmentQueryFirst")]
 		public unowned cp.Shape segment_query_first (cp.Vect start, cp.Vect end, cp.Layers layers, cp.Group group, cp.SegmentQueryInfo @out);
 		[CCode (cname = "cpSpaceSetDefaultCollisionHandler")]
-		public void set_default_collision_handler (cp.CollisionBeginFunc begin, cp.CollisionPreSolveFunc pre_solve, cp.CollisionPostSolveFunc post_solve, cp.CollisionSeparateFunc separate, void* data);
+		public void set_default_collision_handler (
+			[CCode (delegate_target_cname = "cpCollisionBeginFunc")] cp.CollisionBeginFunc? begin,
+			[CCode (delegate_target_cname = "cpCollisionSeparateFunc")] cp.CollisionPreSolveFunc? pre_solve,
+			[CCode (delegate_target_cname = "cpCollisionPostSolveFunc")] cp.CollisionPostSolveFunc? post_solve,
+			[CCode (delegate_target_cname = "cpCollisionSeparateFunc")] cp.CollisionSeparateFunc? separate,
+			void* data);
 		[CCode (cname = "cpSpaceShapeQuery")]
 		public bool shape_query (cp.Shape shape, cp.SpaceShapeQueryFunc func, void* data);
 		[CCode (cname = "cpSpaceStep")]
@@ -1079,8 +1092,6 @@ namespace cp {
 	public static double moment_for_poly (double m, int num_verts, [CCode (array_length_pos = 1.9)] cp.Vect[] verts, cp.Vect offset);
 	[CCode (cname = "cpMomentForSegment")]
 	public static double moment_for_segment (double m, cp.Vect a, cp.Vect b);
-	[CCode (cname = "INFINITY")]
-	public static const double INFINITY_MOMENT;
 	
 	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
 	public struct SegmentQueryInfo {
@@ -1136,14 +1147,21 @@ namespace cp {
 	public delegate void BodyShapeIteratorFunc (cp.Body body, cp.Shape shape);
 	[CCode (cheader_filename = "chipmunk/chipmunk.h", has_target = false)]
 	public delegate void BodyVelocityFunc (cp.Body body, cp.Vect gravity, double damping, double dt);
-	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
-	public delegate bool CollisionBeginFunc (cp.Arbiter arb, cp.Space space);
-	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
-	public delegate void CollisionPostSolveFunc (cp.Arbiter arb, cp.Space space);
-	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
-	public delegate bool CollisionPreSolveFunc (cp.Arbiter arb, cp.Space space);
-	[CCode (cheader_filename = "chipmunk/chipmunk.h")]
-	public delegate void CollisionSeparateFunc (cp.Arbiter arb, cp.Space space);
+	/*[CCode (cname="cpCollisionBeginFunc", type = "int (*)(cpArbiter*, cpSpace*, void *)", cheader_filename = "chipmunk/chipmunk.h")]
+	public delegate int CollisionBeginFunc (cp.Arbiter arb, cp.Space space, void *data);
+	[CCode (cname="cpCollisionPreSolveFunc", type = "int (*)(cpArbiter*, cpSpace*, void *)", cheader_filename = "chipmunk/chipmunk.h")]
+	public  delegate int CollisionPreSolveFunc (cp.Arbiter arb, cp.Space space, void *data);
+	[CCode (cname="cpCollisionPostSolveFunc", type = "void (*)(cpArbiter*, cpSpace*, void *)", cheader_filename = "chipmunk/chipmunk.h")]
+	public delegate void CollisionPostSolveFunc (cp.Arbiter arb, cp.Space space, void *data);
+	[CCode (cname="cpCollisionSeparateFunc", type = "void (*)(cpArbiter*, cpSpace*, void *)", cheader_filename = "chipmunk/chipmunk.h")]*/
+	[CCode (cheader_filename = "chipmunk/chipmunk.h", has_target = false)]
+	public delegate int CollisionBeginFunc (cp.Arbiter arb, cp.Space space, void *data);
+	[CCode (cheader_filename = "chipmunk/chipmunk.h", has_target = false)]
+	public  delegate int CollisionPreSolveFunc (cp.Arbiter arb, cp.Space space, void *data);
+	[CCode (cheader_filename = "chipmunk/chipmunk.h", has_target = false)]
+	public delegate void CollisionPostSolveFunc (cp.Arbiter arb, cp.Space space, void *data);
+	[CCode (cheader_filename = "chipmunk/chipmunk.h", has_target = false)]
+	public delegate void CollisionSeparateFunc (cp.Arbiter arb, cp.Space space, void *data);
 	[CCode (cheader_filename = "chipmunk/chipmunk.h", has_target = false)]
 	public delegate void ConstraintApplyCachedImpulseImpl (cp.Constraint constraint, double dt_coef);
 	[CCode (cheader_filename = "chipmunk/chipmunk.h", has_target = false)]

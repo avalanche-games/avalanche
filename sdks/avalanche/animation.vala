@@ -16,6 +16,7 @@ public class Animation {
 	public SDL.Point screen_pos;
 	public double angle;
 	public SDL.RendererFlip flip;
+	public bool infinite;
 	protected uint16 frame_width;
 	protected uint16 frame_height;
 	protected uint8 actual_x;
@@ -41,6 +42,7 @@ public class Animation {
 		this.counter = 0;
 		this.angle = 0;
 		this.flip = SDL.RendererFlip.NONE;
+		this.infinite = true;
 		update_rects ();
 	}
 	
@@ -59,9 +61,9 @@ public class Animation {
 	}
 	
 	public void next () {
-		if (actual_x >= last_x)
-			actual_x = first_x;
-		else
+		if (actual_x >= last_x) {
+			if(infinite) actual_x = first_x;
+		} else
 			actual_x++;
 	}
 	
@@ -84,6 +86,7 @@ public class Animation {
 		first_x = mask.first_x;
 		actual_x = mask.first_x;
 		last_x = mask.last_x;
+		this.infinite = mask.infinite;
 	}
 	
 	public void update_rects () {
@@ -100,6 +103,7 @@ public struct AnimationMask {
 	public uint8 y;
 	public uint8 first_x;
 	public uint8 last_x;
+	public bool infinite;
 }// AnimationMask
 
 
