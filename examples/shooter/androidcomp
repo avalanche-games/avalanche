@@ -1,0 +1,19 @@
+#! /bin/bash
+# A gift from Txasatonga
+export ANDROID_TOOLCHAIN=/opt/android-toolchain/
+export ANDROID_PJNAME="AvalancheShooterDemo"
+export AVALANCHE_DIR="../.."
+
+read -p " ..........................compiling"
+CROSS=ANDROID make $*
+read -p " ..........................updating project"
+mkdir -p ./android_project/libs/armeabi/
+mv -f ./bin/lib/libgame-android.so ./android_project/libs/armeabi/
+android update project -n $ANDROID_PJNAME -p ./android_project --target "android-15"
+cd android_project
+read -p " ..........................striping"
+$ANDROID_TOOLCHAIN/bin/arm-linux-androideabi-strip ./libs/armeabi/libgame-android.so
+read -p " ..........................packing"
+ant debug
+cd bin
+adb install -r $ANDROID_PJNAME-debug.apk

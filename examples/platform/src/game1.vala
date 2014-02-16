@@ -4,6 +4,7 @@ public class Game1 : Aval.ScreenState,  GLib.Object {
 	private static const cp.Vect GRAVITY = {0, 0.2f};
 	private cp.Space space;
 	private static const double TIME_STEP = 1.0/60.0; //should be 1/FPS
+	private SDL.Rect view;
 	
 	Player player;
 	Level level;
@@ -13,11 +14,14 @@ public class Game1 : Aval.ScreenState,  GLib.Object {
 		space = new cp.Space();
 		space.gravity = GRAVITY;
 		
+		// Viewport
+		view = {0, 0, 960, 544};
+		
 		// Initialize level (background and ground)
-		level = new Level (space);
+		level = new Level (space, view);
 		
 		// Initialize the player class
-		player = new Player ({120, 0}, space);
+		player = new Player ({120, 0}, space, view);
 	}
 	
 	public void on_event (SDL.Event e) {

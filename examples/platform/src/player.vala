@@ -18,6 +18,7 @@ public class Player {
 	bool jumping;
 	bool inair;
 	bool crouching;
+	bool facing_left;
 	
 	// Player template info
 	public static const string PLAYER_IMG = "skel.png";
@@ -51,7 +52,12 @@ public class Player {
 	public cp.PolyShape shape;
 	static const double MASS = 4;
 	
-	public Player (SDL.Point start_position, cp.Space space) {
+	// Level info
+	private unowned SDL.Rect view;
+	
+	public Player (SDL.Point start_position, cp.Space space, SDL.Rect view) {
+		this.view = view;
+		
 		// Load player ship image file directly to texture
 		player_texture = SDLImage.load_texture (Aval.Game.WIN_RENDERER, PLAYER_IMG);
 		
@@ -69,7 +75,10 @@ public class Player {
 		moving = {false};
 		attacking = false;
 		guarding = false;
-		inair = false;
+		jumping = false;
+		facing_left = false;
+		inair = true;
+		reset_animation ();
 		
 		// Physics
 		body = new cp.Body (MASS, cp.INFINITY);
@@ -83,9 +92,9 @@ public class Player {
 		shape.collision_type = 1;
 		shape.u = 0.7;
 		space.add_shape (shape);
-		space.add_collision_handler (0, 1, null, null, ((cp.CollisionPostSolveFunc)touched_ground), null, this);
+		space.add_collision_handler (0, 1, null, null, (cp.CollisionPostSolveFunc)touched_ground, (cp.CollisionSeparateFunc)separated_ground, this);
 		
-		// Set the starting position of the player around the middle of the screen and to the back
+		// Set the starting position
 		body.set_pos ({start_position.x-(PLAYER_WIDTH/2), start_position.y-(PLAYER_WIDTH/2)});
 	}
 	
@@ -97,18 +106,26 @@ public class Player {
 		}
 	}
 	
+	public static void separated_ground (cp.Arbiter arb, cp.Space space, void *data) {
+		Player player = (Player)data;
+		if (!player.inair) {
+			player.inair = true;
+			player.reset_animation (player.jumping);
+		}
+	}
+	
 	public void on_event (SDL.Event e) {	
 		// Check Keyboard / Dpad
 		if (e.type == SDL.EventType.KEYDOWN){
 			if (e.key.keysym.sym == SDL.Keycode.LEFT || e.key.keysym.sym == SDL.Keycode.a) {
-				player_animation.flip = SDL.RendererFlip.HORIZONTAL;
+				facing_left = true;
 				if (!moving[0]) {
 					moving[0] = true;
 					reset_animation ();
 				}
 			}
 			else if (e.key.keysym.sym == SDL.Keycode.RIGHT || e.key.keysym.sym == SDL.Keycode.d) {
-				player_animation.flip = SDL.RendererFlip.NONE;
+				facing_left = false;
 				if (!moving[1]) {
 					moving[1] = true;
 					reset_animation ();
@@ -133,24 +150,23 @@ public class Player {
 				}
 			}
 			else if (e.key.keysym.sym == SDL.Keycode.SPACE || e.key.keysym.sym == SDL.Keycode.KP_5) {
-				if (!inair) {
-					inair = true;
+				if (!inair)
 					body.apply_impulse({0, -20}, {0});
-				}
-				if (!jumping || !inair) {
+				if (!jumping)
 					jumping = true;
-				}
-				reset_animation (true);
 			}
 		}else if (e.type == SDL.EventType.KEYUP){
 			if (e.key.keysym.sym == SDL.Keycode.LEFT || e.key.keysym.sym == SDL.Keycode.a) {
 				if (moving[0]) {
+					if (moving[1]) facing_left = false;
 					moving[0] = false;
 					reset_animation ();
 				}
 			}
 			else if (e.key.keysym.sym == SDL.Keycode.RIGHT || e.key.keysym.sym == SDL.Keycode.d) {
 				if (moving[1]) {
+					// Remove next line for moon walks
+					if (moving[0]) facing_left = true;
 					moving[1] = false;
 					reset_animation ();
 				}
@@ -180,6 +196,7 @@ public class Player {
 	}
 	
 	public void reset_animation (bool starting=false) {
+		player_animation.flip = (facing_left ? SDL.RendererFlip.HORIZONTAL : SDL.RendererFlip.NONE);
 		if (inair)
 			if (attacking)
 				player_animation.set_mask (AN_PUNCH_A);
@@ -203,7 +220,7 @@ public class Player {
 				player_animation.set_mask (AN_PUNCH_S);
 			else if (guarding)
 				player_animation.set_mask (AN_GUARD_S);
-			else if (moving[0] || moving[1] && !(moving[0] && moving[1]))
+			else if ((moving[0] || moving[1]) && !(moving[0] && moving[1]))
 				player_animation.set_mask (AN_WALK);
 			else
 				player_animation.set_mask (AN_IDLE);
@@ -218,9 +235,7 @@ public class Player {
 			body.v.x = player_move_speed;
 		
 		// Update animation
-		// Angle (converted from radians to degrees)
-		// player_animation.angle = body.a*57.29578; //USELESS AS IT HAS INFINITY MOMENT
-		player_animation.screen_pos = {(int)body.p.x, (int)body.p.y}; //TO BE ADJUSTED TO VIEWPORT //TODO
+		player_animation.screen_pos = {(int)body.p.x-view.x, (int)body.p.y-view.y}; //TO BE ADJUSTED TO VIEWPORT //TODO
 		player_animation.tick ();
 		player_animation.update_rects ();
 	}

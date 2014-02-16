@@ -1147,13 +1147,6 @@ namespace cp {
 	public delegate void BodyShapeIteratorFunc (cp.Body body, cp.Shape shape);
 	[CCode (cheader_filename = "chipmunk/chipmunk.h", has_target = false)]
 	public delegate void BodyVelocityFunc (cp.Body body, cp.Vect gravity, double damping, double dt);
-	/*[CCode (cname="cpCollisionBeginFunc", type = "int (*)(cpArbiter*, cpSpace*, void *)", cheader_filename = "chipmunk/chipmunk.h")]
-	public delegate int CollisionBeginFunc (cp.Arbiter arb, cp.Space space, void *data);
-	[CCode (cname="cpCollisionPreSolveFunc", type = "int (*)(cpArbiter*, cpSpace*, void *)", cheader_filename = "chipmunk/chipmunk.h")]
-	public  delegate int CollisionPreSolveFunc (cp.Arbiter arb, cp.Space space, void *data);
-	[CCode (cname="cpCollisionPostSolveFunc", type = "void (*)(cpArbiter*, cpSpace*, void *)", cheader_filename = "chipmunk/chipmunk.h")]
-	public delegate void CollisionPostSolveFunc (cp.Arbiter arb, cp.Space space, void *data);
-	[CCode (cname="cpCollisionSeparateFunc", type = "void (*)(cpArbiter*, cpSpace*, void *)", cheader_filename = "chipmunk/chipmunk.h")]*/
 	[CCode (cheader_filename = "chipmunk/chipmunk.h", has_target = false)]
 	public delegate int CollisionBeginFunc (cp.Arbiter arb, cp.Space space, void *data);
 	[CCode (cheader_filename = "chipmunk/chipmunk.h", has_target = false)]

@@ -3,9 +3,11 @@ namespace Platform {
 public class Level {
 	private cp.SegmentShape ground;
 	private SDL.Texture background;
+	private unowned SDL.Rect view;
 	
-	public Level (cp.Space space) {
-		background = SDLImage.load_texture (Aval.Game.WIN_RENDERER, "desert.png");
+	public Level (cp.Space space, SDL.Rect view) {
+		this.view = view;
+		background = SDLImage.load_texture (Aval.Game.WIN_RENDERER, "demo.png");
 		
 		// Add a static LINE SEGMENT shape for the ground.
 		// We attach it to space.static_body to tell Chipmunk it shouldn't be movable.
@@ -24,7 +26,7 @@ public class Level {
 	}
 	
 	public void draw () {
-		Aval.Game.WIN_RENDERER.copy (background, null, null);
+		Aval.Game.WIN_RENDERER.copy (background, view, {0, 0, view.w, view.h});
 	}
 	
 	public void dispose () {

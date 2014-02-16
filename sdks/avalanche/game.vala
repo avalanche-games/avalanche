@@ -18,6 +18,10 @@ public class Game {
 	private static SDLGraphics.FramerateManager frm;
 	public static int WW;
 	public static int WH;
+	#if AVALANCHE_DEBUG
+		private static long fpsmeter_last_sec;
+		private static int fpsmeter_last_ticks;
+	#endif
 	
 	public static void init (SDL.InitFlag sdl_flags, SDLImage.InitFlags img_flags) {
 		// CHDIR on res path
@@ -43,6 +47,13 @@ public class Game {
 		
 		frm = {0, 0, 0, 0, 60};
 		frm.init ();
+	
+		#if AVALANCHE_DEBUG
+			TimeVal now = TimeVal ();
+			now.get_current_time ();
+			fpsmeter_last_sec = now.tv_sec;
+			fpsmeter_last_ticks = 0;
+		#endif
 	}
 	
 	public static void main_loop () {
@@ -96,6 +107,15 @@ public class Game {
 		frm.run ();
 		STATE.draw ();
 		WIN_RENDERER.present ();
+		#if AVALANCHE_DEBUG
+			TimeVal now = TimeVal ();
+			now.get_current_time ();
+			if(fpsmeter_last_sec != now.tv_sec) {
+				fpsmeter_last_sec = now.tv_sec;
+				stdout.printf("FPS: %d\n", frm.get_count () - fpsmeter_last_ticks);
+				fpsmeter_last_ticks = frm.get_count ();
+			}
+		#endif
 	}
 	
 	public static void quit () {

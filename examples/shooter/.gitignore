@@ -1,3 +1,4 @@
 /bin/
 /bin/*
+/android_project/bin/*
 hs_err*

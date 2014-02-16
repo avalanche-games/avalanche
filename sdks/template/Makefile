@@ -39,7 +39,7 @@ endif
 
 
 ifeq ($(DEBUG), 1)
-	VFLAG += --enable-gobject-tracing --enable-checking -g
+	VFLAG += --enable-gobject-tracing --enable-checking -g -D AVALANCHE_DEBUG
 endif
 
 
