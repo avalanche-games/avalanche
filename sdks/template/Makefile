@@ -1,6 +1,7 @@
 VALAC = valac
 VFLAG += -X -O4 -X '-lSDL2_image' -X '-lSDL2_mixer' -X '-lSDL2_ttf' -X '-lSDL2_gfx' -X '-lSDL2' -X '-lchipmunk'
 VPKGS += --pkg sdl2 --pkg sdl2-image --pkg sdl2-mixer --pkg sdl2-ttf --pkg sdl2-gfx --pkg posix --pkg chipmunk
+# --pkg gee-0.8
 VBASE += $(wildcard $(AVALANCHE_DIR)/sdks/avalanche/*.vala)
 SRC = ./$(wildcard src/*.vala)
 BIN   = ./bin/game
@@ -24,6 +25,7 @@ else ifeq ($(CROSS), ANDROID)
 		-X -L"$(ANDROID_TOOLCHAIN)/sysroot/usr/lib" \
 		-X -I"$(ANDROID_TOOLCHAIN)/sysroot/usr/include" \
 		-X '-Wl,-Bstatic' -X '-lffi' -X '-lintl' -X '-liconv' $(VFLAG) \
+		-X '-lgio-2.0' -X '-lgee-0.8' -X '-lglib-2.0' \
 		-X '-Wl,-Bdynamic' -X '-llog' -X '-lc' -X '-lm' -X '-lz' -X '-ldl' -X '-lGLESv1_CM' -X '-lGLESv2' -X '-landroid' -X '-lstdc++' \
 		--pkg sdl2-android
 	

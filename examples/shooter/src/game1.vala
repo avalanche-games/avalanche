@@ -268,8 +268,8 @@ public class Game1 : Aval.ScreenState,  GLib.Object {
 			unowned Enemy en = enemies.index (i);
 			en.physics_dispose (space);
 			en.dispose ();
-			enemies.remove_index (i);
 		}
+		enemies.remove_range (0, enemies.length);
 		enemies = null;
 	}
 	
@@ -277,8 +277,8 @@ public class Game1 : Aval.ScreenState,  GLib.Object {
 		for (int i = (int)projectiles.length - 1; i >= 0; i--) {
 			unowned Projectile pj = projectiles.index (i);
 			pj.physics_dispose (space);
-			projectiles.remove_index (i);
 		}
+		projectiles.remove_range (0, projectiles.length);
 		projectiles = null;
 	}
 	

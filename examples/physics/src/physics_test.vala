@@ -101,7 +101,7 @@ public class Ball {
 		Aval.Game.WIN_RENDERER.copyex (texture, //Texture
 			{0, 0, 256, 256}, // Image input pos and size
 			{(int)(body.p.x-RADIUS), (int)(body.p.y-RADIUS), 64, 64}, //Output pos and size
-			body.a*57.29578, // Angle (converted from radians to degrees)
+			body.a / GLib.Math.PI * 180f, // Angle (converted from radians to degrees)
 			null, // enter point for rotation (NULL uses half width and half height)
 			SDL.RendererFlip.NONE ); //Flip
 	}
