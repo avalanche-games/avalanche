@@ -1,7 +1,6 @@
 VALAC = valac
 VFLAG += -X -O4 -X '-lSDL2_image' -X '-lSDL2_mixer' -X '-lSDL2_ttf' -X '-lSDL2_gfx' -X '-lSDL2' -X '-lchipmunk'
-VPKGS += --pkg sdl2 --pkg sdl2-image --pkg sdl2-mixer --pkg sdl2-ttf --pkg sdl2-gfx --pkg posix --pkg chipmunk
-# --pkg gee-0.8
+VPKGS += --pkg sdl2 --pkg sdl2-image --pkg sdl2-mixer --pkg sdl2-ttf --pkg sdl2-gfx --pkg posix --pkg chipmunk --pkg gee-0.8
 VBASE += $(wildcard $(AVALANCHE_DIR)/sdks/avalanche/*.vala)
 SRC = ./$(wildcard src/*.vala)
 BIN   = ./bin/game

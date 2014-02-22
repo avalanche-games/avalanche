@@ -20,14 +20,14 @@ namespace Tiled {
 * The Map class is the focal point of the tiled.core package.
 */
 public class Map {
-	public static final int ORIENTATION_ORTHOGONAL = 1;
-	public static final int ORIENTATION_ISOMETRIC = 2;
-	public static final int ORIENTATION_HEXAGONAL = 4;
+	public static const int ORIENTATION_ORTHOGONAL = 1;
+	public static const int ORIENTATION_ISOMETRIC = 2;
+	public static const int ORIENTATION_HEXAGONAL = 4;
 	// Shifted (used for iso and hex).
-	public static final int ORIENTATION_SHIFTED = 5;
+	public static const int ORIENTATION_SHIFTED = 5;
 	
-	public ArrayList<MapLayer> layers;
-	public ArrayList<TileSet> tile_sets;
+	public Gee.ArrayList<MapLayer> layers;
+	public Gee.ArrayList<TileSet> tile_sets;
 	
 	public int tile_width;
 	public int tile_height;
@@ -41,9 +41,9 @@ public class Map {
 	* @param height the map height in tiles.
 	*/
 	public Map (int width, int height) {
-		layers = new ArrayList<MapLayer> ();
+		layers = new Gee.ArrayList<MapLayer> ();
 		bounds = {0, 0, width, height};
-		tile_sets  = new ArrayList<TileSet> ();
+		tile_sets  = new Gee.ArrayList<TileSet> ();
 	}
 	
 	/**
@@ -55,8 +55,8 @@ public class Map {
 		
 		SDL.Rect layer_bounds = {0};
 		
-		for (int i = 0; i < layers.length; i++) {
-			layers.index (i).bounds (layer_bounds);
+		for (int i = 0; i < layers.size; i++) {
+			layers[i].aligns_bounds (layer_bounds);
 			if (width < layer_bounds.w) width = layer_bounds.w;
 			if (height < layer_bounds.h) height = layer_bounds.h;
 		}
@@ -75,19 +75,19 @@ public class Map {
 	}
 	
 	public MapLayer add_layer (MapLayer layer) {
-		layer.map = this;
+		layer.my_map = this;
 		layers.add (layer);
 		return layer;
 	}
 
 	public void set_layer (int index, MapLayer layer) {
-		layer.map = this;
+		layer.my_map = this;
 		// Needing to see if this is really the better way to update one value // TODO
 		layers.set (index, layer);
 	}
 
 	public void insert_layer(int index, MapLayer layer) {
-		layer.map = this;
+		layer.my_map = this;
 		layers.insert (index, layer);
 	}
 	
@@ -106,12 +106,12 @@ public class Map {
 	* Removes all layers from the plane.
 	*/
 	public void remove_all_layers () {
-		layers.remove_range (0, layers.length);
+		layers.clear ();
 	}
 	
 	/**
 	* Resizes this plane. The (dx, dy) pair determines where the original
-	* plane should be positioned on the new area. Only layers that exactly
+	* plane should be positioned on the new SDL.Rect. Only layers that exactly
 	* match the bounds of the map are resized, any other layers are moved by
 	* the given shift.
 	*
@@ -140,7 +140,7 @@ public class Map {
 	* @param y
 	* @return true if the point is within the plane, false otherwise.
 	*/
-	public boolean in_bounds (int x, int y) {
+	public bool in_bounds (int x, int y) {
 		return x >= 0 && y >= 0 && x < bounds.w && y < bounds.h;
 	}
 	
@@ -153,19 +153,7 @@ public class Map {
 	public void add_tileset (TileSet tileset) {
 		if (tileset == null || tile_sets.contains (tileset))
 			return;
-
-		unowned Tile t = tileset.tile (0);
-
-		if (t != null) {
-			int tw = t.width ();
-			int th = t.height ();
-			if (tw != tile_width)
-				if (tile_width == 0) {
-				    tile_width = tw;
-				    tile_height = th;
-				}
-		}
-
+		
 		tile_sets.add (tileset);
 	}
 	
@@ -177,7 +165,7 @@ public class Map {
 	*/
 	public void remove_tileset (TileSet tileset) {
 		// Sanity check
-		final int tileset_index = tile_sets.index_of (tileset);
+		int tileset_index = tile_sets.index_of (tileset);
 		if (tileset_index == -1)
 			return;
 
@@ -202,24 +190,8 @@ public class Map {
 	* @return true if the point is within the map boundaries,
 	*         false otherwise
 	*/
-	public boolean contains (int x, int y) {
+	public bool contains (int x, int y) {
 		return x >= 0 && y >= 0 && x < bounds.w && y < bounds.h;
-	}
-	
-	/**
-	* Returns the maximum tile height. This is the height of the highest tile
-	* in all tileSets or the tile height used by this map if it's smaller.
-	*
-	* @return int The maximum tile height
-	*/
-	public int tile_height_max () {
-		int max_height = tile_height;
-
-		foreach (TileSet tileset in tile_sets)
-			if (tileset.tile_height > maxHeight)
-				maxHeight = tileset.tile_height;
-
-		return maxHeight;
 	}
 	
 	/**
@@ -241,26 +213,26 @@ public class Map {
  */
 public abstract class MapLayer {
 	/** MIRROR_HORIZONTAL */
-	public static final int MIRROR_HORIZONTAL = 1;
+	public static const int MIRROR_HORIZONTAL = 1;
 	/** MIRROR_VERTICAL */
-	public static final int MIRROR_VERTICAL   = 2;
+	public static const int MIRROR_VERTICAL   = 2;
 
 	/** ROTATE_90 */
-	public static final int ROTATE_90  = 90;
+	public static const int ROTATE_90  = 90;
 	/** ROTATE_180 */
-	public static final int ROTATE_180 = 180;
+	public static const int ROTATE_180 = 180;
 	/** ROTATE_270 */
-	public static final int ROTATE_270 = 270;
+	public static const int ROTATE_270 = 270;
 	
 	public string name;
 	public bool is_visible;
 	public unowned Map? my_map;
 	public float opacity = 1.0f;
-	public owned SDL.Rect bounds;
+	public SDL.Rect bounds;
 	
 	public MapLayer () {
 		bounds = {0};
-		map = null;
+		my_map = null;
 	}
 	
 	/**
@@ -269,12 +241,12 @@ public abstract class MapLayer {
 	*/
 	public MapLayer.from_size (int w, int h) {
 		bounds = {0, 0, w, h};
-		map = null;
+		my_map = null;
 	}
 
 	public MapLayer.from_rect (SDL.Rect r) {
 		bounds = r;
-		map = null;
+		my_map = null;
 	}
 	
 	/**
@@ -282,7 +254,7 @@ public abstract class MapLayer {
 	*/
 	public MapLayer.from_map (Map map) {
 		bounds = {0};
-		this.map = map;
+		this.my_map = map;
 	}
 	
 	/**
@@ -307,7 +279,7 @@ public abstract class MapLayer {
 	* @param x_off x offset in tiles
 	* @param y_off y offset in tiles
 	*/
-	public void setOffset(int x_off, int y_off) {
+	public void set_offset (int x_off, int y_off) {
 		bounds.x = x_off;
 		bounds.y = y_off;
 	}
@@ -316,7 +288,7 @@ public abstract class MapLayer {
 	* Assigns the layer bounds in tiles to the given rectangle.
 	* @param rect the rectangle to which the layer bounds are assigned
 	*/
-	public void bounds (SDL.Rect rect) {
+	public void aligns_bounds (SDL.Rect rect) {
 		rect.w = bounds.w;
 		rect.h = bounds.h;
 	}
@@ -331,11 +303,11 @@ public abstract class MapLayer {
 	*/
 	public abstract void merge_onto (MapLayer other);
 
-	public abstract void masked_merge_onto (MapLayer other, Area mask);
+	public abstract void masked_merge_onto (MapLayer other, SDL.Rect mask);
 
 	public abstract void copy_from (MapLayer other);
 
-	public abstract void masked_copy_from (MapLayer other, Area mask);
+	public abstract void masked_copy_from (MapLayer other, SDL.Rect mask);
 
 	public abstract MapLayer? create_diff (MapLayer? ml);
 	
@@ -348,7 +320,7 @@ public abstract class MapLayer {
 	*/
 	public abstract void copy_to (MapLayer other);
 
-	public abstract boolean is_empty ();
+	public abstract bool is_empty ();
 	
 	/**
 	* Creates a copy of this layer.
@@ -357,11 +329,7 @@ public abstract class MapLayer {
 	* @return a clone of this layer, as complete as possible
 	* @exception CloneNotSupportedException
 	*/
-	public MapLayer clone () {
-		MapLayer clone = new MapLayer.from_rect (bounds);
-		// Needing to receive each paramaters cloning // TODO
-		return clone;
-	}
+	public abstract MapLayer clone ();
 
 	/**
 	* @param width  the new width of the layer
@@ -377,9 +345,9 @@ public abstract class MapLayer {
  */
 public class MapObject {
 	public unowned ObjectGroup group;
-	public SDL.Rect bouds = {0};
-	private string name = "Object";
-	private string type = "";
+	public SDL.Rect bounds = {0};
+	public string name = "Object";
+	public string type = "";
 	
 	// Considering change to a better "image" handler way // TODO
 	public string image_source = "";
@@ -419,7 +387,7 @@ public class MapObject {
  * A layer containing {@link MapObject map objects}.
  */
 public class ObjectGroup : MapLayer {
-	private ArrayList<MapObject> objects = new ArrayList<MapObject> ();
+	private Gee.ArrayList<MapObject> objects = new Gee.ArrayList<MapObject> ();
 	
 	public ObjectGroup () { base (); }
 	
@@ -432,69 +400,74 @@ public class ObjectGroup : MapLayer {
 	* @param origY  the y origin of this layer
 	*/
 	public ObjectGroup.from_orig (Map map, int orig_x, int orig_y) {
-		base (map);
+		base.from_map (map);
 		this.bounds = {orig_x, orig_y, 0, 0};
 	}
 
 	/**
-	* Creates an object group with a given area. The size of area is
+	* Creates an object group with a given SDL.Rect. The size of SDL.Rect is
 	* irrelevant, just its origin.
 	*
-	* @param area the area of the object group
+	* @param SDL.Rect the SDL.Rect of the object group
 	*/
-	public ObjectGroup.from_rect (SDL.Rect area) { base (area); 
+	public ObjectGroup.from_rect (SDL.Rect rect) { base.from_rect (rect); }
 	
 	/**
 	* @param map the map this layer is part of
 	*/
 	public ObjectGroup.from_map (Map map) {
 		bounds = {0};
-		this.map = map;
+		this.my_map = map;
 	}
 	
 	/**
 	* @see MapLayer#rotate(int)
 	*/
-	public void rotate (int angle) {
+	public override void rotate (int angle) {
 		// TODO: Implement rotating an object group
 	}
 	
 	/**
 	* @see MapLayer#mirror(int)
 	*/
-	public void mirror (int dir) {
+	public override void mirror (int dir) {
 		// TODO: Implement mirroring an object group
 	}
 
-	public void merge_onto (MapLayer other) {
+	public override void merge_onto (MapLayer other) {
 		// TODO: Implement merging with another object group
 	}
 
-	public void masked_merge_onto (MapLayer other, Area mask) {
+	public override void masked_merge_onto (MapLayer other, SDL.Rect mask) {
 		// TODO: Figure out what object group should do with this method
 	}
 
-	public void copy_from (MapLayer other) {
+	public override void copy_from (MapLayer other) {
 		// TODO: Implement copying from another object group (same as merging)
 	}
 
-	public void masked_copy_from (MapLayer other, Area mask) {
+	public override void masked_copy_from (MapLayer other, SDL.Rect mask) {
 		// TODO: Figure out what object group should do with this method
 	}
 
-	public void copy_to (MapLayer other) {
+	public override void copy_to (MapLayer other) {
 		// TODO: Implement copying to another object group (same as merging)
+	}
+
+	public override MapLayer? create_diff (MapLayer? ml) {
+		// TODO: TODO
+		return null;
 	}
 	
 	/**
 	* @see MapLayer#resize(int,int,int,int)
 	*/
-	public void resize(int width, int height, int dx, int dy) {
+	public override void resize(int width, int height, int dx, int dy) {
 		// TODO: Translate contained objects by the change of origin
 	}
 	
-	public boolean is_empty () {
-		return objects.length < 1;
+	public override bool is_empty () {
+		return objects.size < 1;
 	}
 
 	public void add_object (MapObject o) {
@@ -521,7 +494,7 @@ public class ObjectGroup : MapLayer {
 
 			SDL.Rect rect = {obj.bounds.x + bounds.x * my_map.tile_width,
 				obj.bounds.y + bounds.y * my_map.tile_height,
-				obj.bounds.w, obj.bounds.h}
+				obj.bounds.w, obj.bounds.h};
 			if (rect.contains (x, y)) {
 				return obj;
 			}
@@ -529,8 +502,8 @@ public class ObjectGroup : MapLayer {
 		return null;
 	}
 	
-	public ObjectGroup clone () {
-		ObjectGroup clone = new ObjectGroup.from_orig  (map, bounds.x, bounds.y);
+	public override MapLayer clone () {
+		ObjectGroup clone = new ObjectGroup.from_orig  (my_map, bounds.x, bounds.y);
 		// Needing to receive each paramaters cloning // TODO
 		foreach (MapObject object in objects)
 			objects.add(object.clone ());
@@ -544,7 +517,7 @@ public class ObjectGroup : MapLayer {
 public class Tile {
 	private unowned TileSet tileset;
 	// Tile rect inside tileset texture
-	private SDL.Rect input_rect = {0};
+	public SDL.Rect input_rect = {0};
 	public int id = -1;
 	
 	public Tile.from_tileset (TileSet tileset) {
@@ -557,21 +530,21 @@ public class Tile {
  * tile data.
  */
 public class TileLayer : MapLayer {
-	protected Tile?[][] map;
+	protected Tile[] map;
 	
-	public TileLayer {}
-	public TileLayer.from_size (int w, int h) { base (w, h); }
-	public TileLayer.from_rect (SDL.Rect r) { base (r); }
-	public TileLayer.from_map (Map m) { base (m); }
+	public TileLayer () {}
+	public TileLayer.from_size (int w, int h) { base.from_size (w, h); }
+	public TileLayer.from_rect (SDL.Rect r) { base.from_rect (r); }
+	public TileLayer.from_map (Map m) { base.from_map (m); }
 
 	/**
 	* @param m the map this layer is part of
 	* @param w width in tiles
 	* @param h height in tiles
 	*/
-	public TileLayer (Map m, int w, int h) {
-		base (w, h);
-		this.map = m;
+	public TileLayer.from_orig (Map m, int w, int h) {
+		base.from_size (w, h);
+		this.my_map = m;
 	}
 	
 	/**
@@ -580,22 +553,22 @@ public class TileLayer : MapLayer {
 	* @param angle The Euler angle (0-360) to rotate the layer array data by.
 	* @see MapLayer#rotate(int)
 	*/
-	public void rotate (int angle) {
-		Tile[][] trans;
+	public override void rotate (int angle) {
+		Tile[] trans;
 		int xtrans = 0, ytrans = 0;
 
 		switch (angle) {
 			case ROTATE_90:
-				trans = new Tile[bounds.w][bounds.h];
+				trans = new Tile [bounds.w * bounds.h];
 				xtrans = bounds.h - 1;
 				break;
 			case ROTATE_180:
-				trans = new Tile[bounds.h][bounds.w];
+				trans = new Tile [bounds.h * bounds.w];
 				xtrans = bounds.w - 1;
 				ytrans = bounds.h - 1;
 				break;
 			case ROTATE_270:
-				trans = new Tile[bounds.w][bounds.h];
+				trans = new Tile [bounds.w * bounds.h];
 				ytrans = bounds.w - 1;
 				break;
 			default:
@@ -603,9 +576,9 @@ public class TileLayer : MapLayer {
 				return;
 		}
 
-		double ra = (double)angle * Math.PI / 180f;
-		int cos_angle = (int)Math.round (Math.cos (ra));
-		int sin_angle = (int)Math.round (Math.sin (ra));
+		double ra = (double)angle * GLib.Math.PI / 180f;
+		int cos_angle = (int)GLib.Math.round (GLib.Math.cos (ra));
+		int sin_angle = (int)GLib.Math.round (GLib.Math.sin (ra));
 
 		for (int y = 0; y < bounds.h; y++) {
 			for (int x = 0; x < bounds.w; x++) {
@@ -629,8 +602,8 @@ public class TileLayer : MapLayer {
 	*
 	* @param dir the axial orientation to mirror around
 	*/
-	public void mirror (int dir) {
-		Tile[][] mirror = new Tile[bounds.h][bounds.w];
+	public override void mirror (int dir) {
+		Tile[] mirror = new Tile[bounds.h * bounds.w];
 		for (int y = 0; y < bounds.h; y++) {
 			for (int x = 0; x < bounds.w; x++) {
 				if (dir == MIRROR_VERTICAL) {
@@ -650,7 +623,7 @@ public class TileLayer : MapLayer {
 	* @return true if the Tile is used at least once,
 	*         false otherwise.
 	*/
-	public boolean is_used (Tile t) {
+	public bool is_used (Tile t) {
 		for (int y = 0; y < bounds.h; y++)
 			for (int x = 0; x < bounds.w; x++)
 				if (map[y][x] == t)
@@ -658,7 +631,7 @@ public class TileLayer : MapLayer {
 		return false;
 	}
 
-	public boolean is_empty () {
+	public override bool is_empty () {
 		for (int p = 0; p < 2; p++)
 			for (int y = 0; y < bounds.h; y++)
 				for (int x = p; x < bounds.w; x += 2)
@@ -677,7 +650,7 @@ public class TileLayer : MapLayer {
 	*/
 	protected void set_bounds (SDL.Rect bounds) {
 		this.bounds = bounds;
-		map = new Tile[bounds.h][bounds.w];
+		map = (Tile[][]) new Tile[bounds.h * bounds.w];
 	}
 	
 	/**
@@ -688,7 +661,7 @@ public class TileLayer : MapLayer {
 	* @return A new MapLayer that represents the difference between this
 	*         layer, and the argument, or null if no difference exists.
 	*/
-	public MapLayer? create_diff (MapLayer? ml) {
+	public override MapLayer? create_diff (MapLayer? ml) {
 		if (ml == null) { return null; }
 
 		if (ml is TileLayer) {
@@ -697,15 +670,15 @@ public class TileLayer : MapLayer {
 			for (int y = bounds.y; y < bounds.h + bounds.y; y++)
 				for (int x = bounds.x; x < bounds.w + bounds.x; x++)
 					if (((TileLayer)ml).tile_at (x, y) != tile_at (x, y)) {
-						if (r != null) {
-							r.x += x
+						if (!r.is_equal ({0})) {
+							r.x += x;
 							r.y += y;
 						} else {
 							r = {x, y, 0, 0};
 						}
 					}
 
-			if (!r.equals ({0, 0, 0, 0})) {
+			if (!r.is_equal ({0})) {
 				MapLayer diff = new TileLayer.from_rect ({r.x, r.y, r.w + 1, r.h + 1});
 				diff.copy_from (ml);
 				return diff;
@@ -768,7 +741,7 @@ public class TileLayer : MapLayer {
 	* @return A java.awt.Point instance of the first instance of t, or
 	*         null if it is not found
 	*/
-	public SDL.Point location_of (Tile t) {
+	public SDL.Point? location_of (Tile t) {
 		for (int y = bounds.y; y < bounds.h + bounds.y; y++)
 			for (int x = bounds.x; x < bounds.w + bounds.x; x++)
 				if (tile_at (x, y) == t)
@@ -793,7 +766,7 @@ public class TileLayer : MapLayer {
 	/**
 	* @inheritDoc MapLayer#merge_onto(MapLayer)
 	*/
-	public void merge_onto (MapLayer other) {
+	public override void merge_onto (MapLayer other) {
 		for (int y = bounds.y; y < bounds.y + bounds.h; y++)
 			for (int x = bounds.x; x < bounds.x + bounds.w; x++) {
 				Tile tile = tile_at (x, y);
@@ -803,19 +776,18 @@ public class TileLayer : MapLayer {
 	}
 	
 	/**
-	* Like merge_onto, but will only copy the area specified.
+	* Like merge_onto, but will only copy the SDL.Rect specified.
 	*
 	* @see TileLayer#merge_onto(MapLayer)
 	* @param other
 	* @param mask
 	*/
-	public void masked_merge_onto (MapLayer other, Area mask) {
-		unowned SDL.Rect bound_box = mask.bounds;
+	public override void masked_merge_onto (MapLayer other, SDL.Rect bound_box) {
 
 		for (int y = bound_box.y; y < bound_box.y + bound_box.h; y++)
 			for (int x = bound_box.x; x < bound_box.x + bound_box.w; x++) {
 				Tile tile = ((TileLayer) other).tile_at (x, y);
-				if (mask.contains (x, y) && tile != null)
+				if (bound_box.contains (x, y) && tile != null)
 					set_tile_at (x, y, tile);
 			}
 	}
@@ -827,25 +799,24 @@ public class TileLayer : MapLayer {
 	* @see MapLayer#merge_onto
 	* @param other
 	*/
-	public void copy_from (MapLayer other) {
+	public override void copy_from (MapLayer other) {
 		for (int y = bounds.y; y < bounds.y + bounds.h; y++)
 			for (int x = bounds.x; x < bounds.x + bounds.w; x++)
 				set_tile_at (x, y, ((TileLayer) other).tile_at (x, y));
 	}
 	
 	/**
-	* Like copy_from, but will only copy the area specified.
+	* Like copy_from, but will only copy the SDL.Rect specified.
 	*
 	* @see TileLayer#copy_from(MapLayer)
 	* @param other
-	* @param mask
+	* @param bound_box
 	*/
-	public void masked_copy_from (MapLayer other, Area mask) {
-		unowned SDL.Rect bound_box = mask.bounds;
+	public override void masked_copy_from (MapLayer other, SDL.Rect bound_box) {
 
 		for (int y = bound_box.y; y < bound_box.y + bound_box.h; y++)
 			for (int x = bound_box.x; x < bound_box.x + bound_box.w; x++)
-				if (mask.contains (x,y))
+				if (bound_box.contains (x,y))
 					set_tile_at (x, y, ((TileLayer) other).tile_at (x, y));
 	}
 	
@@ -856,7 +827,7 @@ public class TileLayer : MapLayer {
 	* @see MapLayer#merge_onto
 	* @param other the layer to copy this layer to
 	*/
-	public void copy_to (MapLayer other) {
+	public override void copy_to (MapLayer other) {
 		for (int y = bounds.y; y < bounds.y + bounds.h; y++)
 			for (int x = bounds.x; x < bounds.x + bounds.w; x++)
 				((TileLayer) other).set_tile_at (x, y, tile_at (x, y));
@@ -869,19 +840,15 @@ public class TileLayer : MapLayer {
 	* @return a clone of this layer, as complete as possible
 	* @exception CloneNotSupportedException
 	*/
-	public TileLayer clone () {
+	public override MapLayer clone () {
 		TileLayer clone = new TileLayer.from_rect (bounds);
 		// Needing to receive each paramaters cloning // TODO
 		
 		// Clone the layer data
-		clone.map = new Tile[map.layers.length][];
+		clone.map = (Tile[][]) new Tile[my_map.layers.size];
 		
-		for (int i = 0; i < map.layers.length; i++) {
-			clone.map.layers[i].tiles = new Tile[map.layers[i].tiles.length];
-			//System.arraycopy (map[i], 0, clone.map[i], 0, map[i].length);
-			// Find a non Posix specific function // TODO
-			Posix.memcpy (map.layers[i].tiles, clone.map.layers[i].tiles, map.layers[i].length * sizeof (Tile));
-		}
+		// Will this work? // TODO
+		Posix.memcpy (map, clone.map, map[1].length * map.length * sizeof (Tile));
 
 		return clone;
 	}
@@ -892,8 +859,8 @@ public class TileLayer : MapLayer {
 	* @param dx     the shift in x direction
 	* @param dy     the shift in y direction
 	*/
-	public void resize (int width, int height, int dx, int dy) {
-		Tile[][] new_map = new Tile[height][width];
+	public override void resize (int width, int height, int dx, int dy) {
+		Tile[][] new_map = (Tile[][]) new Tile[height * width];
 
 		int max_x = Math.min (width, bounds.w + dx);
 		int max_y = Math.min (height, bounds.h + dy);
@@ -919,14 +886,13 @@ public class TileLayer : MapLayer {
  * <p>The other is the tile image.</p>
  */
 public class TileSet {
-	private string _base;
-	final private Array<Tile> tiles = new Aray<Tile>;
+	public Gee.ArrayList<Tile> tiles;
 	
 	protected TileCutter tile_cutter;
 	protected SDL.Rect tile_dimensions;
-	private int tile_spacing;
-	private int tile_marging;
-	private int tiles_per_row;
+	public int tile_spacing;
+	public int tile_marging;
+	public int tiles_per_row;
 	protected SDL.Texture? image;
 	public string name;
 	
@@ -935,6 +901,7 @@ public class TileSet {
 	*/
 	public TileSet () {
 		tile_dimensions = {0};
+		tiles = new Gee.ArrayList<Tile> ();
 	}
 	
 	/**
@@ -944,19 +911,18 @@ public class TileSet {
 	* @param cutter
 	*/
 	public void import_tile_bitmap (string filename, TileCutter cutter, SDL.Color? transparent_color=null) {
-		setTilesetImageFilename(imgFilename);
-
-		SDL.Surface s_image = SDLImage.load_texture (Aval.Game.WIN_RENDERER, image_source);
-		if (s_image == null)
+		SDL.Surface? s_image = SDLImage.load (filename);
+		if (s_image == null) {
 			image = null;
 			return;
 		}
 
 		if (transparent_color != null) {
-			SDL_SetColorKey(bmp_surface, true, transparent_color);
+			uint32 formated_transparent_color = s_image.format.map_rgb (transparent_color.r, transparent_color.g, transparent_color.b);
+			s_image.set_colorkey (1, formated_transparent_color);
 		}
 
-		image = newTexture.from_surface(Aval.Game.WIN_RENDERER, s_image);
+		image = new SDL.Texture.from_surface (Aval.Game.WIN_RENDERER, s_image);
 
 		cutter.image = image;
 		cutter.image_w = s_image.w;
@@ -964,6 +930,15 @@ public class TileSet {
 	}
 	
 }
-// TODO: AnimatedTileset, IO, Area and Renderer
+public class TileCutter {
+	public unowned SDL.Texture image;
+	public int image_w;
+	public int image_h;
+}
+public class Math {
+	public static int min (int a, int b) { return (a < b ? a : b); }
+	public static int max (int a, int b) { return (a < b ? b : a); }
+}
+// TODO: AnimatedTileset, TileCutter, IO and Renderer
 
 }// Tiled
