@@ -4,6 +4,7 @@ VPKGS += --pkg sdl2 --pkg sdl2-image --pkg sdl2-mixer --pkg sdl2-ttf --pkg sdl2-
 VBASE += $(wildcard $(AVALANCHE_DIR)/sdks/avalanche/*.vala)
 SRC = ./$(wildcard src/*.vala)
 BIN   = ./bin/game
+STRIP ?= strip
 
 ifeq ($(CROSS), MINGW)
 	MINGW_PREFIX ?= i686-w64
@@ -12,7 +13,7 @@ ifeq ($(CROSS), MINGW)
 	VFLAG += --cc=$(MINGW_PREFIX)-mingw32-gcc --pkg sdl2-windows
 	OS = Windows_NT
 else ifeq ($(CROSS), ANDROID)
-	ANDROID_TOOLCHAIN ?= /opt/android-toolchain/
+	ANDROID_TOOLCHAIN ?= /opt/android-toolchain
 	ANDROID_PREFIX ?= arm-linux-androideabi
 	
 	PKG_CONFIG_PATH = "$(ANDROID_TOOLCHAIN)/sysroot/usr/lib/pkgconfig"
@@ -34,6 +35,7 @@ else ifeq ($(CROSS), ANDROID)
 	VBASE += $(AVALANCHE_DIR)/sdks/avalanche/avalanche_android_main.c
 	SHARED = 1
 	OS = Android
+	STRIP = $(ANDROID_TOOLCHAIN)/bin/$(ANDROID_PREFIX)-strip
 else
 	VFLAG += -X -lm
 endif
@@ -87,6 +89,7 @@ endif
 build:
 	@mkdir "./bin" 2>/dev/null; true;
 	$(VALAC) $(SRC) $(VBASE) $(VPKGS) $(VFLAG) -o $(BIN)
+	$(STRIP) $(BIN)
 
 clean: .PHONY
 default: build
