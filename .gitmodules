@@ -1,0 +1,6 @@
+[submodule "sdks/utils/sdl2"]
+	path = sdks/utils/sdl2
+	url = git://gitorious.org/sdl-2-0-vala-vapi/pedrohlc-sdl2-vala-vapi.git
+[submodule "sdks/utils/tmx/loader"]
+	path = sdks/utils/tmx/loader
+	url = https://github.com/baylej/tmx.git
