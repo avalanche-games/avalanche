@@ -1,0 +1,3 @@
+#!/usr/bin/sh
+mkdir -p ./bin
+gcc -lSDL2_image -lSDL2 -ltmx -shared -o ./bin/libtmx_sdl.so -Wl,-soname,libtmx_sdl.so -fPIC ./src/*.c

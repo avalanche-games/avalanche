@@ -15,6 +15,9 @@ public class Main : Aval.Game {
 		// Initialize SDLMixer
 		SDLMixer.open (48000, SDL.AudioFormat.S16SYS, 2, 4096);
 		
+		// Intialize TMX
+		TMXSDL.init();
+		
 		// Initialize our random number generator
 		RANDOM = new Rand();
 		
@@ -24,7 +27,7 @@ public class Main : Aval.Game {
 		
 		// Create window and render separately.
 		WINDOW = new SDL.Window ("Platformer", SDL.Window.POS_CENTERED,
-			SDL.Window.POS_CENTERED, 960, 544, SDL.WindowFlags.SHOWN | SDL.WindowFlags.RESIZABLE);
+			SDL.Window.POS_CENTERED, 960, 544, SDL.WindowFlags.SHOWN);
 		Aval.Game.WINDOW.get_size(out WW, out WH);
 		WIN_RENDERER = new SDL.Renderer (WINDOW, -1, SDL.RendererFlags.ACCELERATED);
 		

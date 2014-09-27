@@ -1,3 +1,5 @@
 #!/bin/sh
+export VFLAG="-X '-O4' -X '-fPIC' -X '-ltmx_sdl' -X '-ltmx' -X '-ljansson' -X '-lxml2'"
+export VPKGS="--pkg tmx_sdl "
 export AVALANCHE_DIR="../.."
 make $*

@@ -1,0 +1,8 @@
+#!/usr/bin/sh
+mkdir -p /usr/local/include
+cp -f ./src/*.h /usr/local/include/
+mkdir -p /usr/local/lib
+cp -f ./bin/*.so /usr/local/lib/
+mkdir -p /usr/local/share/vala/vapi/
+cp -f ./src/*.vapi /usr/local/share/vala/vapi/
+cp -f ./src/*.deps /usr/local/share/vala/vapi/

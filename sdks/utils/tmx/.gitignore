@@ -1,0 +1,4 @@
+./tmx-build
+./tmx-build/*
+./bin
+./bin/*

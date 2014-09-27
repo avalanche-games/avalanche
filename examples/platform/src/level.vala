@@ -1,13 +1,19 @@
 namespace Platform {
 
 public class Level {
+	private TMX.Map? map;
 	private cp.SegmentShape ground;
 	private SDL.Texture background;
 	private unowned SDL.Rect view;
 	
 	public Level (cp.Space space, SDL.Rect view) {
 		this.view = view;
-		background = SDLImage.load_texture (Aval.Game.WIN_RENDERER, "demo.png");
+		
+		this.map = new TMX.Map("b64zlib.tmx");
+		if (TMX.errno != TMX._ErrorCodes.NONE) stdout.puts (TMX.strerr ());
+		
+		background = TMXSDL.render_map(Aval.Game.WIN_RENDERER, map);
+		//stdout.printf ("%d\n", map.backgroundcolor);
 		
 		// Add a static LINE SEGMENT shape for the ground.
 		// We attach it to space.static_body to tell Chipmunk it shouldn't be movable.
@@ -31,6 +37,7 @@ public class Level {
 	
 	public void dispose () {
 		background = null;
+		map = null;
 	}
 	
 	public void physics_dispose (cp.Space space) {
