@@ -4,3 +4,6 @@
 [submodule "sdks/utils/tmx/loader"]
 	path = sdks/utils/tmx/loader
 	url = https://github.com/baylej/tmx.git
+[submodule "sdks/utils/chipmunk"]
+	path = sdks/utils/chipmunk
+	url = https://github.com/PedroHLC/chipmunk-vapi.git
