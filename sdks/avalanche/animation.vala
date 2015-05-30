@@ -12,10 +12,10 @@
 namespace Aval {
 
 public class Animation {
-	private unowned SDL.Texture spritesheet;
-	public SDL.Point screen_pos;
+	private unowned SDL.Graphics.Texture spritesheet;
+	public SDL.Graphics.Point screen_pos;
 	public double angle;
-	public SDL.RendererFlip flip;
+	public SDL.Graphics.RendererFlip flip;
 	public bool infinite;
 	protected uint16 frame_width;
 	protected uint16 frame_height;
@@ -24,12 +24,12 @@ public class Animation {
 	private uint8 first_x;
 	private uint8 last_x;
 	private uint8 last_y;
-	private SDL.Rect input;
-	private SDL.Rect output;
+	private SDL.Graphics.Rect input;
+	private SDL.Graphics.Rect output;
 	private uint8 counter;
 	private uint8 frame_time;
 	
-	public Animation (SDL.Texture _spritesheet, uint16 _frame_width, uint16 _frame_height, uint8 last_frame_x, uint8 last_frame_y, uint8 start_frame_y, uint8 frame_time, SDL.Point screen_pos, uint8 first_x = 0) {
+	public Animation (SDL.Graphics.Texture _spritesheet, uint16 _frame_width, uint16 _frame_height, uint8 last_frame_x, uint8 last_frame_y, uint8 start_frame_y, uint8 frame_time, SDL.Graphics.Point screen_pos, uint8 first_x = 0) {
 		this.spritesheet = _spritesheet;
 		this.frame_width = _frame_width;
 		this.frame_height = _frame_height;
@@ -41,7 +41,7 @@ public class Animation {
 		this.frame_time = frame_time;
 		this.counter = 0;
 		this.angle = 0;
-		this.flip = SDL.RendererFlip.NONE;
+		this.flip = SDL.Graphics.RendererFlip.NONE;
 		this.infinite = true;
 		update_rects ();
 	}

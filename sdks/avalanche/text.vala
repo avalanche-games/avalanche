@@ -13,34 +13,34 @@ namespace Aval {
 
 public class Text {
 	private unowned SDLTTF.Font font;
-	private SDL.Color stdcolor;
+	private SDL.Graphics.Color stdcolor;
 	
-	private SDL.Texture? texture;
-	private SDL.Point pos;
-	private SDL.Rect input;
-	private SDL.Rect output;
+	private SDL.Graphics.Texture? texture;
+	private SDL.Graphics.Point pos;
+	private SDL.Graphics.Rect input;
+	private SDL.Graphics.Rect output;
 	
-	public Text (SDLTTF.Font _font, SDL.Color _stdcolor, SDL.Point start_pos){
+	public Text (SDLTTF.Font _font, SDL.Graphics.Color _stdcolor, SDL.Graphics.Point start_pos){
 		this.font = _font;
 		this.stdcolor = _stdcolor;
 		this.pos = start_pos;
 	}
 	
-	public void set_pos (SDL.Point new_pos) {
+	public void set_pos (SDL.Graphics.Point new_pos) {
 		this.pos = new_pos;
 		output = {pos.x, pos.y, output.w, output.h};
 	}
 	
-	public void set_color (SDL.Color new_color) {
+	public void set_color (SDL.Graphics.Color new_color) {
 		this.stdcolor = new_color;
 	}
 	
 	public bool set_text (string text) {
-		SDL.Surface? surface = font.render_utf8 (text, stdcolor);
+		SDL.Graphics.Surface? surface = font.render_utf8 (text, stdcolor);
 			if (surface == null) return failed ();
 		input = {0, 0, surface.w, surface.h};
 		output = {pos.x, pos.y, surface.w, surface.h};
-		texture = new SDL.Texture.from_surface (Aval.Game.WIN_RENDERER, surface);
+		texture = SDL.Graphics.Texture.create_from_surface (Aval.Game.WIN_RENDERER, surface);
 			if (texture == null) return failed ();
 		return true;
 	}

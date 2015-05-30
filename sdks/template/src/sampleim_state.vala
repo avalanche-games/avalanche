@@ -1,7 +1,7 @@
 namespace AvalancheTemplate {
 
 public class SampleIMGState : Aval.ScreenState,  GLib.Object {
-	private SDL.Texture sample_tex;
+	private SDL.Graphics.Texture sample_tex;
 	
 	public SampleIMGState () {
 		// Things should not be loaded here

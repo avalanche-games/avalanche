@@ -5,20 +5,20 @@ public class Game1 : Aval.ScreenState,  GLib.Object {
 	Player player;
 	
 	// Background
-	SDL.Texture background_main;
+	SDL.Graphics.Texture background_main;
 	Aval.Parallaxed background_layer1;
 	Aval.Parallaxed background_layer2;
 	
 	// Enemies
-	SDL.Texture enemy_texture;
+	SDL.Graphics.Texture enemy_texture;
 	Array<Enemy> enemies;
 	
 	// Projectiles
-	SDL.Texture projectile_texture;
+	SDL.Graphics.Texture projectile_texture;
 	Array<Projectile> projectiles;
 	
 	// Explosions
-	SDL.Texture explosion_texture;
+	SDL.Graphics.Texture explosion_texture;
 	Array<Aval.Animation> explosions;
 	
 	// The rate at which the enemies appear
@@ -124,7 +124,7 @@ public class Game1 : Aval.ScreenState,  GLib.Object {
 	public void on_event (SDL.Event e) {
 		// In case window was resized
 		if (e.type == SDL.EventType.WINDOWEVENT &&
-			e.window.event == SDL.WindowEventID.RESIZED) {
+			e.window.event == SDL.Graphics.WindowEventID.RESIZED) {
 			// Updates our parallaxes sizes
 			background_layer1.set_outrect (Aval.Game.WW, Aval.Game.WH);
 			background_layer2.set_outrect (Aval.Game.WW, Aval.Game.WH);
@@ -331,7 +331,7 @@ public class Game1 : Aval.ScreenState,  GLib.Object {
 		SDLMixer.DEFAULT_CHANNEL.play (laser_sound, 0);
 	}
 	
-	public void add_explosion (SDL.Point pos) {
+	public void add_explosion (SDL.Graphics.Point pos) {
 		explosions.append_val (new Aval.Animation (explosion_texture,
 			EXPLOSION_WIDTH, EXPLOSION_HEIGHT, 11, 0, 0, 1, pos));
 		

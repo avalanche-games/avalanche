@@ -12,8 +12,8 @@
 namespace Aval {
 
 public class Game {
-	public static SDL.Window? WINDOW;
-	public static SDL.Renderer? WIN_RENDERER;
+	public static SDL.Graphics.Window? WINDOW;
+	public static SDL.Graphics.Renderer? WIN_RENDERER;
 	public static Aval.ScreenState? STATE;
 	private static SDLGraphics.FramerateManager frm;
 	public static int WW;
@@ -68,7 +68,7 @@ public class Game {
 				// When window is resized, store new resolution
 				if (e.type == SDL.EventType.WINDOWEVENT) {
 					SDL.WindowEvent we = e.window;
-					if (we.event == SDL.WindowEventID.SIZE_CHANGED) {
+					if (we.event == SDL.Graphics.WindowEventID.SIZE_CHANGED) {
 						WW = we.data1;
 						WH = we.data2;
 					}

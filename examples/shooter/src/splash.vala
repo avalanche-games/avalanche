@@ -1,7 +1,7 @@
 namespace Shooter {
 
 public class Splash : Aval.ScreenState,  GLib.Object {
-	SDL.Texture background;
+	SDL.Graphics.Texture background;
 	uint frame_count;
 	static const double FADE_PERFRAME = 255 / 120;
 	double alpha;
@@ -15,7 +15,7 @@ public class Splash : Aval.ScreenState,  GLib.Object {
 	
 	public void on_enter () {
 		background = SDLImage.load_texture (Aval.Game.WIN_RENDERER, bg_path);
-		background.set_blend_mod (SDL.BlendMode.BLEND);
+		background.set_blend_mod (SDL.Graphics.BlendMode.BLEND);
 		frame_count = 0;
 		alpha = 0;
 		set_outrect ();
@@ -23,7 +23,7 @@ public class Splash : Aval.ScreenState,  GLib.Object {
 	
 	public void on_event (SDL.Event e) {
 		if (e.type == SDL.EventType.WINDOWEVENT &&
-			e.window.event == SDL.WindowEventID.RESIZED)
+			e.window.event == SDL.Graphics.WindowEventID.RESIZED)
 			set_outrect ();
 	}
 	
@@ -48,21 +48,21 @@ public class Splash : Aval.ScreenState,  GLib.Object {
 		frame_count++;
 	}
 	
-	static const SDL.Rect inrect = {0, 0, 840, 480};
-	static SDL.Rect outrect;
+	static const SDL.Graphics.Rect inrect = {0, 0, 840, 480};
+	static SDL.Graphics.Rect outrect;
 	public void draw () {
 		Aval.Game.WIN_RENDERER.copy (background, inrect, outrect);
 	}
 	
 	private void set_outrect () {
 		// Do not make image larger than it is.
-		int secure_width = (Aval.Game.WW <= inrect.w ? Aval.Game.WW : inrect.w);
+		uint secure_width = (Aval.Game.WW <= inrect.w ? Aval.Game.WW : inrect.w);
 		
 		// Keeps aspect ratio
 		int proportional_height = (int)Math.round(
 			(double)inrect.h / (double)inrect.w * (double)secure_width
 			);
-		outrect = {(Aval.Game.WW - secure_width) / 2,
+		outrect = {(Aval.Game.WW - (int)secure_width) / 2,
 			(Aval.Game.WH - proportional_height) / 2,
 			secure_width,
 			proportional_height};

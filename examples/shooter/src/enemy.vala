@@ -2,7 +2,7 @@ namespace Shooter {
 
 public class Enemy  {
 	// Animation representing the enemy
-	unowned SDL.Texture enemy_texture;
+	unowned SDL.Graphics.Texture enemy_texture;
 	Aval.Animation enemy_animation;
 	
 	// State of the enemy ship
@@ -31,14 +31,14 @@ public class Enemy  {
 	public cp.SegmentShape shape;
 	static const double MASS = 2;
 	
-	public Enemy (SDL.Texture enemy_texture, int screen_width, int screen_height, cp.Space space) {
+	public Enemy (SDL.Graphics.Texture enemy_texture, int screen_width, int screen_height, cp.Space space) {
 		this.enemy_texture = enemy_texture;
 		
 		// Create enemy animation
 		enemy_animation = new Aval.Animation (enemy_texture, (uint16)ENEMY_WIDTH, (uint16)ENEMY_HEIGHT, 7, 0, 0, 4, {0, 0});
 		
 		// Randomly generate the position of the enemy
-		SDL.Point start_position = {screen_width, Main.RANDOM.int_range(0, screen_height)};
+		SDL.Graphics.Point start_position = {screen_width, Main.RANDOM.int_range(0, screen_height)};
 		
 		// Set the enemy to be active
 		active = true;

@@ -12,7 +12,7 @@
 namespace Aval {
 
 public class Parallaxed {
-	SDL.Texture texture;
+	SDL.Graphics.Texture texture;
 	public int texture_width;
 	private int scaled_width;
 	public int texture_height;

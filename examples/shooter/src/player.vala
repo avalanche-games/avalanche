@@ -2,7 +2,7 @@ namespace Shooter {
 
 public class Player {
 	// Animation representing the player
-	SDL.Texture player_texture;
+	SDL.Graphics.Texture player_texture;
 	Aval.Animation player_animation;
 	
 	// Amount of hit points that player has
@@ -24,7 +24,7 @@ public class Player {
 	public cp.SegmentShape shape;
 	static const double MASS = 5;
 	
-	public Player (string texture_path, SDL.Point start_position, cp.Space space) {
+	public Player (string texture_path, SDL.Graphics.Point start_position, cp.Space space) {
 		// Load player ship image file directly to texture
 		player_texture = SDLImage.load_texture (Aval.Game.WIN_RENDERER, texture_path);
 		
@@ -51,18 +51,18 @@ public class Player {
 		body.set_pos ({start_position.x, start_position.y});
 	}
 	
-	public void on_event (SDL.Event e) {	
+	public void on_event (SDL.Event e) {
 		// Check Keyboard / Dpad
 		if (e.type == SDL.EventType.KEYDOWN){
-			if (e.key.keysym.sym == SDL.Keycode.LEFT) moving[0] = true;
-			else if (e.key.keysym.sym == SDL.Keycode.RIGHT) moving[1] = true;
-			else if (e.key.keysym.sym == SDL.Keycode.UP) moving[2] = true;
-			else if (e.key.keysym.sym == SDL.Keycode.DOWN) moving[3] = true;
+			if (e.key.keysym.sym == SDL.Input.Keycode.LEFT) moving[0] = true;
+			else if (e.key.keysym.sym == SDL.Input.Keycode.RIGHT) moving[1] = true;
+			else if (e.key.keysym.sym == SDL.Input.Keycode.UP) moving[2] = true;
+			else if (e.key.keysym.sym == SDL.Input.Keycode.DOWN) moving[3] = true;
 		}else if (e.type == SDL.EventType.KEYUP){
-			if (e.key.keysym.sym == SDL.Keycode.LEFT) moving[0] = false;
-			else if (e.key.keysym.sym == SDL.Keycode.RIGHT) moving[1] = false;
-			else if (e.key.keysym.sym == SDL.Keycode.UP) moving[2] = false;
-			else if (e.key.keysym.sym == SDL.Keycode.DOWN) moving[3] = false;
+			if (e.key.keysym.sym == SDL.Input.Keycode.LEFT) moving[0] = false;
+			else if (e.key.keysym.sym == SDL.Input.Keycode.RIGHT) moving[1] = false;
+			else if (e.key.keysym.sym == SDL.Input.Keycode.UP) moving[2] = false;
+			else if (e.key.keysym.sym == SDL.Input.Keycode.DOWN) moving[3] = false;
 		}else if (e.type == SDL.EventType.FINGERMOTION ||
 			e.type == SDL.EventType.FINGERDOWN){
 			double fx = Math.round((double)e.tfinger.x * (double)Aval.Game.WW);

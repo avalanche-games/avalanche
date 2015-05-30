@@ -2,7 +2,7 @@ namespace Shooter {
 
 public class Projectile : GLib.Object {
 	// Image representing the Projectile
-	unowned SDL.Texture texture;
+	unowned SDL.Graphics.Texture texture;
 	
 	// State of the Projectile
 	public bool active;
@@ -16,14 +16,14 @@ public class Projectile : GLib.Object {
 	// Width and height of the projectile image
 	public static const int PROJECTILE_WIDTH = 46;
 	public static const int PROJECTILE_HEIGHT = 16;
-	public static const SDL.Rect projectile_irect = {0, 0, PROJECTILE_WIDTH, PROJECTILE_HEIGHT};
+	public static const SDL.Graphics.Rect projectile_irect = {0, 0, PROJECTILE_WIDTH, PROJECTILE_HEIGHT};
 	
 	// Physics
 	public cp.Body body;
 	public cp.SegmentShape shape;
 	static const double MASS = 2;
 	
-	public Projectile (SDL.Texture texture, SDL.Point start_position, cp.Space space) {
+	public Projectile (SDL.Graphics.Texture texture, SDL.Graphics.Point start_position, cp.Space space) {
 		this.texture = texture;
 		
 		// Set the projectile to be active
